@@ -82,20 +82,13 @@ export const Contact = () => {
             <div className="pt-8 text-white">
               <h4 className="font-semibold mb-4">Contact with Me</h4>
               <div className="flex space-x-4 justify-center">
-                <a href="#" target="_blank">
+                <a href="https://www.linkedin.com/in/phanmai03/" target="_blank">
                   <Linkedin />
-                </a>
-                <a href="#" target="_blank">
-                  <Twitter />
-                </a>
-                <a href="#" target="_blank">
-                  <Instagram />
                 </a>
               </div>
             </div>
           </div>
 
-          {/* Form */}
           {/* Form */}
           <div className="bg-card p-8 rounded-lg shadow-xs">
             <h3 className="text-2xl font-semibold mb-6 text-foreground">

@@ -6,7 +6,7 @@ const projects = [
     title: "Clothing E-commerce",
     description: "An online store with product search, cart, and checkout.",
     image: "/projects/Clothing.png",
-    url: "https://github.com/PhanMai1603/E-commerce-Website",
+    url: "https://github.com/PhanMai1603/Ecommerce_Project_Nhom07_02CLC",
     tags: ["Html", "Css", "Javascript"],
   },
   {
@@ -15,7 +15,7 @@ const projects = [
     description: "Admin system for managing products, orders, and users.",
     image: "/projects/Management.png",
     url: "https://github.com/PhanMai1603/E-commerce-Management-System",
-    tags: ["TypeScript.", "NextJs"],
+    tags: ["TypeScript", "NextJs"],
   },
   {
     id: 3,
@@ -23,7 +23,7 @@ const projects = [
     description: "Personal portfolio website to showcase my projects.",
     image: "/projects/portifolio.png",
     url: "https://github.com/PhanMai1603/my-portfolio",
-    tags: ["Next.js", "TailwindCSS"],
+    tags: ["ReactJs", "TailwindCSS"],
   },
 ];
 
