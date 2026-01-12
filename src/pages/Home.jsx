@@ -22,7 +22,7 @@ export const Home = () =>{
       {/* Main Content */}
       <main>
         <MainSection />
-        <AboutSection />
+        {/* <AboutSection /> */}
         <Skills />
         <Projects />
         <Contact />

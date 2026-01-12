@@ -1,11 +1,4 @@
-import {
-  Instagram,
-  Linkedin,
-  Mail,
-  PhoneCall,
-  Send,
-  Twitter,
-} from "lucide-react";
+import { Linkedin, Mail, PhoneCall, Send } from "lucide-react";
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
 
@@ -21,10 +14,10 @@ export const Contact = () => {
 
     emailjs
       .send(
-        import.meta.env.VITE_SERVICE_ID, // ID Service trong EmailJS
-        import.meta.env.VITE_TEMPLATE_ID, // ID Template trong EmailJS
-        formData, // dữ liệu form
-        import.meta.env.VITE_PUBLIC_KEY // Public Key EmailJS
+        import.meta.env.VITE_SERVICE_ID,
+        import.meta.env.VITE_TEMPLATE_ID,
+        formData,
+        import.meta.env.VITE_PUBLIC_KEY
       )
       .then(() => {
         alert("Message Sent!");
@@ -37,135 +30,150 @@ export const Contact = () => {
 
   return (
     <section id="contact" className="py-24 px-4 relative">
-      <div className="container mx-auto max-w-2xl">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center text-secondary">
+      <div className="container mx-auto max-w-5xl">
+        {/* Heading */}
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
           Get In <span className="text-primary">Touch</span>
         </h2>
-        <p className="text-center text-secondary mb-12 max-w-2xl mx-auto">
-          Have a project or want to collaborate ? I'm always open to discussing
-          new opportunities
+        <p className="text-center text-muted-foreground mb-16 max-w-2xl mx-auto">
+          Have a project or want to collaborate? I’m always open to discussing
+          new opportunities.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {/* Contact Info */}
-          <div className="space-y-8">
-            <h3 className="text-2xl font-semibold mb-6">Contact</h3>
-            <div className="flex items-start space-x-4">
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+          {/* LEFT - Contact Info */}
+          <div className="space-y-10">
+            <h3 className="text-2xl font-semibold">Contact Info</h3>
+
+            {/* Email */}
+            <div className="flex items-center gap-4">
               <div className="p-3 rounded-full bg-primary/20">
                 <Mail className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <h4 className="font-medium">Email</h4>
+                <p className="text-sm text-muted-foreground">Email</p>
                 <a
                   href="mailto:inet.ngocmai.v6@gmail.com"
-                  className="text-secondary hover:text-primary transition-colors"
+                  className="font-medium hover:text-primary transition"
                 >
                   inet.ngocmai.v6@gmail.com
                 </a>
               </div>
             </div>
 
-            <div className="flex items-start space-x-4">
+            {/* Phone */}
+            <div className="flex items-center gap-4">
               <div className="p-3 rounded-full bg-primary/20">
                 <PhoneCall className="h-6 w-6 text-primary" />
               </div>
               <div>
-                <h4 className="font-medium">Phone Number</h4>
+                <p className="text-sm text-muted-foreground">Phone</p>
                 <a
-                  href="tel:+1234567890"
-                  className="text-secondary hover:text-primary transition-colors"
+                  href="tel:+84337273891"
+                  className="font-medium hover:text-primary transition"
                 >
-                  +(84) 337.273.891
+                  +84 337 273 891
                 </a>
               </div>
             </div>
 
-            <div className="pt-8 text-white">
-              <h4 className="font-semibold mb-4">Contact with Me</h4>
-              <div className="flex space-x-4 justify-center">
-                <a href="https://www.linkedin.com/in/phanmai03/" target="_blank">
-                  <Linkedin />
-                </a>
-              </div>
+            {/* Social */}
+            <div>
+              <p className="text-sm text-muted-foreground mb-4">
+                Connect with me
+              </p>
+              <a
+                href="https://www.linkedin.com/in/phanmai03/"
+                target="_blank"
+                className="inline-flex items-center gap-2 px-5 py-2 rounded-full 
+                border border-primary/30 hover:bg-primary hover:text-primary-foreground 
+                transition-all duration-300"
+              >
+                <Linkedin size={18} /> LinkedIn
+              </a>
             </div>
           </div>
 
-          {/* Form */}
-          <div className="bg-card p-8 rounded-lg shadow-xs">
-            <h3 className="text-2xl font-semibold mb-6 text-foreground">
+          {/* RIGHT - Form */}
+          <div
+            className="rounded-2xl p-8 
+            bg-white/5 backdrop-blur-md 
+            border border-white/10 
+            shadow-xl"
+          >
+            <h3 className="text-2xl font-semibold mb-6 text-center">
               Send a Message
             </h3>
+
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Name */}
               <div>
-                <label
-                  htmlFor="name"
-                  className="block text-m font-medium mb-2 text-foreground"
-                >
+                <label className="block text-sm font-medium mb-2">
                   Your Name
                 </label>
                 <input
                   type="text"
-                  name="name"
-                  id="name"
                   value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  className="w-full px-4 py-3 rounded-md border border-input bg-background text-foreground 
-                           focus:outline-hidden focus:ring-2 focus:ring-primary"
-                  required
                   placeholder="Enter your name"
+                  className="w-full px-4 py-3 rounded-lg 
+                  bg-background border border-input 
+                  focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
                 />
               </div>
+
+              {/* Email */}
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-m font-medium mb-2 text-foreground"
-                >
+                <label className="block text-sm font-medium mb-2">
                   Your Email
                 </label>
                 <input
                   type="email"
-                  name="email"
-                  id="email"
                   value={formData.email}
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  className="w-full px-4 py-3 rounded-md border border-input bg-background text-foreground 
-                           focus:outline-hidden focus:ring-2 focus:ring-primary"
-                  required
                   placeholder="Enter your email"
+                  className="w-full px-4 py-3 rounded-lg 
+                  bg-background border border-input 
+                  focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
                 />
               </div>
+
+              {/* Message */}
               <div>
-                <label
-                  htmlFor="message"
-                  className="block text-m font-medium mb-2 text-foreground"
-                >
+                <label className="block text-sm font-medium mb-2">
                   Your Message
                 </label>
                 <textarea
-                  name="message"
-                  id="message"
                   rows={5}
                   value={formData.message}
                   onChange={(e) =>
                     setFormData({ ...formData, message: e.target.value })
                   }
-                  className="w-full px-4 py-3 rounded-md border border-input bg-background text-foreground 
-                           focus:outline-hidden focus:ring-2 focus:ring-primary resize-none"
+                  placeholder="Write your message..."
+                  className="w-full px-4 py-3 rounded-lg 
+                  bg-background border border-input 
+                  focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                   required
-                  placeholder="Enter your message"
                 />
               </div>
-              <div className="flex justify-center">
+
+              {/* Button */}
+              <div className="flex justify-center pt-2">
                 <button
                   type="submit"
-                  className="flex items-center gap-2 px-6 py-2 rounded-full bg-primary text-primary-foreground 
-               font-medium transition-all duration-300 
-               hover:shadow-[0_0_10px_rgba(139,93,246,0.5)] hover:scale-105 active:scale-95"
+                  className="flex items-center gap-2 px-8 py-3 rounded-full 
+                  bg-primary text-primary-foreground font-medium
+                  hover:shadow-[0_0_20px_rgba(139,93,246,0.6)]
+                  hover:scale-105 active:scale-95 transition-all"
                 >
-                  <Send size={16} /> Send
+                  <Send size={16} /> Send Message
                 </button>
               </div>
             </form>
