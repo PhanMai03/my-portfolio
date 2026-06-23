@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { cn } from "../lib/utils";
 
 export const Skills = () => {
   const skills = [
@@ -27,12 +28,12 @@ export const Skills = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-bold mb-4 text-center text-secondary"
+          className="text-3xl md:text-4xl font-bold mb-4 text-center text-foreground"
         >
-          My <span className="text-primary">Skills</span>
+          My <span className="text-primary text-glow">Skills</span>
         </motion.h2>
 
-        <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto text-sm sm:text-base">
+        <p className="text-center text-foreground/70 mb-12 max-w-2xl mx-auto text-sm sm:text-base font-medium">
           Technical proficiencies and tools I use to build modern web applications.
         </p>
 
@@ -51,17 +52,19 @@ export const Skills = () => {
           "
         >
           {skills.map((skill, key) => {
-            const brandColor = skill.color;
+            // NextJS uses a dark logo, so we want it to stand out on dark vs light backgrounds
+            const isNextJS = skill.name.toLowerCase() === "nextjs";
+            const brandColor = isNextJS ? "#a78bfa" : skill.color;
 
             return (
               <motion.div
                 key={key}
                 initial={{ opacity: 0, scale: 0.85 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                whileHover={{ y: -10 }}
-                transition={{ duration: 0.4, delay: key * 0.04 }}
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.3, delay: key * 0.03 }}
                 viewport={{ once: true }}
-                className="group relative flex flex-col items-center justify-center"
+                className="group relative flex flex-col items-center justify-center cursor-pointer"
               >
                 {/* Glow */}
                 <div
@@ -69,14 +72,14 @@ export const Skills = () => {
                     absolute inset-0
                     w-20 h-20
                     sm:w-24 sm:h-24
-                    blur-[30px]
+                    blur-[24px]
                     rounded-full
-                    opacity-10
-                    group-hover:opacity-50
+                    opacity-5
+                    group-hover:opacity-40
                     transition-all
                     duration-500
                     scale-75
-                    group-hover:scale-150
+                    group-hover:scale-130
                   "
                   style={{ backgroundColor: brandColor }}
                 />
@@ -89,25 +92,21 @@ export const Skills = () => {
                     sm:w-28 sm:h-28
                     flex items-center justify-center
                     rounded-2xl
-                    bg-white/5
-                    border border-white/10
-                    backdrop-blur-md
-                    group-hover:border-white/40
+                    bg-card/40 dark:bg-white/5
+                    border border-border/80 dark:border-white/10
+                    backdrop-blur-xs
+                    group-hover:border-primary/50 dark:group-hover:border-white/30
                     transition-all duration-300
-                    shadow-xl
+                    shadow-sm group-hover:shadow-md
                   "
                 >
                   <img
                     src={skill.img}
                     alt={skill.name}
-                    className="
-                      w-12 h-12
-                      sm:w-14 sm:h-14
-                      object-contain
-                      drop-shadow-[0_0_8px_rgba(255,255,255,0.25)]
-                      group-hover:scale-110
-                      transition-transform duration-500
-                    "
+                    className={cn(
+                      "w-12 h-12 sm:w-14 sm:h-14 object-contain group-hover:scale-110 transition-transform duration-500",
+                      isNextJS ? "dark:invert-0 invert" : ""
+                    )}
                   />
                 </div>
 
@@ -117,15 +116,14 @@ export const Skills = () => {
                     mt-4
                     text-[10px]
                     sm:text-xs
-                    font-semibold
+                    font-bold
                     uppercase
                     tracking-wider
-                    text-white/50
-                    group-hover:text-white
+                    text-foreground/70 dark:text-white/60
+                    group-hover:text-primary dark:group-hover:text-white
                     transition-colors
                     duration-300
                   "
-                  style={{ textShadow: `0 0 10px ${brandColor}` }}
                 >
                   {skill.name}
                 </div>

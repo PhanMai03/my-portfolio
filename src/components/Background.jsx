@@ -26,7 +26,7 @@ export const BackgroundAnimations = () => {
         this.size = Math.random() * 1.5 + 0.5
         this.speedX = (Math.random() - 0.5) * 0.3
         this.speedY = (Math.random() - 0.5) * 0.3
-        this.color = Math.random() > 0.5 ? "#ec4899" : "#3b82f6"
+        this.color = Math.random() > 0.5 ? "#a78bfa" : "#3b82f6" // custom primary-like colors
       }
 
       update() {
@@ -40,8 +40,9 @@ export const BackgroundAnimations = () => {
       }
 
       draw() {
+        const isDark = document.documentElement.classList.contains("dark")
         ctx.fillStyle = this.color
-        ctx.shadowBlur = 6
+        ctx.shadowBlur = isDark ? 6 : 2
         ctx.shadowColor = this.color
         ctx.beginPath()
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
@@ -51,7 +52,7 @@ export const BackgroundAnimations = () => {
 
     const init = () => {
       particles = []
-      const count = Math.floor((canvas.width * canvas.height) / 20000)
+      const count = Math.floor((canvas.width * canvas.height) / 22000)
 
       for (let i = 0; i < count; i++) {
         particles.push(new Particle())
@@ -59,15 +60,20 @@ export const BackgroundAnimations = () => {
     }
 
     const connect = () => {
+      const isDark = document.documentElement.classList.contains("dark")
+      const lineColor = isDark ? "255, 255, 255" : "99, 102, 241"
+      const maxDistance = 120
+
       for (let a = 0; a < particles.length; a++) {
         for (let b = a + 1; b < a + 8 && b < particles.length; b++) {
           const dx = particles[a].x - particles[b].x
           const dy = particles[a].y - particles[b].y
           const distance = Math.sqrt(dx * dx + dy * dy)
 
-          if (distance < 120) {
-            ctx.strokeStyle = `rgba(255,255,255,${1 - distance / 120})`
-            ctx.lineWidth = 0.3
+          if (distance < maxDistance) {
+            const opacity = (1 - distance / maxDistance) * (isDark ? 0.15 : 0.12)
+            ctx.strokeStyle = `rgba(${lineColor}, ${opacity})`
+            ctx.lineWidth = isDark ? 0.3 : 0.5
             ctx.beginPath()
             ctx.moveTo(particles[a].x, particles[a].y)
             ctx.lineTo(particles[b].x, particles[b].y)
