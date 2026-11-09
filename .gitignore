@@ -12,6 +12,19 @@ dist
 dist-ssr
 *.local
 
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# Vercel & Deployment
+.vercel
+.turbo
+
+# Coverage & Cache
+coverage
+.eslintcache
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
