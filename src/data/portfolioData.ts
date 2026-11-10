@@ -15,7 +15,7 @@ export const PERSONAL_INFO = {
   graduation: "2021 – 2025",
   gpa: "3.23 / 4.0",
   toeic: "TOEIC 640 (Listening & Reading)",
-  email: "inet.ngocmai.v6@gmail.com",
+  email: "maiphan03.work@gmail.com",
   phone: "0337273891",
   formattedPhone: "0337 273 891",
   location: "Ho Chi Minh City, Vietnam",

@@ -52,11 +52,11 @@ export const HeroSection: React.FC = () => {
             {t.hero.summary}
           </p>
 
-          {/* CTA Buttons */}
-          <div className="pt-2 sm:pt-3 flex flex-wrap items-center gap-4 sm:gap-6">
+          {/* CTA Buttons — Touch Target >= 44px chuẩn Mobile */}
+          <div className="pt-2 sm:pt-3 flex flex-wrap items-center gap-3 sm:gap-5">
             <a
               href="#projects"
-              className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full bg-[#25231D] dark:bg-[#F2EADF] text-[#F2EADF] dark:text-[#25231D] text-xs sm:text-sm font-sans font-medium hover:bg-[#3D3A31] dark:hover:bg-[#E6D8C5] transition-all duration-300 shadow-sm group cursor-pointer"
+              className="inline-flex items-center justify-center min-h-[44px] gap-2 px-6 sm:px-7 py-3 rounded-full bg-[#25231D] dark:bg-[#F2EADF] text-[#F2EADF] dark:text-[#25231D] text-xs sm:text-sm font-sans font-medium hover:bg-[#3D3A31] dark:hover:bg-[#E6D8C5] transition-all duration-300 shadow-sm group cursor-pointer"
             >
               <span>{t.hero.exploreWork}</span>
               <ArrowUpRight
@@ -67,7 +67,7 @@ export const HeroSection: React.FC = () => {
 
             <a
               href="#about"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-sans font-medium text-[#25231D] dark:text-[#F2EADF] hover:text-[#B96F4F] dark:hover:text-[#C87D5D] transition-colors group cursor-pointer"
+              className="inline-flex items-center min-h-[44px] gap-1.5 px-3 py-2 text-xs sm:text-sm font-sans font-medium text-[#25231D] dark:text-[#F2EADF] hover:text-[#B96F4F] dark:hover:text-[#C87D5D] transition-colors group cursor-pointer"
             >
               <span>{t.hero.readStory}</span>
               <span className="group-hover:translate-x-1 transition-transform">→</span>

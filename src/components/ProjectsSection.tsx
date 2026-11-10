@@ -44,7 +44,7 @@ export const ProjectsSection: React.FC = () => {
           ? "Sàn thương mại nông sản số với bộ lọc thuộc tính đa tầng, logic giỏ hàng nhiều mức giá và tích hợp API xác thực chuẩn OpenAPI."
           : "Digital agricultural commerce platform with real-time faceted filters, multi-tier cart logic, and OpenAPI verified endpoint consumption.",
       image: "/projects/Agrigo.png",
-      liveUrl: "https://github.com/PhanMai03/agrigo-web",
+      liveUrl: "https://agrigo-web.vercel.app/",
       githubUrl: "https://github.com/PhanMai03/agrigo-web",
       stack: ["React", "TypeScript", "Tailwind CSS", "REST API", "Vite"],
     },
@@ -81,7 +81,7 @@ export const ProjectsSection: React.FC = () => {
             href="https://github.com/PhanMai03"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#25231D]/75 dark:text-[#F2EADF]/75 hover:text-[#B96F4F] dark:hover:text-[#C87D5D] transition-colors pb-1"
+            className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#25231D]/75 dark:text-[#F2EADF]/75 hover:text-[#B96F4F] dark:hover:text-[#C87D5D] transition-colors py-2 px-1"
           >
             <span>{language === "vi" ? "Xem tất cả dự án trên GitHub" : "View all projects on GitHub"}</span>
             <ArrowUpRight size={14} />
@@ -158,28 +158,37 @@ export const ProjectsSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* 2 NÚT HÀNH ĐỘNG GITHUB & LIVE DEMO TINH TẾ */}
-              <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-between gap-3">
+              {/* 2 NÚT HÀNH ĐỘNG GITHUB & LIVE DEMO — TOUCH TARGET >= 44PX CHUẨN MOBILE */}
+              <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex flex-wrap items-center justify-between gap-3">
                 <a
                   href={proj.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#25231D]/75 dark:text-[#F2EADF]/75 hover:text-[#B96F4F] dark:hover:text-[#C87D5D] transition-colors py-1 group/git"
+                  className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full border border-[#25231D]/20 dark:border-[#F2EADF]/20 text-xs font-mono uppercase tracking-wider text-[#25231D]/80 dark:text-[#F2EADF]/80 hover:text-[#B96F4F] dark:hover:text-[#C87D5D] hover:border-[#B96F4F] transition-all group/git"
                 >
-                  <Github size={13} className="group-hover/git:rotate-12 transition-transform" />
+                  <Github size={14} className="group-hover/git:rotate-12 transition-transform" />
                   <span>GitHub</span>
                   <ArrowUpRight size={12} />
                 </a>
 
-                <a
-                  href={proj.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#B96F4F] dark:bg-[#C87D5D] hover:bg-[#A35D3F] dark:hover:bg-[#B56D4E] text-[#F2EADF] font-mono text-xs font-medium tracking-wide transition-all shadow-xs cursor-pointer group/live"
-                >
-                  <span>{language === "vi" ? "Trải nghiệm" : "Live Demo"}</span>
-                  <ArrowUpRight size={13} className="group-hover/live:translate-x-0.5 group-hover/live:-translate-y-0.5 transition-transform" />
-                </a>
+                {proj.liveUrl ? (
+                  <a
+                    href={proj.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="min-h-[44px] inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#B96F4F] dark:bg-[#C87D5D] hover:bg-[#A35D3F] dark:hover:bg-[#B56D4E] text-[#F2EADF] font-mono text-xs font-medium tracking-wide transition-all shadow-xs cursor-pointer group/live"
+                  >
+                    <span>{language === "vi" ? "Trải nghiệm" : "Live Demo"}</span>
+                    <ArrowUpRight size={13} className="group-hover/live:translate-x-0.5 group-hover/live:-translate-y-0.5 transition-transform" />
+                  </a>
+                ) : (
+                  <div
+                    className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full border border-dashed border-[#25231D]/30 dark:border-[#F2EADF]/30 text-[#25231D]/60 dark:text-[#F2EADF]/60 font-mono text-xs select-none"
+                    title={language === "vi" ? "Hệ thống nội bộ chưa public demo riêng" : "Internal application"}
+                  >
+                    <span>{language === "vi" ? "🔒 Hệ thống nội bộ" : "🔒 Internal System"}</span>
+                  </div>
+                )}
               </div>
             </div>
           ))}

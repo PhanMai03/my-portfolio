@@ -11,7 +11,6 @@ import {
   Linkedin,
   Sparkles,
 } from "lucide-react";
-import emailjs from "@emailjs/browser";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -23,6 +22,7 @@ export const Footer: React.FC = () => {
     message: "",
   });
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
   const [copied, setCopied] = useState(false);
 
   const copyEmail = () => {
@@ -36,36 +36,59 @@ export const Footer: React.FC = () => {
     if (!formData.name || !formData.email || !formData.message) return;
 
     setStatus("sending");
+    setErrorMessage("");
 
-    const serviceId = import.meta.env.VITE_SERVICE_ID;
-    const templateId = import.meta.env.VITE_TEMPLATE_ID;
-    const publicKey = import.meta.env.VITE_PUBLIC_KEY;
+    const accessKey =
+      import.meta.env.VITE_WEB3FORMS_ACCESS_KEY ||
+      import.meta.env.VITE_PUBLIC_KEY ||
+      "";
 
-    if (serviceId && templateId && publicKey) {
-      try {
-        await emailjs.send(serviceId, templateId, formData, publicKey);
-        setStatus("success");
-        setFormData({ name: "", email: "", message: "" });
-        setTimeout(() => setStatus("idle"), 5000);
-      } catch {
-        window.open(
-          `mailto:${PERSONAL_INFO.email}?subject=Inquiry from Portfolio - ${encodeURIComponent(
-            formData.name
-          )}&body=${encodeURIComponent(formData.message)}`
-        );
-        setStatus("success");
-        setFormData({ name: "", email: "", message: "" });
-        setTimeout(() => setStatus("idle"), 5000);
-      }
-    } else {
-      window.open(
-        `mailto:${PERSONAL_INFO.email}?subject=Inquiry from Portfolio - ${encodeURIComponent(
-          formData.name
-        )}&body=${encodeURIComponent(formData.message)}`
+    // Kiểm tra xem đã có Access Key thật hay chưa
+    if (!accessKey || accessKey.includes("your_web3forms")) {
+      setStatus("error");
+      setErrorMessage(
+        language === "vi"
+          ? "Chưa cấu hình Access Key Web3Forms! Bạn hãy vào trang web3forms.com nhập email để lấy key miễn phí và dán vào file .env."
+          : "Web3Forms Access Key is not set in .env! Please get your free access key at web3forms.com."
       );
-      setStatus("success");
-      setFormData({ name: "", email: "", message: "" });
-      setTimeout(() => setStatus("idle"), 5000);
+      return;
+    }
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          subject: `[Portfolio Inquiry] From ${formData.name}`,
+          from_name: formData.name,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+        setTimeout(() => setStatus("idle"), 6000);
+      } else {
+        setStatus("error");
+        setErrorMessage(data.message || (language === "vi" ? "Mã Access Key Web3Forms không hợp lệ hoặc đã hết hạn." : "Invalid or expired Web3Forms Access Key."));
+      }
+    } catch (err: unknown) {
+      console.error("Submission error:", err);
+      setStatus("error");
+      setErrorMessage(
+        language === "vi"
+          ? "Lỗi kết nối mạng đến máy chủ Web3Forms. Bạn có thể bấm gửi qua Email trực tiếp ở bên dưới."
+          : "Network connection error to Web3Forms server. Please use direct email below."
+      );
     }
   };
 
@@ -107,7 +130,7 @@ export const Footer: React.FC = () => {
             {/* Direct Contact sitting openly on the canvas with hairline dividers (NO CARDS) */}
             <div className="space-y-4 pt-2">
               
-              {/* Email hiển thị dạng tiêu đề tương tác lớn */}
+              {/* Email hiển thị dạng tiêu đề tương tác lớn — Touch Target >= 44px */}
               <div className="space-y-1.5 pb-4 border-b border-[#F2EADF]/15">
                 <span className="font-mono text-[10px] text-[#C8B69E] uppercase tracking-wider block">
                   {t.contact.directEmail}
@@ -115,7 +138,7 @@ export const Footer: React.FC = () => {
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <a
                     href={`mailto:${PERSONAL_INFO.email}`}
-                    className="font-serif text-lg sm:text-xl font-bold text-[#F2EADF] hover:text-[#B96F4F] transition-colors break-all"
+                    className="min-h-[44px] inline-flex items-center font-serif text-lg sm:text-xl font-bold text-[#F2EADF] hover:text-[#B96F4F] transition-colors break-all py-1.5"
                   >
                     {PERSONAL_INFO.email}
                   </a>
@@ -123,17 +146,17 @@ export const Footer: React.FC = () => {
                   <button
                     type="button"
                     onClick={copyEmail}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#F2EADF]/20 hover:border-[#B96F4F] text-[#C8B69E] hover:text-[#F2EADF] text-xs font-mono transition-colors cursor-pointer"
+                    className="min-h-[44px] inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-[#F2EADF]/20 hover:border-[#B96F4F] text-[#C8B69E] hover:text-[#F2EADF] text-xs font-mono transition-colors cursor-pointer"
                     title="Copy email to clipboard"
                   >
                     {copied ? (
                       <>
-                        <Check size={12} className="text-[#F2EADF]" />
+                        <Check size={13} className="text-[#F2EADF]" />
                         <span>{language === "vi" ? "Đã chép" : "Copied"}</span>
                       </>
                     ) : (
                       <>
-                        <Copy size={12} />
+                        <Copy size={13} />
                         <span>{language === "vi" ? "Sao chép" : "Copy"}</span>
                       </>
                     )}
@@ -141,7 +164,7 @@ export const Footer: React.FC = () => {
                 </div>
               </div>
 
-              {/* Phone & Location dưới dạng bảng chỉ mục thanh mảnh (không hộp card) */}
+              {/* Phone & Location dưới dạng bảng chỉ mục thanh mảnh — Touch Target >= 44px */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4 border-b border-[#F2EADF]/15 font-sans">
                 <div className="space-y-1">
                   <span className="font-mono text-[10px] text-[#C8B69E] uppercase tracking-wider block">
@@ -149,9 +172,9 @@ export const Footer: React.FC = () => {
                   </span>
                   <a
                     href={`tel:${PERSONAL_INFO.phone.replace(/\s+/g, "")}`}
-                    className="font-mono text-sm text-[#F2EADF] hover:text-[#B96F4F] transition-colors flex items-center gap-1.5"
+                    className="min-h-[44px] font-mono text-sm text-[#F2EADF] hover:text-[#B96F4F] transition-colors flex items-center gap-2 py-1"
                   >
-                    <PhoneCall size={13} className="text-[#B96F4F] shrink-0" />
+                    <PhoneCall size={14} className="text-[#B96F4F] shrink-0" />
                     <span>{PERSONAL_INFO.phone}</span>
                   </a>
                 </div>
@@ -160,49 +183,49 @@ export const Footer: React.FC = () => {
                   <span className="font-mono text-[10px] text-[#C8B69E] uppercase tracking-wider block">
                     {t.contact.locationLabel}
                   </span>
-                  <div className="font-mono text-sm text-[#F2EADF] flex items-center gap-1.5">
-                    <MapPin size={13} className="text-[#85866A] shrink-0" />
+                  <div className="min-h-[44px] font-mono text-sm text-[#F2EADF] flex items-center gap-2 py-1">
+                    <MapPin size={14} className="text-[#85866A] shrink-0" />
                     <span>Ho Chi Minh City, VN</span>
                   </div>
                 </div>
               </div>
 
-              {/* Editorial Social Links dạng Pill thoáng đãng */}
+              {/* Editorial Social Links dạng Pill thoáng đãng — Touch Target >= 44px */}
               <div className="space-y-2 pt-1">
                 <span className="font-mono text-[10px] text-[#C8B69E] uppercase tracking-widest block">
                   {t.contact.connectVerify}
                 </span>
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2.5">
                   <a
                     href={PERSONAL_INFO.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#F2EADF]/20 hover:border-[#B96F4F] text-[#F2EADF] text-xs font-mono hover:text-[#B96F4F] transition-all"
+                    className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-[#F2EADF]/20 hover:border-[#B96F4F] text-[#F2EADF] text-xs font-mono hover:text-[#B96F4F] transition-all"
                   >
-                    <Github size={13} />
+                    <Github size={14} />
                     <span>GitHub</span>
-                    <ArrowUpRight size={11} />
+                    <ArrowUpRight size={12} />
                   </a>
 
                   <a
                     href={PERSONAL_INFO.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#F2EADF]/20 hover:border-[#B96F4F] text-[#F2EADF] text-xs font-mono hover:text-[#B96F4F] transition-all"
+                    className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-[#F2EADF]/20 hover:border-[#B96F4F] text-[#F2EADF] text-xs font-mono hover:text-[#B96F4F] transition-all"
                   >
-                    <Linkedin size={13} />
+                    <Linkedin size={14} />
                     <span>LinkedIn</span>
-                    <ArrowUpRight size={11} />
+                    <ArrowUpRight size={12} />
                   </a>
 
                   <a
                     href="/Phan-Thi-Ngoc-Mai-CV.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#B96F4F]/50 text-[#DECFC0] text-xs font-mono hover:bg-[#B96F4F] hover:text-[#F2EADF] transition-all"
+                    className="min-h-[44px] inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-[#B96F4F]/50 text-[#DECFC0] text-xs font-mono hover:bg-[#B96F4F] hover:text-[#F2EADF] transition-all"
                   >
                     <span>{language === "vi" ? "Hồ sơ CV [PDF]" : "Resume [PDF]"}</span>
-                    <ArrowUpRight size={11} />
+                    <ArrowUpRight size={12} />
                   </a>
                 </div>
               </div>
@@ -280,9 +303,32 @@ export const Footer: React.FC = () => {
 
               {/* Thông báo gửi thành công */}
               {status === "success" && (
-                <div className="p-3 rounded-xl bg-[#B96F4F]/25 border border-[#B96F4F]/60 text-[#F2EADF] font-sans text-xs flex items-center justify-center gap-2 animate-fadeIn">
-                  <Check size={15} className="text-[#DECFC0]" />
+                <div className="p-3.5 rounded-xl bg-[#B96F4F]/25 border border-[#B96F4F]/60 text-[#F2EADF] font-sans text-xs flex items-center justify-center gap-2 animate-fadeIn">
+                  <Check size={16} className="text-[#DECFC0]" />
                   <span>{t.contact.successMessage}</span>
+                </div>
+              )}
+
+              {/* Thông báo lỗi rõ ràng nếu chưa có Access Key hoặc gặp lỗi mạng */}
+              {status === "error" && (
+                <div className="p-4 rounded-xl bg-red-950/40 border border-red-500/50 text-[#F2EADF] font-sans text-xs space-y-2 animate-fadeIn">
+                  <div className="flex items-center gap-2 font-bold text-red-300">
+                    <span className="text-base">⚠</span>
+                    <span>{language === "vi" ? "Chưa thể gửi tin nhắn qua Web3Forms" : "Web3Forms Dispatch Failed"}</span>
+                  </div>
+                  <p className="text-[#F2EADF]/85 leading-relaxed">
+                    {errorMessage}
+                  </p>
+                  <div className="pt-1">
+                    <a
+                      href={`mailto:${PERSONAL_INFO.email}?subject=Inquiry from Portfolio - ${encodeURIComponent(
+                        formData.name || "Visitor"
+                      )}&body=${encodeURIComponent(formData.message || "")}`}
+                      className="inline-flex items-center gap-1.5 font-mono text-xs text-[#DECFC0] hover:text-white underline underline-offset-4 transition-colors"
+                    >
+                      <span>{language === "vi" ? "→ Bấm vào đây để mở Email gửi trực tiếp" : "→ Click here to send via direct mailto"}</span>
+                    </a>
+                  </div>
                 </div>
               )}
 

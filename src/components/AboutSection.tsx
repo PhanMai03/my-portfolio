@@ -82,14 +82,18 @@ export const AboutSection: React.FC = () => {
              ----------------------------------------------------------------------- */}
           <div className="lg:col-span-5 space-y-6">
             
-            {/* Ảnh candid đặt tự nhiên trên nền canvas, không hộp bọc */}
+            {/* Ảnh đại diện được xử lý thẩm mỹ cao cấp — Archival Editorial Portrait */}
             <div className="flex items-center gap-5">
-              <div className="relative shrink-0 w-28 sm:w-32 aspect-[4/5] rounded-2xl overflow-hidden shadow-lg -rotate-1 hover:rotate-0 transition-transform duration-300 border border-[#25231D]/15 dark:border-[#F2EADF]/20">
-                <img
-                  src="/mai-phan.jpg"
-                  alt={PERSONAL_INFO.name}
-                  className="w-full h-full object-cover object-center filter contrast-[1.02] block"
-                />
+              <div className="relative shrink-0 w-28 sm:w-32 aspect-[4/5] rounded-xl overflow-hidden shadow-md -rotate-1 hover:rotate-0 transition-transform duration-300 border border-[#25231D]/20 dark:border-[#F2EADF]/20 p-1 bg-[#F2EADF] dark:bg-[#20261C]">
+                <div className="relative w-full h-full rounded-lg overflow-hidden">
+                  <img
+                    src="/mai-phan.jpg"
+                    alt={PERSONAL_INFO.name}
+                    className="w-full h-full object-cover object-center filter contrast-[1.04] brightness-[0.98] sepia-[0.14] block"
+                  />
+                  {/* Lớp gradient ấm Terracotta/Warm Ivory hòa hợp phông xanh ảnh thẻ vào palette OFF-GRID */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#B96F4F]/25 via-transparent to-[#F2EADF]/10 pointer-events-none mix-blend-color" />
+                </div>
               </div>
 
               <div className="space-y-1 min-w-0">
@@ -139,11 +143,11 @@ export const AboutSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Action Buttons */}
+            {/* Action Buttons — Touch Target >= 44px chuẩn Mobile */}
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <a
                 href="#experience"
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#25231D] dark:bg-[#F2EADF] text-[#F2EADF] dark:text-[#25231D] text-xs font-sans font-medium hover:bg-[#3D3A31] dark:hover:bg-[#E6D8C5] transition-all shadow-xs cursor-pointer"
+                className="inline-flex items-center min-h-[44px] gap-1.5 px-5 py-2.5 rounded-full bg-[#25231D] dark:bg-[#F2EADF] text-[#F2EADF] dark:text-[#25231D] text-xs font-sans font-medium hover:bg-[#3D3A31] dark:hover:bg-[#E6D8C5] transition-all shadow-xs cursor-pointer"
               >
                 <span>{t.about.exploreExp}</span>
                 <ArrowUpRight size={12} />
@@ -153,7 +157,7 @@ export const AboutSection: React.FC = () => {
                 href={PERSONAL_INFO.cvUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full border border-[#25231D]/30 dark:border-[#F2EADF]/30 text-xs font-sans font-medium text-[#25231D] dark:text-[#F2EADF] hover:border-[#B96F4F] hover:text-[#B96F4F] dark:hover:text-[#C87D5D] transition-all cursor-pointer"
+                className="inline-flex items-center min-h-[44px] gap-1.5 px-4 py-2.5 rounded-full border border-[#25231D]/30 dark:border-[#F2EADF]/30 text-xs font-sans font-medium text-[#25231D] dark:text-[#F2EADF] hover:border-[#B96F4F] hover:text-[#B96F4F] dark:hover:text-[#C87D5D] transition-all cursor-pointer"
               >
                 <Download size={12} />
                 <span>{language === "vi" ? "Tải CV [PDF]" : "Resume [PDF]"}</span>
@@ -163,7 +167,7 @@ export const AboutSection: React.FC = () => {
           </div>
 
           {/* -----------------------------------------------------------------------
-              CỘT PHẢI (7 cols): HỒ SƠ HỌC THUẬT & DANH DỰ (THOÁNG ĐÃNG, KHÔNG HỘP CARD NẶNG)
+              CỘT PHẢI (7 cols): HỒ SƠ HỌC THUẬT & DANH DỰ
              ----------------------------------------------------------------------- */}
           <div className="lg:col-span-7 space-y-6 lg:pl-6 lg:border-l border-[#25231D]/15 dark:border-[#F2EADF]/15 relative">
             
@@ -179,7 +183,7 @@ export const AboutSection: React.FC = () => {
               </svg>
             </div>
 
-            {/* Dossier Header Info */}
+            {/* Dossier Header Info — Đã loại bỏ mã Barcode lặp lại vô nghĩa */}
             <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#25231D]/15 dark:border-[#F2EADF]/15">
               <div className="flex items-center gap-2">
                 <span className="font-mono text-xs font-bold text-[#B96F4F] dark:text-[#C87D5D]">
@@ -192,24 +196,9 @@ export const AboutSection: React.FC = () => {
               </div>
 
               <div className="flex items-center gap-2">
-                <svg className="w-16 h-4 text-[#25231D]/70 dark:text-[#F2EADF]/70" viewBox="0 0 100 24">
-                  <rect x="0" y="0" width="3" height="24" fill="currentColor" />
-                  <rect x="5" y="0" width="2" height="24" fill="currentColor" />
-                  <rect x="10" y="0" width="4" height="24" fill="currentColor" />
-                  <rect x="16" y="0" width="1" height="24" fill="currentColor" />
-                  <rect x="20" y="0" width="5" height="24" fill="currentColor" />
-                  <rect x="28" y="0" width="2" height="24" fill="currentColor" />
-                  <rect x="33" y="0" width="4" height="24" fill="currentColor" />
-                  <rect x="40" y="0" width="6" height="24" fill="currentColor" />
-                  <rect x="50" y="0" width="2" height="24" fill="currentColor" />
-                  <rect x="55" y="0" width="5" height="24" fill="currentColor" />
-                  <rect x="63" y="0" width="3" height="24" fill="currentColor" />
-                  <rect x="70" y="0" width="4" height="24" fill="currentColor" />
-                  <rect x="78" y="0" width="2" height="24" fill="currentColor" />
-                  <rect x="84" y="0" width="5" height="24" fill="currentColor" />
-                  <rect x="92" y="0" width="2" height="24" fill="currentColor" />
-                  <rect x="96" y="0" width="4" height="24" fill="currentColor" />
-                </svg>
+                <span className="font-mono text-[10px] text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider">
+                  [✓] ACCREDITED DEGREE
+                </span>
               </div>
             </div>
 

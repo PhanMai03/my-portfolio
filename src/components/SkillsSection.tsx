@@ -106,36 +106,14 @@ export const SkillsSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Column Footer with Archival Barcode */}
-            <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-between">
-              <div className="flex flex-col">
-                <span className="font-mono text-[8.5px] text-[#25231D]/60 dark:text-[#F2EADF]/60 uppercase">
-                  {language === "vi" ? "DẤU XÁC NHẬN" : "VERIFICATION STAMP"}
-                </span>
-                <span className="font-mono text-[11px] font-bold text-[#25231D] dark:text-[#F2EADF]">
-                  {t.skills.auditedStamp}
-                </span>
-              </div>
-              <svg className="w-20 h-5 text-[#25231D]/60 dark:text-[#F2EADF]/60" viewBox="0 0 100 24">
-                <rect x="0" y="0" width="3" height="24" fill="currentColor" />
-                <rect x="5" y="0" width="1" height="24" fill="currentColor" />
-                <rect x="8" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="14" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="18" y="0" width="5" height="24" fill="currentColor" />
-                <rect x="25" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="30" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="36" y="0" width="1" height="24" fill="currentColor" />
-                <rect x="40" y="0" width="6" height="24" fill="currentColor" />
-                <rect x="48" y="0" width="3" height="24" fill="currentColor" />
-                <rect x="54" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="60" y="0" width="5" height="24" fill="currentColor" />
-                <rect x="68" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="73" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="80" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="85" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="92" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="96" y="0" width="4" height="24" fill="currentColor" />
-              </svg>
+            {/* Cột 01 Footer: Tóm tắt năng lực QA */}
+            <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-between font-mono text-xs">
+              <span className="text-[10px] text-[#85866A] dark:text-[#9E9F88] uppercase tracking-wider">
+                {language === "vi" ? "PHẠM VI NĂNG LỰC" : "VERIFIED SCOPE"}
+              </span>
+              <span className="font-bold text-[#B96F4F] dark:text-[#C87D5D]">
+                5 CORE QA PRACTICES
+              </span>
             </div>
           </div>
 
@@ -192,34 +170,14 @@ export const SkillsSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-between">
-              <div className="flex flex-col">
-                <span className="font-mono text-[8.5px] text-[#25231D]/60 dark:text-[#F2EADF]/60 uppercase">
-                  {language === "vi" ? "DẤU XÁC NHẬN" : "VERIFICATION STAMP"}
-                </span>
-                <span className="font-mono text-[11px] font-bold text-[#25231D] dark:text-[#F2EADF]">
-                  {language === "vi" ? "FE ĐÃ KIỂM ĐỊNH" : "CLIENT AUDITED"}
-                </span>
-              </div>
-              <svg className="w-20 h-5 text-[#25231D]/60 dark:text-[#F2EADF]/60" viewBox="0 0 100 24">
-                <rect x="0" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="4" y="0" width="3" height="24" fill="currentColor" />
-                <rect x="10" y="0" width="1" height="24" fill="currentColor" />
-                <rect x="14" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="20" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="25" y="0" width="5" height="24" fill="currentColor" />
-                <rect x="33" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="38" y="0" width="3" height="24" fill="currentColor" />
-                <rect x="44" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="51" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="56" y="0" width="5" height="24" fill="currentColor" />
-                <rect x="64" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="70" y="0" width="3" height="24" fill="currentColor" />
-                <rect x="76" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="83" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="88" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="95" y="0" width="3" height="24" fill="currentColor" />
-              </svg>
+            {/* Cột 02 Footer */}
+            <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-between font-mono text-xs">
+              <span className="text-[10px] text-[#85866A] dark:text-[#9E9F88] uppercase tracking-wider">
+                {language === "vi" ? "PHẠM VI NĂNG LỰC" : "VERIFIED SCOPE"}
+              </span>
+              <span className="font-bold text-[#30372D] dark:text-[#C8B69E]">
+                6 PRODUCTION STACKS
+              </span>
             </div>
           </div>
 
@@ -275,34 +233,14 @@ export const SkillsSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-between">
-              <div className="flex flex-col">
-                <span className="font-mono text-[8.5px] text-[#25231D]/60 dark:text-[#F2EADF]/60 uppercase">
-                  {language === "vi" ? "DẤU XÁC NHẬN" : "VERIFICATION STAMP"}
-                </span>
-                <span className="font-mono text-[11px] font-bold text-[#25231D] dark:text-[#F2EADF]">
-                  {language === "vi" ? "DATA ĐÃ KIỂM ĐỊNH" : "DATA AUDITED"}
-                </span>
-              </div>
-              <svg className="w-20 h-5 text-[#25231D]/60 dark:text-[#F2EADF]/60" viewBox="0 0 100 24">
-                <rect x="0" y="0" width="3" height="24" fill="currentColor" />
-                <rect x="5" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="10" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="16" y="0" width="1" height="24" fill="currentColor" />
-                <rect x="20" y="0" width="5" height="24" fill="currentColor" />
-                <rect x="27" y="0" width="3" height="24" fill="currentColor" />
-                <rect x="33" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="38" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="45" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="50" y="0" width="5" height="24" fill="currentColor" />
-                <rect x="58" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="64" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="71" y="0" width="1" height="24" fill="currentColor" />
-                <rect x="75" y="0" width="5" height="24" fill="currentColor" />
-                <rect x="83" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="88" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="94" y="0" width="3" height="24" fill="currentColor" />
-              </svg>
+            {/* Cột 03 Footer */}
+            <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-between font-mono text-xs">
+              <span className="text-[10px] text-[#85866A] dark:text-[#9E9F88] uppercase tracking-wider">
+                {language === "vi" ? "PHẠM VI NĂNG LỰC" : "VERIFIED SCOPE"}
+              </span>
+              <span className="font-bold text-[#85866A] dark:text-[#9E9F88]">
+                5 APIS & DB PROTOCOLS
+              </span>
             </div>
           </div>
 
@@ -358,35 +296,14 @@ export const SkillsSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-between">
-              <div className="flex flex-col">
-                <span className="font-mono text-[8.5px] text-[#25231D]/60 dark:text-[#F2EADF]/60 uppercase">
-                  {language === "vi" ? "DẤU XÁC NHẬN" : "VERIFICATION STAMP"}
-                </span>
-                <span className="font-mono text-[11px] font-bold text-[#25231D] dark:text-[#F2EADF]">
-                  {language === "vi" ? "CÔNG CỤ ĐÃ KIỂM ĐỊNH" : "TOOLSET AUDITED"}
-                </span>
-              </div>
-              <svg className="w-20 h-5 text-[#25231D]/60 dark:text-[#F2EADF]/60" viewBox="0 0 100 24">
-                <rect x="0" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="6" y="0" width="1" height="24" fill="currentColor" />
-                <rect x="9" y="0" width="3" height="24" fill="currentColor" />
-                <rect x="15" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="19" y="0" width="5" height="24" fill="currentColor" />
-                <rect x="26" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="31" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="37" y="0" width="1" height="24" fill="currentColor" />
-                <rect x="41" y="0" width="5" height="24" fill="currentColor" />
-                <rect x="49" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="54" y="0" width="3" height="24" fill="currentColor" />
-                <rect x="60" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="67" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="72" y="0" width="4" height="24" fill="currentColor" />
-                <rect x="79" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="84" y="0" width="5" height="24" fill="currentColor" />
-                <rect x="92" y="0" width="2" height="24" fill="currentColor" />
-                <rect x="96" y="0" width="3" height="24" fill="currentColor" />
-              </svg>
+            {/* Cột 04 Footer */}
+            <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-between font-mono text-xs">
+              <span className="text-[10px] text-[#85866A] dark:text-[#9E9F88] uppercase tracking-wider">
+                {language === "vi" ? "PHẠM VI NĂNG LỰC" : "VERIFIED SCOPE"}
+              </span>
+              <span className="font-bold text-[#B96F4F] dark:text-[#C87D5D]">
+                5 AI & DEV TOOLS
+              </span>
             </div>
           </div>
 

@@ -27,7 +27,7 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     camera.lookAt(0, 0.15, 0);
 
     // =========================================================================
-    // 2. RENDERER (Antialias cao cấp, PCF Soft Shadow chuẩn)
+    // 2. RENDERER (Cập nhật PCFShadowMap mới nhất, triệt tiêu warning deprecated)
     // =========================================================================
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -37,7 +37,7 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height, false);
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap; // Đã cập nhật từ PCFSoftShadowMap cũ
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
     renderer.domElement.style.width = "100%";
@@ -46,7 +46,7 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     container.appendChild(renderer.domElement);
 
     // =========================================================================
-    // 3. HỆ THỐNG ÁNH SÁNG & KHỬ SHADOW ACNE (Triệt tiêu chớp sọc đen bóng đổ)
+    // 3. HỆ THỐNG ÁNH SÁNG & KHỬ SHADOW ACNE
     // =========================================================================
     const ambientLight = new THREE.AmbientLight(0xf5efe6, 1.45);
     scene.add(ambientLight);
@@ -59,7 +59,6 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     keyLight.shadow.mapSize.height = 1024;
     keyLight.shadow.camera.near = 1.0;
     keyLight.shadow.camera.far = 12;
-    // Cực kỳ quan trọng để triệt tiêu chớp bóng đổ trên bề mặt cong (Shadow Acne)
     keyLight.shadow.bias = -0.0005;
     keyLight.shadow.normalBias = 0.04;
     scene.add(keyLight);
@@ -75,7 +74,7 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     scene.add(fillLight);
 
     // =========================================================================
-    // 4. CHẤT LIỆU ĐẤT SÉT MỊN SILKY MATTE CLAY (Êm ái, không nhiễu hạt)
+    // 4. CHẤT LIỆU ĐẤT SÉT HỮU CƠ SILKY MATTE CLAY
     // =========================================================================
     const createClayMat = (colorHex: number, roughness = 0.92) => {
       return new THREE.MeshStandardMaterial({
@@ -86,10 +85,10 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
       });
     };
 
-    const matClayIvory = createClayMat(0xf2eadf, 0.94);       // Màn hình kem ivory
     const matClaySand = createClayMat(0xd8c8b5, 0.90);        // Viền khung iMac
     const matClayBack = createClayMat(0xcebeab, 0.92);        // Lưng máy
-    const matClayTerracotta = createClayMat(0xb96f4f, 0.88);  // Khối terracotta
+    const matClayTerracotta = createClayMat(0xb96f4f, 0.88);  // Khối terracotta QA
+    const matClaySage = createClayMat(0x85866a, 0.88);        // Khối rêu sage
     const matClayPlinthBase = createClayMat(0xe3d6c6, 0.92);   // Bệ đá dưới
     const matClayPlinthTop = createClayMat(0xede2d3, 0.94);    // Bệ đá trên
     const matClayStand = createClayMat(0xcebda8, 0.90);       // Chân đế cong
@@ -113,37 +112,34 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
       return shape;
     };
 
+    // Root Group
     const mainGroup = new THREE.Group();
     scene.add(mainGroup);
 
     // =========================================================================
-    // 6. BỆ ĐÁ THẠCH CAO XẾP TẦNG (Không giao nhau với shadow plane)
+    // 6. BỆ ĐÁ THẠCH CAO ĐIÊU KHẮC (Archival Plinths)
     // =========================================================================
-    // Bệ đá tầng 1 (Bottom Plinth)
-    const plinth1Shape = createRoundedRectShape(2.5, 1.8, 0.55);
+    const plinth1Shape = createRoundedRectShape(2.35, 1.75, 0.22);
     const plinth1Geo = new THREE.ExtrudeGeometry(plinth1Shape, {
-      depth: 0.07,
+      depth: 0.16,
       bevelEnabled: true,
       bevelSegments: 4,
-      steps: 1,
       bevelSize: 0.04,
       bevelThickness: 0.04,
     });
     const plinth1Mesh = new THREE.Mesh(plinth1Geo, matClayPlinthBase);
     plinth1Mesh.rotation.x = Math.PI / 2;
-    plinth1Mesh.position.set(0.15, -0.88, 0.1);
+    plinth1Mesh.position.set(0, -0.98, 0);
     plinth1Mesh.receiveShadow = true;
     mainGroup.add(plinth1Mesh);
 
-    // Bệ đá tầng 2 (Top Plinth)
-    const plinth2Shape = createRoundedRectShape(1.9, 1.4, 0.45);
+    const plinth2Shape = createRoundedRectShape(1.85, 1.35, 0.18);
     const plinth2Geo = new THREE.ExtrudeGeometry(plinth2Shape, {
-      depth: 0.06,
+      depth: 0.14,
       bevelEnabled: true,
       bevelSegments: 4,
-      steps: 1,
-      bevelSize: 0.035,
-      bevelThickness: 0.035,
+      bevelSize: 0.03,
+      bevelThickness: 0.03,
     });
     const plinth2Mesh = new THREE.Mesh(plinth2Geo, matClayPlinthTop);
     plinth2Mesh.rotation.x = Math.PI / 2;
@@ -152,14 +148,13 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     mainGroup.add(plinth2Mesh);
 
     // =========================================================================
-    // 7. MÀN HÌNH ĐIÊU KHẮC iMAC (Khung rỗng Hollow Frame - Triệt tiêu 100% Z-Fighting)
+    // 7. MÀN HÌNH ĐIÊU KHẮC iMAC (Khung Hollow Frame)
     // =========================================================================
     const monitorGroup = new THREE.Group();
     monitorGroup.position.set(0.1, 0.25, 0);
     mainGroup.add(monitorGroup);
 
     // A. Khung viền ngoài có khoét lỗ (Hollow Cutout Frame)
-    // Khi khoét lỗ, mặt trước không còn phủ lên màn hình -> KHÔNG BAO GIỜ BỊ CHỚP!
     const frameOuterShape = createRoundedRectShape(1.98, 1.52, 0.26);
     const screenHolePath = createRoundedRectShape(1.68, 1.22, 0.16);
     frameOuterShape.holes.push(screenHolePath);
@@ -193,14 +188,120 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     backMesh.castShadow = true;
     monitorGroup.add(backMesh);
 
-    // C. Mặt màn hình kem hữu cơ (Nằm thụt vào bên trong khung khoét lỗ)
+    // C. MẶT MÀN HÌNH QA TESTING TELEMETRY (Được render động bằng Canvas)
+    const termCanvas = document.createElement("canvas");
+    termCanvas.width = 512;
+    termCanvas.height = 380;
+    const ctx = termCanvas.getContext("2d");
+
+    const renderTerminal = (time: number) => {
+      if (!ctx) return;
+      // Nền terminal tông xám rêu đậm đồng điệu OFF-GRID
+      ctx.fillStyle = "#1E241B";
+      ctx.fillRect(0, 0, 512, 380);
+
+      // Header Bar
+      ctx.fillStyle = "#273024";
+      ctx.fillRect(0, 0, 512, 36);
+
+      // Window controls
+      ctx.fillStyle = "#B96F4F";
+      ctx.beginPath();
+      ctx.arc(20, 18, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#85866A";
+      ctx.beginPath();
+      ctx.arc(36, 18, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#C8B69E";
+      ctx.beginPath();
+      ctx.arc(52, 18, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Title
+      ctx.fillStyle = "#E6D8C5";
+      ctx.font = "bold 13px 'Courier New', monospace";
+      ctx.fillText("QA_SUITE // VERIFIED_BUILD v2.5", 72, 22);
+
+      // Badge PASS
+      ctx.fillStyle = "#34D399";
+      ctx.fillText("[✓ PASS 100%]", 395, 22);
+
+      // Divider line
+      ctx.strokeStyle = "rgba(242, 234, 223, 0.12)";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, 36);
+      ctx.lineTo(512, 36);
+      ctx.stroke();
+
+      // Terminal logs (Mô phỏng kết quả kiểm thử thực tế)
+      ctx.font = "12px 'Courier New', monospace";
+      
+      ctx.fillStyle = "#85866A";
+      ctx.fillText("$ vitest --run --reporter=verbose", 24, 68);
+
+      ctx.fillStyle = "#34D399";
+      ctx.fillText("✓ auth.rbac.spec.ts (4 passed)", 24, 96);
+      ctx.fillStyle = "rgba(242, 234, 223, 0.7)";
+      ctx.fillText("  • verifyAdminToken ........... 12ms", 40, 118);
+      ctx.fillText("  • enforceUserPermissions ..... 8ms", 40, 138);
+
+      ctx.fillStyle = "#34D399";
+      ctx.fillText("✓ postman.api.contract.spec.ts", 24, 170);
+      ctx.fillStyle = "rgba(242, 234, 223, 0.7)";
+      ctx.fillText("  • GET /api/v1/orders [200 OK]  14ms", 40, 192);
+      ctx.fillText("  • POST /api/v1/checkout ...... 18ms", 40, 212);
+
+      ctx.fillStyle = "#34D399";
+      ctx.fillText("✓ web.ui.responsiveness.spec.ts", 24, 244);
+      ctx.fillStyle = "rgba(242, 234, 223, 0.7)";
+      ctx.fillText("  • zeroLayoutOverflow [375px] . 6ms", 40, 266);
+
+      // Summary Bar
+      ctx.fillStyle = "#273024";
+      ctx.fillRect(20, 290, 472, 38);
+      ctx.fillStyle = "#B96F4F";
+      ctx.font = "bold 12px 'Courier New', monospace";
+      ctx.fillText("TEST RUN: 18 PASSED (0 FAILURES)", 36, 314);
+
+      // Blinking Cursor
+      const blink = Math.floor(time * 2) % 2 === 0;
+      if (blink) {
+        ctx.fillStyle = "#34D399";
+        ctx.fillRect(355, 303, 8, 14);
+      }
+
+      // Scanning radar line (Quét kiểm thử liên tục)
+      const scanY = 36 + ((time * 65) % 310);
+      const gradient = ctx.createLinearGradient(0, scanY - 14, 0, scanY);
+      gradient.addColorStop(0, "rgba(52, 211, 153, 0)");
+      gradient.addColorStop(1, "rgba(52, 211, 153, 0.18)");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, scanY - 14, 512, 14);
+      ctx.strokeStyle = "rgba(52, 211, 153, 0.45)";
+      ctx.beginPath();
+      ctx.moveTo(0, scanY);
+      ctx.lineTo(512, scanY);
+      ctx.stroke();
+    };
+
+    renderTerminal(0);
+    const termTexture = new THREE.CanvasTexture(termCanvas);
+
     const screenShape = createRoundedRectShape(1.70, 1.24, 0.16);
     const screenGeo = new THREE.ExtrudeGeometry(screenShape, {
       depth: 0.03,
       bevelEnabled: false,
     });
-    const screenMesh = new THREE.Mesh(screenGeo, matClayIvory);
-    // Đặt màn hình nằm gọn trong hốc khoét, mặt trước tại Z = 0.08 (thụt sâu 0.04 so với đỉnh viền Z=0.12)
+    const screenMat = new THREE.MeshStandardMaterial({
+      map: termTexture,
+      roughness: 0.4,
+      metalness: 0.05,
+    });
+    const screenMesh = new THREE.Mesh(screenGeo, screenMat);
     screenMesh.position.set(0, 0, 0.05);
     screenMesh.receiveShadow = true;
     monitorGroup.add(screenMesh);
@@ -242,7 +343,7 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     monitorGroup.add(footMesh);
 
     // =========================================================================
-    // 8. CÁC KHỐI ĐIÊU KHẮC HỮU CƠ LƠ LỬNG
+    // 8. CÁC KHỐI BIỂU TƯỢNG QA & FRONTEND CHUYÊN NGÀNH LƠ LỬNG
     // =========================================================================
     interface FloatingNode {
       mesh: THREE.Object3D;
@@ -255,70 +356,77 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
 
     const floatingNodes: FloatingNode[] = [];
 
-    // Node 1: Khối đá đẽo thô góc cạnh (Top Left)
-    const cube1Geo = new THREE.BoxGeometry(0.46, 0.46, 0.46);
-    const posAttr = cube1Geo.attributes.position;
-    for (let i = 0; i < posAttr.count; i++) {
-      posAttr.setX(i, posAttr.getX(i) + Math.sin(i * 1.7) * 0.025);
-      posAttr.setY(i, posAttr.getY(i) + Math.cos(i * 2.3) * 0.025);
-    }
-    cube1Geo.computeVertexNormals();
+    // NODE 1: KHỐI KHIÊN BẢO VỆ QA (QA SHIELD INSPECTION TOKEN) — Top Left
+    const shieldShape = new THREE.Shape();
+    shieldShape.moveTo(0, 0.32);
+    shieldShape.lineTo(0.24, 0.22);
+    shieldShape.lineTo(0.22, -0.06);
+    shieldShape.quadraticCurveTo(0, -0.28, 0, -0.32);
+    shieldShape.quadraticCurveTo(0, -0.28, -0.22, -0.06);
+    shieldShape.lineTo(-0.24, 0.22);
+    shieldShape.closePath();
 
-    const cube1Mesh = new THREE.Mesh(cube1Geo, matClaySand);
-    cube1Mesh.position.set(-1.45, 1.15, 0.3);
-    cube1Mesh.rotation.set(0.35, -0.4, 0.2);
-    cube1Mesh.castShadow = true;
-    mainGroup.add(cube1Mesh);
+    const shieldGeo = new THREE.ExtrudeGeometry(shieldShape, {
+      depth: 0.12,
+      bevelEnabled: true,
+      bevelSegments: 3,
+      bevelSize: 0.03,
+      bevelThickness: 0.03,
+    });
+    const shieldMesh = new THREE.Mesh(shieldGeo, matClayTerracotta);
+    shieldMesh.position.set(-1.45, 1.15, 0.3);
+    shieldMesh.rotation.set(0.2, -0.3, 0.1);
+    shieldMesh.castShadow = true;
+    mainGroup.add(shieldMesh);
     floatingNodes.push({
-      mesh: cube1Mesh,
-      basePos: cube1Mesh.position.clone(),
+      mesh: shieldMesh,
+      basePos: shieldMesh.position.clone(),
       speed: 1.1,
       offset: 0,
       rotSpeedX: 0.003,
       rotSpeedY: 0.005,
     });
 
-    // Node 2: Khối kiến trúc góc vát đá thô (Top Right)
-    const stone2Geo = new THREE.BoxGeometry(0.42, 0.38, 0.36);
-    const stone2Mesh = new THREE.Mesh(stone2Geo, matClaySand);
-    stone2Mesh.position.set(1.4, 1.25, -0.2);
-    stone2Mesh.rotation.set(-0.25, 0.5, -0.15);
-    stone2Mesh.castShadow = true;
-    mainGroup.add(stone2Mesh);
+    // NODE 2: KHỐI FRONTEND COMPONENT WIREFRAME `<UI />` — Top Right
+    const compBoxGeo = new THREE.BoxGeometry(0.52, 0.38, 0.3);
+    const compBoxEdges = new THREE.EdgesGeometry(compBoxGeo);
+    const compWireframe = new THREE.LineSegments(
+      compBoxEdges,
+      new THREE.LineBasicMaterial({ color: 0xb96f4f, linewidth: 2 })
+    );
+    const compBoxMesh = new THREE.Mesh(compBoxGeo, matClaySand);
+    compBoxMesh.add(compWireframe);
+    compBoxMesh.position.set(1.4, 1.25, -0.2);
+    compBoxMesh.rotation.set(-0.25, 0.5, -0.15);
+    compBoxMesh.castShadow = true;
+    mainGroup.add(compBoxMesh);
     floatingNodes.push({
-      mesh: stone2Mesh,
-      basePos: stone2Mesh.position.clone(),
+      mesh: compBoxMesh,
+      basePos: compBoxMesh.position.clone(),
       speed: 0.95,
       offset: 1.8,
       rotSpeedX: -0.004,
       rotSpeedY: 0.006,
     });
 
-    // Node 3: Khối vòm terracotta bo tròn (Bottom Left)
-    const terraShape = createRoundedRectShape(0.44, 0.52, 0.14);
-    const terraGeo = new THREE.ExtrudeGeometry(terraShape, {
-      depth: 0.34,
-      bevelEnabled: true,
-      bevelSegments: 4,
-      bevelSize: 0.03,
-      bevelThickness: 0.03,
-    });
-    const terraMesh = new THREE.Mesh(terraGeo, matClayTerracotta);
-    terraMesh.position.set(-1.5, -0.4, 0.55);
-    terraMesh.rotation.set(0.4, 0.35, -0.2);
-    terraMesh.castShadow = true;
-    mainGroup.add(terraMesh);
+    // NODE 3: HUY HIỆU API [200 OK] TRÒN KHẮC RÃNH — Bottom Left
+    const tokenGeo = new THREE.CylinderGeometry(0.24, 0.24, 0.12, 32);
+    const tokenMesh = new THREE.Mesh(tokenGeo, matClaySage);
+    tokenMesh.position.set(-1.5, -0.4, 0.55);
+    tokenMesh.rotation.set(Math.PI / 3, 0.35, -0.2);
+    tokenMesh.castShadow = true;
+    mainGroup.add(tokenMesh);
     floatingNodes.push({
-      mesh: terraMesh,
-      basePos: terraMesh.position.clone(),
+      mesh: tokenMesh,
+      basePos: tokenMesh.position.clone(),
       speed: 1.2,
       offset: 3.2,
       rotSpeedX: 0.005,
       rotSpeedY: -0.003,
     });
 
-    // Node 4: Khối đá đa diện Terracotta (Right Center)
-    const facetedGeo = new THREE.DodecahedronGeometry(0.28, 0);
+    // NODE 4: KHỐI ĐÁ ĐA DIỆN TERRACOTTA KIỂM ĐỊNH DEFECT — Right Center
+    const facetedGeo = new THREE.DodecahedronGeometry(0.26, 0);
     const facetedMesh = new THREE.Mesh(facetedGeo, matClayTerracotta);
     facetedMesh.position.set(1.58, -0.2, 0.4);
     facetedMesh.castShadow = true;
@@ -332,23 +440,8 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
       rotSpeedY: 0.008,
     });
 
-    // Node 5: Hạt bi đất sét tròn nhỏ (Center Right)
-    const beadGeo = new THREE.SphereGeometry(0.1, 24, 24);
-    const beadMesh = new THREE.Mesh(beadGeo, matClayTerracotta);
-    beadMesh.position.set(1.48, 0.35, 0.1);
-    beadMesh.castShadow = true;
-    mainGroup.add(beadMesh);
-    floatingNodes.push({
-      mesh: beadMesh,
-      basePos: beadMesh.position.clone(),
-      speed: 1.4,
-      offset: 2.1,
-      rotSpeedX: 0.002,
-      rotSpeedY: 0.004,
-    });
-
     // =========================================================================
-    // 9. CÁC NÉT VẼ KỸ THUẬT KIẾN TRÚC MẢNH MAI (Architectural Lines)
+    // 9. CÁC NÉT VẼ KỸ THUẬT KIẾN TRÚC MẢNH MAI (Architectural QA Grid Lines)
     // =========================================================================
     const lineMat = new THREE.LineBasicMaterial({
       color: 0x25231d,
@@ -382,7 +475,7 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     mainGroup.add(axisLine);
 
     // =========================================================================
-    // 10. MẶT PHẲNG BÓNG ĐỔ (Đặt tại Y = -1.05 dưới đáy bệ đá, không cắt ngang)
+    // 10. MẶT PHẲNG BÓNG ĐỔ (Đặt tại Y = -1.05 dưới đáy bệ đá)
     // =========================================================================
     const shadowPlaneGeo = new THREE.PlaneGeometry(8, 8);
     const shadowPlaneMat = new THREE.ShadowMaterial({ opacity: 0.12 });
@@ -406,7 +499,7 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     window.addEventListener("mousemove", handleMouseMove);
 
     // =========================================================================
-    // 12. RESIZE OBSERVER (Ngăn chặn vòng lặp Resize vô tận)
+    // 12. RESIZE OBSERVER
     // =========================================================================
     let lastW = width;
     let lastH = height;
@@ -425,13 +518,22 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     resizeObserver.observe(container);
 
     // =========================================================================
-    // 13. ANIMATION LOOP (Lơ lửng hữu cơ mượt mà)
+    // 13. ANIMATION LOOP — SỬ DỤNG performance.now() TRIỆT TIÊU THREE.Clock WARNING
     // =========================================================================
-    const clock = new THREE.Clock();
+    const startTime = performance.now();
+    let lastTerminalUpdate = 0;
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
+      const now = performance.now();
+      const elapsedTime = (now - startTime) * 0.001;
+
+      // Cập nhật màn hình Terminal QA (30fps để tối ưu hiệu năng)
+      if (now - lastTerminalUpdate > 33) {
+        renderTerminal(elapsedTime);
+        termTexture.needsUpdate = true;
+        lastTerminalUpdate = now;
+      }
 
       // Dao động lơ lửng nhẹ nhàng toàn bộ cụm tác phẩm
       const floatY = Math.sin(elapsedTime * 0.8) * 0.045;
@@ -457,40 +559,22 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     animate();
 
     // =========================================================================
-    // DỌN DẸP BỘ NHỚ KHI UNMOUNT
+    // 14. DỌN DẸP BỘ NHỚ KHI UNMOUNT
     // =========================================================================
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("mousemove", handleMouseMove);
       resizeObserver.disconnect();
 
-      if (renderer.domElement && container.contains(renderer.domElement)) {
+      termTexture.dispose();
+      renderer.dispose();
+      if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
-
-      renderer.dispose();
-      scene.clear();
     };
   }, []);
 
-  return (
-    <div className="relative w-full h-[400px] sm:h-[480px] lg:h-[520px] xl:h-[560px] select-none flex items-center justify-center">
-      {/* Three.js WebGL Interactive Canvas */}
-      <div ref={mountRef} className="w-full h-full block cursor-grab active:cursor-grabbing" />
-
-      {/* Technical Editorial Coordinate Badge (01 / 05) */}
-      <div className="absolute top-4 left-6 pointer-events-none flex items-center gap-2 select-none z-10">
-        <span className="font-mono text-[11px] text-[#25231D]/60 tracking-wider">
-          01 <span className="opacity-40">/</span> 05
-        </span>
-      </div>
-
-      <div className="absolute bottom-3 right-6 pointer-events-none hidden sm:flex items-center gap-2 text-[10.5px] font-mono text-[#25231D]/50 select-none z-10">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#B96F4F] animate-pulse" />
-        <span>Di chuột để tương tác 3D WebGL</span>
-      </div>
-    </div>
-  );
+  return <div ref={mountRef} className="w-full h-[480px] sm:h-[540px] lg:h-[580px] relative select-none" />;
 };
 
 export default HeroSoftwareSculpture3D;
