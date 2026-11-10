@@ -1,159 +1,132 @@
-import { ProjectItem, TechItem, ExperienceItem, AchievementItem, EducationInfo } from "@/types/portfolio";
+import { ProjectItem, TechItem, ExperienceItem, EducationInfo } from "@/types/portfolio";
 
 export const PERSONAL_INFO = {
   name: "Phan Thi Ngoc Mai",
+  englishName: "Phan Thi Ngoc Mai",
   shortName: "Ngoc Mai",
-  title: "Full-Stack Software Engineer",
-  headline: "Full-Stack Development & Modern Software Engineering",
-  subtitle:
-    "Software Engineering graduate from HCMUTE (GPA 3.23, TOEIC 640). Building modern full-stack web applications with React, Next.js, Node.js, and scalable databases (SQL Server, MongoDB). Leveraging AI-accelerated tooling to engineer robust, high-performance systems.",
-  school: "Ho Chi Minh City University of Technology and Education (HCMUTE)",
+  monogram: "MP",
+  title: "Software Engineer • Frontend & QA Testing",
+  headline: "Software Engineer — Frontend Development & Manual Software Testing",
+  summary:
+    "An Information Technology graduate with a background in web development and manual software testing. Experienced in functional testing, UI testing, API testing, test case design, and defect reporting. Eager to develop professionally in software quality assurance and contribute to delivering reliable software products.",
+  school: "Ho Chi Minh City University of Technology and Education",
+  degree: "Bachelor of Engineering in Software Engineering",
   major: "Software Engineering",
-  graduation: "2025",
-  gpa: "3.23/4.0",
-  toeic: "640",
-  email: "maiphan03.work@gmail.com",
+  graduation: "2021 – 2025",
+  gpa: "3.23 / 4.0",
+  toeic: "TOEIC 640 (Listening & Reading)",
+  email: "inet.ngocmai.v6@gmail.com",
   phone: "0337273891",
+  formattedPhone: "0337 273 891",
+  location: "Ho Chi Minh City, Vietnam",
+  availability: "Available for QA / Frontend Roles",
   github: "https://github.com/PhanMai03",
   linkedin: "https://www.linkedin.com/in/phanmai03",
-  portfolioUrl: "https://maiphan.vercel.app",
-  cvUrl: "https://drive.google.com/file/d/16beiSwcN8t9mFwE-s0K7pcD7sLySw49-/view?usp=sharing",
-  location: "Ho Chi Minh City, Vietnam",
-  availability: "Available for full-time opportunities",
-  focusAreas: [
-    "Full-Stack Web Development (React, Next.js, Node.js)",
-    "Database Engineering (SQL Server, MongoDB)",
-    "API Architecture & Verification (Postman, RESTful)",
-    "AI-Augmented Engineering (Antigravity, Gemini, ChatGPT)",
+  portfolioUrl: "https://maiphan.vercel.app/",
+  cvUrl: "/Phan-Thi-Ngoc-Mai-CV.pdf",
+  activities: [
+    {
+      title: "Consolation Prize — Cyber Security CTF Competition 2023",
+      org: "HCMUTE",
+      year: "2023",
+      impact: "Awarded a Consolation Prize in Cyber Security CTF Competition 2023 at HCMUTE.",
+    },
+    {
+      title: "ASEAN Student Contest on Information Security (ASCIS)",
+      org: "VNISA & Ministry of Information and Communications",
+      year: "2023",
+      impact: "Participated in the ASEAN Student Contest on Information Security (ASCIS) 2023.",
+    },
+    {
+      title: "Mastering IT Academic Competition",
+      org: "HCMUTE",
+      year: "2025",
+      impact: "Competed in the Mastering IT Academic Competition 2025 at HCMUTE.",
+    },
   ],
 };
 
 export const FEATURED_PROJECTS: ProjectItem[] = [
   {
     id: "clothing-ecommerce-management",
-    title: "Clothing E-commerce Management",
+    title: "Clothing E-Commerce Management",
+    period: "01/2025 – 06/2025",
     shortDescription:
-      "Comprehensive administration suite designed for high-volume apparel commerce, inventory control, and multi-tier user authorization.",
+      "Full-featured e-commerce admin dashboard with authentication, RBAC, CRUD operations, and Postman API testing.",
     fullDescription:
-      "A production-oriented e-commerce back-office management console engineered for apparel retail operations. The system delivers end-to-end administration capabilities spanning real-time stock auditing, product catalog lifecycle management, dynamic sales metrics visualization, and strict role-based access control (RBAC).",
+      "Developed a full-featured e-commerce admin dashboard with authentication, role-based access control, and CRUD operations for managing products, orders, and users. Implemented order workflows and admin analytics dashboards. Designed and executed manual test cases for functional and UI testing, performed API testing with Postman, and reported defects with clear reproduction steps.",
     features: [
-      "Role-Based Access Control (Admin, Inventory Manager, Sales Staff) with protected route guards.",
-      "Real-time inventory mutation tracking and low-stock automated threshold alerts.",
-      "Comprehensive order lifecycle pipeline (Pending, Paid, Shipped, Returned) with invoice generation.",
-      "Dynamic data analytics charts for revenue, popular SKUs, and user traffic metrics.",
-      "Optimized data grid with multi-column sorting, debounced search, and batch actions.",
+      "Developed a full-featured e-commerce admin dashboard with authentication, role-based access control, and CRUD operations for managing products, orders, and users.",
+      "Implemented responsive admin interfaces and management dashboards.",
+      "Designed and executed manual test cases for functional and UI testing, performed API testing with Postman, and reported defects with clear reproduction steps.",
     ],
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "RESTful API", "Chart.js"],
-    role: "Frontend / Full-stack Developer",
+    technologies: ["ReactJS", "NextJS", "Tailwind CSS", "RESTful APIs", "Postman"],
+    role: "Frontend Developer & Manual Tester",
     repository: "https://github.com/PhanMai03/E-commerce-Management-System",
-    liveUrl: null,
+    liveUrl: "https://share-and-care-admin-lovat.vercel.app/",
     image: "/projects/Management.png",
-    badge: "Enterprise System",
-    metrics: ["Role-Based ACL", "Inventory Tracking", "Sub-second Mutations"],
-    screenshots: [
-      { title: "Dashboard & Real-time Metrics", image: "/projects/Management.png" },
-      { title: "Inventory Control & Catalog Grid", image: "/projects/Management.png" },
-      { title: "Order Pipeline & Invoice Status", image: "/projects/Management.png" },
-    ],
+    badge: "E-Commerce & QA",
+    metrics: ["RBAC Access Control", "Postman Verified", "CRUD Management"],
   },
   {
     id: "book-website",
     title: "Book Website",
+    period: "04/2024 – Present",
     shortDescription:
-      "Modern digital bookstore and reader platform featuring instant faceted filtering, responsive cart state, and user reviews.",
+      "Full-featured online bookstore platform with advanced search, category-based filtering, shopping cart, COD checkout, order tracking, and role-based admin dashboard.",
     fullDescription:
-      "An interactive web platform tailored for discovering, exploring, and purchasing books across curated literary categories. Built with modern component architecture, providing smooth client-side routing, localized shopping cart persistence, dynamic search, and comprehensive book preview pages.",
+      "Developed a full-featured online bookstore platform with advanced search, category-based filtering, shopping cart, COD checkout, and order tracking. Implemented role-based access control (Admin/User) and built an admin dashboard for managing books, categories, inventory, users, and orders. Integrated RESTful APIs and optimized state management for dynamic data rendering and responsive user interactions. Collaborated on UI/UX improvements to enhance usability and customer shopping experience.",
     features: [
-      "Dynamic faceted search and filtering across genre, author, rating, and price ranges.",
-      "Synchronized shopping cart with client-side state caching and instant checkout flow.",
-      "Detailed book showcase view with user reviews, synopsis, and related book suggestions.",
-      "Personal bookmarked reading list and user favorites management.",
-      "Fluid, responsive UI engineered with mobile-first layout principles.",
+      "Developed a full-featured online bookstore platform with advanced search, category-based filtering, shopping cart, COD checkout, and order tracking.",
+      "Implemented role-based access control (Admin/User) and built an admin dashboard for managing books, categories, inventory, users, and orders.",
+      "Integrated RESTful APIs and optimized state management for dynamic data rendering and responsive user interactions.",
+      "Collaborated on UI/UX improvements to enhance usability and customer shopping experience.",
     ],
-    technologies: ["ReactJS", "Tailwind CSS", "JavaScript", "REST API", "HTML5/CSS3"],
+    technologies: ["ReactJS", "Tailwind CSS", "RESTful APIs", "JavaScript"],
     role: "Frontend Developer",
     repository: "https://github.com/PhanMai03/book-website",
-    liveUrl: null,
+    liveUrl: "https://book-website-xi-eight.vercel.app/",
     image: "/projects/Book.png",
-    badge: "Consumer Web Application",
-    metrics: ["Instant Search", "Responsive UI", "Cart State Sync"],
-    screenshots: [
-      { title: "Book Catalog & Faceted Search", image: "/projects/Book.png" },
-      { title: "Book Details & Reader Reviews", image: "/projects/Book.png" },
-      { title: "Shopping Cart & Checkout Flow", image: "/projects/Book.png" },
-    ],
+    badge: "Web Platform",
+    metrics: ["Advanced Search", "COD Checkout Flow", "Admin Dashboard"],
   },
   {
-    id: "agrigo-web",
-    title: "Agrigo Web",
+    id: "hospital-management-system",
+    title: "Hospital Management System",
+    period: "09/2024 – Present",
     shortDescription:
-      "Digital agricultural marketplace connecting farm-to-table supply chains with real-time produce ordering and vendor dispatching.",
+      "Clinical and hospital administration software verified through comprehensive manual, functional, UI, and API verification cycles.",
     fullDescription:
-      "A specialized agricultural e-commerce and supply distribution platform engineered to bridge local producers directly with wholesale and retail buyers. Implements real-time product stock tracking, regional order dispatch workflows, and responsive customer shopping journeys.",
+      "Performed manual and functional testing for a mission-critical hospital management system based on business requirements. Designed and executed test cases, verified UI and data behavior across clinical workflows, and reported defects using Jira with Excel test data management.",
     features: [
-      "Dynamic agricultural produce catalog with freshness grading, pricing tiers, and seasonal filtering.",
-      "Integrated shopping cart and localized order placement pipeline with delivery schedule selection.",
-      "Vendor and farm dispatch dashboard tracking fulfillment status from harvest to doorstep.",
-      "Mobile-responsive client architecture optimized for low-bandwidth rural connectivity.",
-      "Secure REST API integration with real-time inventory and pricing synchronization.",
+      "Perform manual and functional testing for a hospital management system based on business requirements.",
+      "Design and execute test cases, verify UI and data behavior, and retest fixed defects.",
+      "Report and track defects using Jira; manage test data with Excel.",
     ],
-    technologies: ["ReactJS", "TypeScript", "Tailwind CSS", "REST API", "Node.js"],
-    role: "Frontend / Full-stack Developer",
-    repository: "https://github.com/PhanMai03/agrigo-web",
+    technologies: ["Web UI Testing", "Functional Testing", "API Testing", "Jira", "Excel"],
+    role: "Manual Tester Intern",
+    repository: "https://github.com/PhanMai03",
     liveUrl: null,
     image: "/projects/Agrigo.png",
-    badge: "AgriTech Platform",
-    metrics: ["Direct Supply Chain", "Sub-second Catalog", "Order Dispatch Pipeline"],
-    screenshots: [
-      { title: "Produce Catalog & Freshness Grading", image: "/projects/Agrigo.png" },
-      { title: "Farm Delivery Scheduling & Cart", image: "/projects/Agrigo.png" },
-      { title: "Vendor Dispatch & Supply Tracking", image: "/projects/Agrigo.png" },
-    ],
+    badge: "Healthcare QA",
+    metrics: ["Clinical Test Scenarios", "Jira Defect Lifecycle", "Excel Test Data"],
   },
-];
-
-export const TECH_STACK: TechItem[] = [
-  // Programming Languages
-  { name: "JavaScript", tag: "Core Language", category: "Languages" },
-  { name: "TypeScript", tag: "Strict Type Safety", category: "Languages" },
-
-  // Frameworks & Runtimes
-  { name: "React", tag: "UI Component Architecture", category: "Frameworks" },
-  { name: "NextJS", tag: "Full-Stack & SSR", category: "Frameworks" },
-  { name: "NodeJS", tag: "Backend Runtime", category: "Frameworks" },
-
-  // Databases
-  { name: "SQL Server", tag: "Relational Database", category: "Databases" },
-  { name: "MongoDB", tag: "Document Database", category: "Databases" },
-
-  // Tools
-  { name: "Postman", tag: "API Verification", category: "Tools" },
-  { name: "Git/GitHub", tag: "Version Control & CI", category: "Tools" },
-  { name: "Jira", tag: "Agile Project Tracking", category: "Tools" },
-  { name: "Figma", tag: "UI/UX Mockups", category: "Tools" },
-
-  // AI Tools
-  { name: "Antigravity", tag: "AI Coding Assistant", category: "AI Tools" },
-  { name: "Google Gemini", tag: "Multimodal AI", category: "AI Tools" },
-  { name: "ChatGPT", tag: "Generative Reasoning", category: "AI Tools" },
-  { name: "Codex", tag: "Code Synthesis", category: "AI Tools" },
 ];
 
 export const WORK_EXPERIENCES: ExperienceItem[] = [
   {
     company: "Healthcare Solution Viet Nam",
     role: "Manual Tester Intern",
-    period: "08/2026 – Present",
+    period: "09/2024 – Present",
     location: "Ho Chi Minh City, Vietnam",
     description:
-      "Working within a professional software development environment, collaborating cross-functionally with engineers to verify feature behavior and hospital management system quality.",
+      "Perform manual and functional testing for a hospital management system based on business requirements.",
     achievements: [
-      "Collaborated closely with engineering team members to execute functional, integration, and user-flow validation on clinical hospital software.",
-      "Authored and executed structured test cases against detailed functional specifications, verifying system reliability.",
-      "Identified, documented, and triaged system defects with clear reproduction steps, speeding up developer bug resolution cycles.",
-      "Observed and contributed to quality assurance standards in healthcare-grade software where data accuracy is mission-critical.",
+      "Perform manual and functional testing for a hospital management system based on business requirements.",
+      "Design and execute test cases, verify UI and data behavior, and retest fixed defects.",
+      "Report and track defects using Jira; manage test data with Excel.",
     ],
-    technologies: ["Hospital Management System", "Manual Testing", "Test Case Design", "Defect Triage", "QA Workflows"],
+    technologies: ["Web UI Testing", "Functional Testing", "API Testing", "Test Case Design", "Defect Reporting", "Jira", "Excel"],
   },
   {
     company: "FPT Software",
@@ -161,57 +134,56 @@ export const WORK_EXPERIENCES: ExperienceItem[] = [
     period: "06/2024 – 09/2024",
     location: "Ho Chi Minh City, Vietnam",
     description:
-      "Participated in production web application development utilizing React and TypeScript within an enterprise Agile/Scrum delivery environment.",
+      "Collaborated in an 18-member Agile team to build a responsive Single Page Application (SPA) for an internal automation system.",
     achievements: [
-      "Participated in frontend development for responsive web application modules utilizing ReactJS and TypeScript.",
-      "Collaborated within an Agile/Scrum framework with daily standups, sprint reviews, and estimation poker.",
-      "Employed GitLab version control for feature branching, code reviews, and pull request workflows.",
-      "Ensured component reusability, cross-browser compatibility, and seamless integration with backend RESTful APIs.",
+      "Collaborated in an 18-member Agile team to build a responsive Single Page Application (SPA) for an internal automation system.",
+      "Implemented front-end features using ReactJS and Tailwind CSS with an emphasis on reusable components and scalable structure.",
+      "Integrated RESTful APIs and dynamically rendered data according to functional specifications.",
+      "Maintained code quality and improved UI performance to deliver a smoother user experience.",
     ],
-    technologies: ["ReactJS", "TypeScript", "Tailwind CSS", "GitLab", "RESTful APIs", "Agile / Scrum"],
+    technologies: ["ReactJS", "Tailwind CSS", "TypeScript", "JavaScript", "RESTful APIs", "Agile / Scrum", "SPA"],
   },
 ];
 
 export const EDUCATION_DATA: EducationInfo = {
-  school: "Ho Chi Minh City University of Technology and Education (HCMUTE)",
-  degree: "Bachelor of Engineering",
+  school: "Ho Chi Minh City University of Technology and Education",
+  degree: "Major in Software Engineering",
   major: "Software Engineering",
   period: "2021 – 2025",
   graduationYear: "2025",
   gpa: "3.23 / 4.0",
-  toeic: "640",
+  toeic: "TOEIC 640 (Listening & Reading)",
   focus: [
-    "Object-Oriented Software Design & Architecture",
-    "Web Application Engineering (Frontend & Backend)",
-    "Relational Database Systems (PostgreSQL, SQL)",
-    "Data Structures, Algorithms & Distributed Patterns",
+    "Software Quality Assurance (Functional, UI, API Testing)",
+    "Web Application Development (ReactJS, NextJS, TypeScript, Tailwind CSS)",
+    "Test Case Design & Defect Reporting (Jira, Postman, Excel)",
+    "Database Systems (SQL Server, RESTful APIs, NodeJS)",
   ],
 };
 
-export const ACHIEVEMENTS_DATA: AchievementItem[] = [
+export const CV_SKILLS_CATEGORIES = [
   {
-    title: "Cyber Security CTF 2023",
-    year: "2023",
-    award: "Consolation Prize (Giải Khuyến Khích)",
-    organization: "HCMUTE Security Division",
-    description:
-      "Competed in Capture The Flag technical challenges testing vulnerability analysis, web exploitation defenses, and cryptographic problem solving.",
+    id: "testing-qa",
+    title: "Testing & QA",
+    skills: ["Web UI Testing", "Functional Testing", "API Testing", "Test Case Design", "Defect Reporting"],
+    description: "Manual and functional verification for web platforms and mission-critical hospital systems.",
   },
   {
-    title: "ASCIS 2023",
-    year: "2023",
-    award: "Contestant Participant",
-    organization: "ASEAN Student Contest on Information Security",
-    description:
-      "Participated in the premier ASEAN collegiate information security competition, applying analytical security and system defense skills.",
+    id: "frontend",
+    title: "Front-end Development",
+    skills: ["ReactJS", "NextJS", "TypeScript", "JavaScript", "HTML", "CSS", "Tailwind CSS"],
+    description: "Responsive Single Page Applications with reusable component architecture and smooth UI performance.",
   },
   {
-    title: "Mastering IT 2025",
-    year: "2025",
-    award: "Academic & Tech Competitor",
-    organization: "University Information Technology Division",
-    description:
-      "Participated in advanced software development and computer science problem-solving symposium representing Software Engineering.",
+    id: "backend",
+    title: "Back-end & APIs",
+    skills: ["NodeJS", "RESTful APIs"],
+    description: "API contract consumption and dynamic data rendering.",
+  },
+  {
+    id: "tools-database",
+    title: "Tools & Database",
+    skills: ["Postman", "Git / GitHub", "Jira", "Figma", "SQL Server", "Microsoft Office / Excel", "AI-assisted tools"],
+    description: "Industry-standard engineering, testing, sprint management, and defect triage toolsets.",
   },
 ];
-

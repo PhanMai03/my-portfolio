@@ -64,6 +64,18 @@ Built with a strong focus on **performance**, **clean architecture**, and **crea
 
 ---
 
+## 💻 Featured Projects
+
+| Project | Tech Stack | Live Demo | Repository |
+| :--- | :--- | :---: | :---: |
+| **Clothing E-commerce Management** | Next.js, TypeScript, Tailwind CSS, REST API, Chart.js | [🔗 Live Demo](https://share-and-care-admin-lovat.vercel.app/) | [🐙 View Code](https://github.com/PhanMai03/E-commerce-Management-System) |
+| **Book Website** | React, Tailwind CSS, JavaScript, REST API | [🔗 Live Demo](https://book-website-xi-eight.vercel.app/) | [🐙 View Code](https://github.com/PhanMai03/book-website) |
+| **Agrigo Web** | React, TypeScript, Tailwind CSS, Node.js | *(Local Build)* | [🐙 View Code](https://github.com/PhanMai03/agrigo-web) |
+| **3D Interactive Developer Portfolio** | React 19, TypeScript, Three.js, Tailwind CSS v4, Vite | [🔗 Live Demo](https://maiphan.vercel.app) | [🐙 View Code](https://github.com/PhanMai03/my-portfolio) |
+| **Mobile Bookstore & Reader App** | Android Studio, Java, SQLite, Material Design | *(Native APK)* | [🐙 View Code](https://github.com/HoangDang1123/MobileProgramming_Project_BookApp) |
+
+---
+
 ## 🛠 Tech Stack
 
 | Category | Technologies |

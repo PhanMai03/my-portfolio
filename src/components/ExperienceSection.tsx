@@ -1,153 +1,175 @@
 import React from "react";
-import {
-  Calendar,
-  Building2,
-  CheckCircle2,
-  Layers,
-} from "lucide-react";
-
-interface WorkExperienceItem {
-  id: string;
-  period: string;
-  role: string;
-  company: string;
-  status: "Active" | "Completed";
-  bullets: string[];
-  technologies: string[];
-}
+import { ArrowUpRight, Building2, MapPin } from "lucide-react";
+import { PERSONAL_INFO } from "@/data/portfolioData";
+import { useLanguage } from "@/context/LanguageContext";
 
 export const ExperienceSection: React.FC = () => {
-  const experiences: WorkExperienceItem[] = [
+  const { t, language } = useLanguage();
+
+  const localizedExperiences = [
     {
-      id: "healthcare-solution",
-      period: "Sep 2026 – Present",
-      role: "Manual Tester Intern",
       company: "Healthcare Solution Viet Nam",
-      status: "Active",
-      bullets: [
-        "Performed manual, functional & UI verification for hospital administration systems.",
-        "Authored structured test cases and tracked defect resolutions in Jira.",
-      ],
-      technologies: ["Manual Testing", "Test Cases", "Jira", "API Testing"],
+      role: language === "vi" ? "Thực tập sinh Kiểm thử Phần mềm (Manual Tester)" : "Manual Tester Intern",
+      period: language === "vi" ? "09/2024 – Hiện tại" : "09/2024 – Present",
+      location: "Ho Chi Minh City, Vietnam",
+      domain: language === "vi" ? "Hệ thống Quản lý Bệnh viện Y tế" : "Healthcare IT & Hospital Systems",
+      isCurrent: true,
+      achievements:
+        language === "vi"
+          ? [
+              "Thực hiện kiểm thử thủ công và kiểm thử chức năng cho hệ thống quản lý bệnh viện theo tài liệu yêu cầu nghiệp vụ.",
+              "Thiết kế và thực thi test cases, xác minh tính đúng đắn của UI và luồng dữ liệu nghiệp vụ, retest lỗi sau khi dev fix.",
+              "Quản lý vòng đời lỗi và báo cáo defect chi tiết qua Jira; tổ chức dữ liệu test quy củ với Excel.",
+            ]
+          : [
+              "Perform manual and functional testing for a hospital management system based on business requirements.",
+              "Design and execute test cases, verify UI and data behavior, and retest fixed defects.",
+              "Report and track defects using Jira; manage test data with Excel.",
+            ],
+      technologies: ["Web UI Testing", "Functional Testing", "API Testing", "Test Case Design", "Defect Reporting", "Jira", "Excel"],
     },
     {
-      id: "fpt-software",
-      period: "Jun 2024 – Sep 2024",
-      role: "Frontend Developer Intern",
       company: "FPT Software",
-      status: "Completed",
-      bullets: [
-        "Developed responsive SPA interfaces using ReactJS and Tailwind CSS.",
-        "Collaborated in an 18-member Agile/Scrum team with daily standups.",
-      ],
-      technologies: ["ReactJS", "TypeScript", "Tailwind CSS", "REST API", "Agile"],
+      role: language === "vi" ? "Thực tập sinh Lập trình Frontend" : "Frontend Developer Intern",
+      period: "06/2024 – 09/2024",
+      location: "Ho Chi Minh City, Vietnam",
+      domain: language === "vi" ? "Hệ thống Tự động hóa Doanh nghiệp" : "Enterprise Automation & SPA",
+      isCurrent: false,
+      achievements:
+        language === "vi"
+          ? [
+              "Phối hợp trong đội ngũ Agile 18 thành viên xây dựng ứng dụng Single Page Application (SPA) cho hệ thống tự động hóa nội bộ.",
+              "Phát triển tính năng giao diện bằng ReactJS và Tailwind CSS, chú trọng cấu trúc component tái sử dụng và khả năng mở rộng.",
+              "Tích hợp các RESTful APIs và hiển thị dữ liệu động chính xác theo đặc tả kỹ thuật.",
+              "Tối ưu mã nguồn và cải thiện hiệu năng UI nhằm đem lại trải nghiệm mượt mà cho người dùng.",
+            ]
+          : [
+              "Collaborated in an 18-member Agile team to build a responsive Single Page Application (SPA) for an internal automation system.",
+              "Implemented front-end features using ReactJS and Tailwind CSS with an emphasis on reusable components and scalable structure.",
+              "Integrated RESTful APIs and dynamically rendered data according to functional specifications.",
+              "Maintained code quality and improved UI performance to deliver a smoother user experience.",
+            ],
+      technologies: ["ReactJS", "Tailwind CSS", "TypeScript", "JavaScript", "RESTful APIs", "Agile / Scrum", "SPA"],
     },
   ];
 
   return (
     <section
       id="experience"
-      className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-left relative scroll-mt-20 select-none"
+      className="relative min-h-[75vh] flex flex-col justify-center py-20 sm:py-24 lg:py-28 text-left overflow-hidden bg-[#F2EADF] dark:bg-[#161914] border-b border-[#25231D]/15 dark:border-[#F2EADF]/15 transition-colors duration-300"
     >
-      {/* Background Subtle Blueprint Grid */}
-      <div className="absolute inset-0 bg-[radial-gradient(#10B981_1px,transparent_1px)] [background-size:28px_28px] opacity-[0.03] dark:opacity-[0.05] pointer-events-none" />
+      <div className="w-full max-w-[1520px] mx-auto px-6 sm:px-12 lg:px-16 xl:px-20 space-y-12 sm:space-y-14">
+        
+        {/* =========================================================================
+            SECTION HEADER (THANH THOÁT, KHÔNG HỘP CARD)
+           ========================================================================= */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#25231D]/15 dark:border-[#F2EADF]/15">
+          <div className="space-y-2 max-w-xl">
+            <div className="flex items-center gap-2.5 text-[#85866A] dark:text-[#9E9F88]">
+              <span className="w-6 h-[1px] bg-[#85866A] dark:bg-[#9E9F88]" />
+              <span className="font-mono text-xs uppercase tracking-widest">
+                03 // WORK EXPERIENCE
+              </span>
+            </div>
 
-      {/* Section Header */}
-      <div className="mb-12 sm:mb-16">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <h2 className="text-2xl sm:text-3xl font-extrabold font-mono text-slate-900 dark:text-white tracking-wider uppercase">
-            EXPERIENCE
-          </h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-[3.2rem] font-serif font-bold text-[#25231D] dark:text-[#F2EADF] leading-[1.06] tracking-tight">
+              {t.experience.title}{" "}
+              <span className="italic font-normal text-[#B96F4F] dark:text-[#C87D5D]">
+                {t.experience.titleHighlight}
+              </span>
+            </h2>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <a
+              href={PERSONAL_INFO.cvUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#B96F4F] dark:text-[#C87D5D] hover:text-[#25231D] dark:hover:text-[#F2EADF] transition-colors group cursor-pointer pb-1"
+            >
+              <span>{language === "vi" ? "Xem hồ sơ CV [PDF]" : "View Resume [PDF]"}</span>
+              <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </a>
+          </div>
         </div>
-        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-mono">
-          Professional engineering track record.
-        </p>
-      </div>
 
-      {/* OPEN TIMELINE - FLUSH ALIGNED WITH HEADER (NO CARDS) */}
-      <div className="relative pl-7 sm:pl-9">
-        {/* Continuous Left Vertical Glowing Rail */}
-        <div className="absolute left-[3px] top-2 bottom-3 w-[2px] bg-gradient-to-b from-emerald-500 via-emerald-500/30 to-transparent" />
-
-        {/* Milestones List */}
-        <div className="space-y-12 sm:space-y-16">
-          {experiences.map((item) => {
-            const isActive = item.status === "Active";
-
-            return (
-              <div key={item.id} className="relative group">
-                {/* Node Dot on Rail */}
-                <div
-                  className={`absolute -left-[30px] sm:-left-[38px] top-1.5 w-4 h-4 rounded-full border-2 bg-white dark:bg-slate-950 flex items-center justify-center transition-transform duration-300 group-hover:scale-125 ${
-                    isActive
-                      ? "border-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
-                      : "border-slate-300 dark:border-white/[0.2] group-hover:border-emerald-500"
-                  }`}
-                >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      isActive ? "bg-emerald-500 animate-pulse" : "bg-slate-400 dark:bg-slate-500"
-                    }`}
-                  />
+        {/* =========================================================================
+            BỐ CỤC DÒNG THỜI GIAN TẠP CHÍ TỰ NHIÊN (EDITORIAL TIMELINE — HOÀN TOÀN KHÔNG DÙNG CARD)
+           ========================================================================= */}
+        <div className="space-y-0 divide-y divide-[#25231D]/15 dark:divide-[#F2EADF]/15">
+          {localizedExperiences.map((exp, index) => (
+            <div
+              key={exp.company}
+              className="py-8 sm:py-10 first:pt-0 last:pb-0 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start group"
+            >
+              
+              {/* Cột trái (4 cols): Thời gian, Công ty & Địa điểm */}
+              <div className="lg:col-span-4 space-y-2">
+                <div className="flex items-center gap-2">
+                  {exp.isCurrent ? (
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  ) : (
+                    <span className="w-2 h-2 rounded-full bg-[#B96F4F] dark:bg-[#C87D5D]" />
+                  )}
+                  <span className="font-mono text-xs font-bold text-[#B96F4F] dark:text-[#C87D5D] tracking-wide">
+                    {exp.period}
+                  </span>
                 </div>
 
-                {/* Content - Fully Open & Unboxed */}
-                <div className="space-y-3">
-                  {/* Period & Company Pill */}
-                  <div className="flex flex-wrap items-center gap-2.5 font-mono text-xs">
-                    <span className="text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-medium">
-                      <Calendar size={13} className="text-emerald-500" />
-                      {item.period}
-                    </span>
-
-                    <span className="text-slate-300 dark:text-slate-600">&bull;</span>
-
-                    <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
-                      <Building2 size={13} />
-                      {item.company}
-                    </span>
-
-                    {isActive && (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-700 dark:text-emerald-300 font-mono text-[10px] font-bold uppercase tracking-wider">
-                        <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
-                        Active
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Role Title */}
-                  <h3 className="text-xl sm:text-2xl font-display font-extrabold text-slate-900 dark:text-white group-hover:text-emerald-500 transition-colors tracking-tight">
-                    {item.role}
+                <div className="space-y-1">
+                  <h3 className="font-mono text-sm sm:text-base font-bold text-[#25231D] dark:text-[#F2EADF] tracking-wide uppercase flex items-center gap-2">
+                    <span>{exp.company}</span>
                   </h3>
-
-                  {/* Concise 2-Bullet Highlights */}
-                  <div className="space-y-1.5 font-sans text-xs sm:text-sm text-slate-600 dark:text-slate-300 pt-1 max-w-4xl">
-                    {item.bullets.map((bullet, bIdx) => (
-                      <div key={bIdx} className="flex items-start gap-2">
-                        <span className="text-emerald-500 font-bold mt-0.5">›</span>
-                        <span className="leading-relaxed">{bullet}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Concise Tech Stack Pills */}
-                  <div className="flex flex-wrap items-center gap-1.5 pt-2">
-                    {item.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-white/[0.04] border border-slate-200 dark:border-white/[0.08] text-slate-700 dark:text-slate-300 font-mono text-[11px]"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                  <div className="font-sans text-xs text-[#85866A] dark:text-[#9E9F88] italic flex items-center gap-1">
+                    <MapPin size={11} />
+                    <span>{exp.location}</span>
+                    <span>•</span>
+                    <span>{exp.domain}</span>
                   </div>
                 </div>
               </div>
-            );
-          })}
+
+              {/* Cột phải (8 cols): Vai trò, Trách nhiệm & Công nghệ */}
+              <div className="lg:col-span-8 space-y-4">
+                <div>
+                  <h4 className="text-2xl sm:text-[1.8rem] font-serif font-bold text-[#25231D] dark:text-[#F2EADF] tracking-tight group-hover:text-[#B96F4F] dark:group-hover:text-[#C87D5D] transition-colors">
+                    {exp.role}
+                  </h4>
+                </div>
+
+                {/* Danh sách thành tựu & trách nhiệm */}
+                <ul className="space-y-2.5 font-sans text-xs sm:text-[13.5px] text-[#25231D]/80 dark:text-[#F2EADF]/80 leading-relaxed list-none">
+                  {exp.achievements.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <span className="text-[#B96F4F] dark:text-[#C87D5D] mt-1 shrink-0 text-xs">✦</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Công cụ & Kỹ thuật ứng dụng */}
+                <div className="pt-2 flex flex-wrap items-center gap-2">
+                  <span className="font-mono text-[10px] uppercase text-[#85866A] dark:text-[#9E9F88] mr-1">
+                    STACK:
+                  </span>
+                  {exp.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="px-2.5 py-1 rounded-md bg-[#E6D8C5]/60 dark:bg-[#20261C] border border-[#25231D]/10 dark:border-[#F2EADF]/12 text-[10.5px] font-mono text-[#30372D] dark:text-[#D4C9BD]"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          ))}
         </div>
+
       </div>
     </section>
   );
 };
+
+export default ExperienceSection;

@@ -1,97 +1,181 @@
 import React, { useEffect, useState } from "react";
-import { Sun, Moon } from "lucide-react";
+import { ArrowUpRight, Menu, X, Sun, Moon } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
+import { useLanguage } from "@/context/LanguageContext";
 
-interface NavbarProps {
-  onOpenCommandPalette: () => void;
-}
-
-export const Navbar: React.FC<NavbarProps> = ({ onOpenCommandPalette }) => {
-  const [activeSection, setActiveSection] = useState("home");
+export const Navbar: React.FC = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
-    // Keyboard shortcut for Command Palette
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        onOpenCommandPalette();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onOpenCommandPalette]);
-
-  useEffect(() => {
-    const sectionIds = ["home", "about", "experience", "skills", "projects", "contact"];
     const handleScroll = () => {
-      const scrollPos = window.scrollY + 180;
-      for (let i = sectionIds.length - 1; i >= 0; i--) {
-        const id = sectionIds[i];
-        const el = document.getElementById(id);
-        if (el && el.offsetTop <= scrollPos) {
-          setActiveSection(id);
-          break;
-        }
-      }
+      setScrolled(window.scrollY > 20);
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navItems = [
-    { label: "HOME", href: "#home", id: "home" },
-    { label: "ABOUT ME", href: "#about", id: "about" },
-    { label: "EXPERIENCE", href: "#experience", id: "experience" },
-    { label: "SKILLS", href: "#skills", id: "skills" },
-    { label: "PROJECTS", href: "#projects", id: "projects" },
-    { label: "CONTACT", href: "#contact", id: "contact" },
+    { label: t.nav.about, href: "#about" },
+    { label: t.nav.experience, href: "#experience" },
+    { label: t.nav.projects, href: "#projects" },
+    { label: t.nav.skills, href: "#skills" },
+    { label: t.nav.contact, href: "#contact" },
   ];
 
+  const handleNavClick = (href: string) => {
+    setMobileMenuOpen(false);
+    if (href === "#home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const id = href.replace("#", "");
+    const el = document.getElementById(id) || document.getElementById(id.replace(/s$/, ""));
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <nav
-      className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-300 max-w-[95vw]"
-      aria-label="Main Navigation"
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
+        scrolled
+          ? "bg-[#F2EADF]/92 dark:bg-[#161914]/92 backdrop-blur-md border-b border-[#25231D]/10 dark:border-[#F2EADF]/12 py-3"
+          : "bg-transparent py-4 sm:py-5"
+      }`}
     >
-      {/* Floating Pill Menu with Theme Toggle - Enlarged & Pure Deep Black Tint */}
-      <div className="bg-white/95 dark:bg-[#0E1117]/95 backdrop-blur-2xl text-slate-800 dark:text-slate-200 rounded-full px-7 sm:px-10 py-3.5 sm:py-4 shadow-[0_20px_50px_rgba(0,0,0,0.4)] border border-slate-200/90 dark:border-white/[0.12] flex items-center gap-6 sm:gap-9 whitespace-nowrap overflow-x-auto scrollbar-none">
-        {navItems.map((item) => {
-          const isActive = activeSection === item.id;
-          return (
-            <a
-              key={item.label}
-              href={item.href}
-              className={`font-mono text-xs sm:text-[14px] font-bold tracking-wider uppercase transition-all duration-200 py-1 cursor-pointer ${
-                isActive
-                  ? "text-emerald-500 font-black scale-105"
-                  : "text-slate-700 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400"
+      <div className="w-full max-w-[1520px] mx-auto px-6 sm:px-12 lg:px-16 xl:px-20 flex items-center justify-between">
+        
+        {/* LOGO: Phan Mai. */}
+        <a
+          href="#home"
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className="font-serif font-bold text-2xl sm:text-[1.7rem] text-[#25231D] dark:text-[#F2EADF] tracking-tight hover:opacity-80 transition-opacity select-none cursor-pointer"
+        >
+          Phan Mai.
+        </a>
+
+        {/* NAVIGATION LINKS (Desktop) */}
+        <nav className="hidden md:flex items-center gap-5 lg:gap-7 xl:gap-8 font-sans text-xs sm:text-[13px] text-[#25231D]/85 dark:text-[#F2EADF]/85 tracking-wide">
+          {navItems.map((item) => (
+            <button
+              key={item.href}
+              type="button"
+              onClick={() => handleNavClick(item.href)}
+              className="relative py-1 group transition-colors cursor-pointer hover:text-[#25231D] dark:hover:text-[#F2EADF]"
+            >
+              <span>{item.label}</span>
+              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#25231D] dark:bg-[#F2EADF] transition-all duration-300 group-hover:w-full" />
+            </button>
+          ))}
+        </nav>
+
+        {/* CONTROLS (Theme Switcher + Language Switcher + CTA Button) */}
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          
+          {/* BẢNG TIẾNG VIỆT / ENGLISH SWITCHER (Pill Toggle) */}
+          <div className="flex items-center p-0.5 rounded-full bg-[#E6D8C5]/70 dark:bg-[#22271F] border border-[#25231D]/15 dark:border-[#F2EADF]/15 text-[11px] font-mono">
+            <button
+              type="button"
+              onClick={() => setLanguage("vi")}
+              className={`px-2.5 py-1 rounded-full transition-all duration-200 cursor-pointer ${
+                language === "vi"
+                  ? "bg-[#B96F4F] text-[#F2EADF] font-bold shadow-xs"
+                  : "text-[#25231D]/70 dark:text-[#F2EADF]/65 hover:text-[#25231D] dark:hover:text-[#F2EADF]"
               }`}
+              title="Chuyển sang Tiếng Việt"
+            >
+              VI
+            </button>
+            <button
+              type="button"
+              onClick={() => setLanguage("en")}
+              className={`px-2.5 py-1 rounded-full transition-all duration-200 cursor-pointer ${
+                language === "en"
+                  ? "bg-[#B96F4F] text-[#F2EADF] font-bold shadow-xs"
+                  : "text-[#25231D]/70 dark:text-[#F2EADF]/65 hover:text-[#25231D] dark:hover:text-[#F2EADF]"
+              }`}
+              title="Switch to English"
+            >
+              EN
+            </button>
+          </div>
+
+          {/* THEME TOGGLE (Sun ☀️ / Moon 🌙) */}
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="w-8 h-8 rounded-full flex items-center justify-center bg-[#E6D8C5]/70 dark:bg-[#22271F] border border-[#25231D]/15 dark:border-[#F2EADF]/15 text-[#25231D] dark:text-[#F2EADF] hover:border-[#B96F4F] transition-colors cursor-pointer"
+            title={theme === "dark" ? "Chuyển sang giao diện Sáng" : "Chuyển sang giao diện Tối"}
+            aria-label="Toggle dark/light theme"
+          >
+            {theme === "dark" ? (
+              <Sun size={15} className="text-[#C87D5D]" />
+            ) : (
+              <Moon size={15} className="text-[#30372D]" />
+            )}
+          </button>
+
+          {/* GET IN TOUCH CTA */}
+          <a
+            href="#contact"
+            className="hidden sm:inline-flex items-center gap-1.5 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full border border-[#25231D]/35 dark:border-[#F2EADF]/30 text-xs font-sans text-[#25231D] dark:text-[#F2EADF] bg-transparent hover:border-[#B96F4F] hover:text-[#B96F4F] dark:hover:text-[#C87D5D] transition-all duration-300 group cursor-pointer"
+          >
+            <span>{t.nav.getInTouch}</span>
+            <ArrowUpRight
+              size={13}
+              className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+            />
+          </a>
+
+          {/* Mobile menu toggle */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            className="md:hidden p-1.5 text-[#25231D] dark:text-[#F2EADF] cursor-pointer"
+            aria-label="Toggle navigation"
+          >
+            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Drawer */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-[#F2EADF] dark:bg-[#161914] border-b border-[#25231D]/10 dark:border-[#F2EADF]/15 px-6 py-6 space-y-4 shadow-xl">
+          {navItems.map((item) => (
+            <button
+              key={item.href}
+              type="button"
+              onClick={() => handleNavClick(item.href)}
+              className="block w-full text-left py-2 font-serif text-lg text-[#25231D] dark:text-[#F2EADF] hover:text-[#B96F4F] transition-colors cursor-pointer"
             >
               {item.label}
+            </button>
+          ))}
+          <div className="pt-3 border-t border-[#25231D]/10 dark:border-[#F2EADF]/15 flex items-center justify-between">
+            <a
+              href="#contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full border border-[#25231D]/40 dark:border-[#F2EADF]/40 text-xs font-sans text-[#25231D] dark:text-[#F2EADF]"
+            >
+              <span>{t.nav.getInTouch}</span>
+              <ArrowUpRight size={13} />
             </a>
-          );
-        })}
 
-        {/* Separator Divider */}
-        <span className="w-px h-5 bg-slate-200 dark:bg-white/[0.15] shrink-0" />
-
-        {/* Light / Dark Mode Toggle Button */}
-        <button
-          type="button"
-          onClick={toggleTheme}
-          title={theme === "dark" ? "Chuyển sang Theme Trắng (Light)" : "Chuyển sang Theme Tối (Dark)"}
-          className="p-1.5 rounded-full text-slate-700 dark:text-amber-400 hover:text-emerald-500 dark:hover:text-amber-300 transition-colors cursor-pointer shrink-0"
-          aria-label="Toggle Theme"
-        >
-          {theme === "dark" ? (
-            <Sun size={19} className="text-amber-400 hover:text-amber-300 hover:rotate-45 transition-transform drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
-          ) : (
-            <Moon size={19} className="text-slate-700 hover:text-emerald-600 hover:-rotate-12 transition-transform" />
-          )}
-        </button>
-      </div>
-    </nav>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-xs text-[#85866A]">
+                {theme === "dark" ? "Dark Theme" : "Light Theme"}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
   );
 };

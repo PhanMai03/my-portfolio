@@ -1,281 +1,400 @@
-import React, { useState, useMemo } from "react";
-import { MousePointerClick, Layers, CheckCircle2, X } from "lucide-react";
-import { HEX_SKILL_NODES, HEX_GRID_CONFIG, HexNode } from "@/data/skillsHiveData";
-import { getPointyHexPoints } from "@/lib/hexagonGeometry";
+import React from "react";
+import { ShieldCheck, Code2, Database, Sparkles } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export const SkillsSection: React.FC = () => {
-  const [selectedHexId, setSelectedHexId] = useState<string | null>(null);
-  const [hoveredHexId, setHoveredHexId] = useState<string | null>(null);
-
-  const { radius, width: W, dx, dy, originX, originY, svgViewBox } = HEX_GRID_CONFIG;
-
-  // Memoize currently active skill node for details panel
-  const activeNode = useMemo(
-    () => HEX_SKILL_NODES.find((node) => node.id === selectedHexId && !node.isHub) || null,
-    [selectedHexId]
-  );
+  const { t, language } = useLanguage();
 
   return (
-    <section id="skills" className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-left relative">
-      {/* Background Subtle Blueprint Grid */}
-      <div className="absolute inset-0 bg-[radial-gradient(#10B981_1px,transparent_1px)] [background-size:28px_28px] opacity-[0.03] dark:opacity-[0.05] pointer-events-none" />
-
-      {/* Header */}
-      <div className="mb-10">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <h2 className="text-2xl sm:text-3xl font-extrabold font-mono text-slate-900 dark:text-white tracking-wider uppercase">
-            SKILLS
-          </h2>
-        </div>
-        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-2xl font-mono">
-          The technologies, tools, and practices I use to build and ship products.
-        </p>
-      </div>
-
-      {/* Main 2-Column: Left Open Hexagon Hive Grid (8 cols) + Right Detail Inspector Card (4 cols) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-        {/* LEFT: Open & Frameless Hexagonal Interconnected Hive (8 cols) */}
-        <div className="lg:col-span-8 relative flex items-center justify-center overflow-x-auto scrollbar-none py-2">
-          <svg
-            viewBox={svgViewBox}
-            className="w-full max-w-[880px] h-auto min-w-[620px] select-none overflow-visible"
-          >
-            <defs>
-              {/* Glow Filter */}
-              <filter id="hex-glow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="7" result="blur" />
-                <feComposite in="SourceGraphic" in2="blur" operator="over" />
-              </filter>
-
-              {/* Subtle Background Grid Pattern */}
-              <pattern id="hive-grid" width="45" height="45" patternUnits="userSpaceOnUse">
-                <path
-                  d="M 45 0 L 0 0 0 45"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                  className="text-slate-300/40 dark:text-white/[0.04]"
-                />
-              </pattern>
-            </defs>
-
-            {/* Faint Grid Texture strictly behind hive */}
-            <rect x="0" y="0" width="920" height="530" fill="url(#hive-grid)" />
-
-            {/* Render All Hexagons */}
-            {HEX_SKILL_NODES.map((node) => {
-              const cx = originX + node.q * W + node.r * dx;
-              const cy = originY + node.r * dy;
-              const isSelected = selectedHexId === node.id;
-              const isHovered = hoveredHexId === node.id;
-
-              const hexPoints = getPointyHexPoints(cx, cy, radius);
-
-              return (
-                <g
-                  key={node.id}
-                  onClick={() => {
-                    if (!node.isHub) {
-                      setSelectedHexId(node.id);
-                    }
-                  }}
-                  onMouseEnter={() => setHoveredHexId(node.id)}
-                  onMouseLeave={() => setHoveredHexId(null)}
-                  className={`transition-all duration-300 ${
-                    node.isHub ? "cursor-default" : "cursor-pointer"
-                  }`}
-                  style={{
-                    transformOrigin: `${cx}px ${cy}px`,
-                    transform: isHovered || isSelected ? "scale(1.08)" : "scale(1)",
-                  }}
-                >
-                  {/* Glowing Aura when hovered or selected */}
-                  {(isHovered || isSelected) && (
-                    <polygon
-                      points={hexPoints}
-                      fill="none"
-                      stroke={node.borderColor}
-                      strokeWidth="6"
-                      opacity="0.65"
-                      filter="url(#hex-glow)"
-                    />
-                  )}
-
-                  {/* Outer Hexagon Border & Fill */}
-                  <polygon
-                    points={hexPoints}
-                    fill={node.color}
-                    stroke={node.borderColor}
-                    strokeWidth={isSelected ? "3.5" : isHovered ? "3" : "2"}
-                    className="transition-colors"
-                  />
-
-                  {/* Hub Category Hexagon Content */}
-                  {node.isHub && node.hubLabel && (
-                    <g className="pointer-events-none select-none">
-                      <text
-                        x={cx}
-                        y={cy + 5}
-                        textAnchor="middle"
-                        fill={node.borderColor}
-                        fontSize="13"
-                        fontWeight="bold"
-                        fontFamily="'Geist Mono', monospace"
-                        letterSpacing="0.06em"
-                      >
-                        {node.hubLabel[0]}
-                      </text>
-                    </g>
-                  )}
-
-                  {/* Standard Skill Hexagon Content (Icon + Label) */}
-                  {!node.isHub && (
-                    <g className="pointer-events-none select-none">
-                      {node.iconSrc && (
-                        <image
-                          href={node.iconSrc}
-                          x={cx - 17}
-                          y={cy - 23}
-                          width="34"
-                          height="34"
-                          preserveAspectRatio="xMidYMid meet"
-                        />
-                      )}
-
-                      {/* Skill Name */}
-                      <text
-                        x={cx}
-                        y={cy + 22}
-                        textAnchor="middle"
-                        fill="#0F172A"
-                        fontSize="11.5"
-                        fontWeight="700"
-                        fontFamily="'Geist Mono', monospace"
-                      >
-                        {node.name}
-                      </text>
-                    </g>
-                  )}
-                </g>
-              );
-            })}
-          </svg>
-        </div>
-
-        {/* RIGHT: Detail Inspector Card (4 cols) */}
-        <div className="lg:col-span-4 rounded-2xl bg-white/90 dark:bg-[#0A0D14]/80 border border-slate-200 dark:border-white/[0.08] backdrop-blur-xl p-6 sm:p-7 shadow-sm dark:shadow-xl sticky top-24 min-h-[440px] flex flex-col justify-between transition-all">
-          {activeNode ? (
-            <div>
-              {/* Header Status Bar */}
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-white/[0.06] mb-6">
-                <span
-                  className="font-mono text-[10px] px-2.5 py-1 rounded-md font-bold uppercase tracking-wider"
-                  style={{
-                    backgroundColor: `${activeNode.borderColor}15`,
-                    color: activeNode.borderColor,
-                    border: `1px solid ${activeNode.borderColor}40`,
-                  }}
-                >
-                  {activeNode.categoryTitle}
-                </span>
-
-                <button
-                  type="button"
-                  onClick={() => setSelectedHexId(null)}
-                  className="text-slate-400 hover:text-slate-700 dark:hover:text-white p-1 rounded-md transition-colors cursor-pointer"
-                  title="Close details"
-                >
-                  <X size={15} />
-                </button>
-              </div>
-
-              {/* Title & Icon */}
-              <div className="flex items-start gap-4 mb-6">
-                <div
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center p-3 shrink-0 shadow-inner border bg-slate-50 dark:bg-white/[0.04]"
-                  style={{
-                    borderColor: `${activeNode.borderColor}60`,
-                    boxShadow: `0 0 25px ${activeNode.glowColor}`,
-                  }}
-                >
-                  {activeNode.iconSrc ? (
-                    <img
-                      src={activeNode.iconSrc}
-                      alt={activeNode.name}
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    <span
-                      className="w-6 h-6 rounded-full"
-                      style={{ backgroundColor: activeNode.borderColor }}
-                    />
-                  )}
-                </div>
-                <div>
-                  <h3 className="text-2xl font-display font-extrabold text-slate-900 dark:text-white mb-1">
-                    {activeNode.name}
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
-                      {activeNode.tag}
-                    </span>
-                    <span className="text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10">
-                      {activeNode.level}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Technical Description */}
-              <div className="mb-6">
-                <h4 className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <Layers size={13} className="text-emerald-500" />
-                  Engineering Specification
-                </h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans bg-slate-50 dark:bg-white/[0.02] p-3.5 rounded-xl border border-slate-100 dark:border-white/[0.04]">
-                  {activeNode.description}
-                </p>
-              </div>
-
-              {/* Verified Production Usage */}
-              {activeNode.usedInProjects && (
-                <div className="pt-4 border-t border-slate-100 dark:border-white/[0.06]">
-                  <span className="text-[10px] font-mono text-slate-400 block mb-2 uppercase tracking-wider">
-                    Applied In Production Projects:
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {activeNode.usedInProjects.map((proj) => (
-                      <span
-                        key={proj}
-                        className="text-[11px] font-mono px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25 flex items-center gap-1"
-                      >
-                        <CheckCircle2 size={11} className="text-emerald-500" />
-                        {proj}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="my-auto flex flex-col items-center justify-center text-center py-10 px-4">
-              <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-white/[0.03] border border-slate-200 dark:border-white/[0.08] flex items-center justify-center text-emerald-500 mb-6 shadow-inner animate-pulse">
-                <MousePointerClick size={28} />
-              </div>
-              <h3 className="font-display font-bold text-lg text-slate-900 dark:text-white mb-2">
-                Interactive Technical Hive
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs leading-relaxed font-mono">
-                The technologies, tools, and practices I use to build and ship products.
-              </p>
-              <span className="mt-4 text-[11px] font-mono text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full">
-                Click a hexagon to view details
+    <section
+      id="skills"
+      className="relative min-h-[70vh] py-20 sm:py-24 lg:py-28 text-left overflow-hidden bg-[#F2EADF] dark:bg-[#161914] border-b border-[#25231D]/15 dark:border-[#F2EADF]/15 select-none transition-colors duration-300"
+    >
+      <div className="w-full max-w-[1520px] mx-auto px-6 sm:px-12 lg:px-16 xl:px-20 space-y-12 sm:space-y-16">
+        
+        {/* =========================================================================
+            SECTION HEADER
+           ========================================================================= */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#25231D]/15 dark:border-[#F2EADF]/15">
+          <div className="space-y-3 max-w-xl">
+            <div className="flex items-center gap-2.5 text-[#85866A] dark:text-[#9E9F88]">
+              <span className="w-6 h-[1px] bg-[#85866A] dark:bg-[#9E9F88]" />
+              <span className="font-mono text-xs uppercase tracking-widest">
+                {t.skills.tag}
               </span>
             </div>
-          )}
+
+            <h2 className="text-4xl sm:text-5xl lg:text-[3.4rem] font-serif font-bold text-[#25231D] dark:text-[#F2EADF] leading-[1.05] tracking-tight">
+              {t.skills.title} <br />
+              <span className="italic font-normal text-[#B96F4F] dark:text-[#C87D5D]">
+                {t.skills.titleHighlight}
+              </span>
+            </h2>
+          </div>
+
+          <p className="font-sans text-xs sm:text-sm text-[#25231D]/75 dark:text-[#F2EADF]/75 max-w-md leading-relaxed">
+            {t.skills.subtitle}
+          </p>
         </div>
+
+        {/* =========================================================================
+            BẢNG MA TRẬN NĂNG LỰC TRỰC DIỆN (SWISS EDITORIAL CAPABILITY MATRIX)
+            - HOÀN TOÀN LOẠI BỎ HỘP CARD BỌC NGOÀI & TỪNG CARD BỌC TRONG
+            - 4 CỘT PHÂN TÁCH BẰNG ĐƯỜNG KẺ HAIRLINE TINH TẾ, KHÔNG GÂY TÙ TÚNG
+           ========================================================================= */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[#25231D]/15 dark:divide-[#F2EADF]/15">
+          
+          {/* -----------------------------------------------------------------------
+              CỘT 01: KIỂM THỬ PHẦN MỀM & QA
+             ----------------------------------------------------------------------- */}
+          <div className="relative py-8 md:py-0 md:px-6 xl:px-8 first:pt-0 first:md:pl-0 flex flex-col justify-between space-y-8 group">
+            {/* Dấu triện đỏ CTF 2023 Honors Stamp thanh mảnh */}
+            <div className="absolute top-0 right-2 md:right-4 rotate-12 border border-[#B96F4F] dark:border-[#C87D5D] rounded-full w-16 h-16 p-0.5 pointer-events-none opacity-80 flex items-center justify-center text-center">
+              <div className="border border-dashed border-[#B96F4F] dark:border-[#C87D5D] rounded-full w-full h-full flex flex-col items-center justify-center font-mono text-[5.5px] uppercase font-bold text-[#B96F4F] dark:text-[#C87D5D] leading-tight">
+                <span>CTF 2023</span>
+                <span className="text-[7px]">HONORS</span>
+                <span>HCMUTE</span>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              {/* Category Marker */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between pb-2 border-b border-[#25231D]/15 dark:border-[#F2EADF]/15 font-mono text-[11px]">
+                  <span className="font-bold text-[#B96F4F] dark:text-[#C87D5D] tracking-wider">
+                    01 // TESTING
+                  </span>
+                  <span className="text-[#25231D]/50 dark:text-[#F2EADF]/50">#QA-9481</span>
+                </div>
+
+                <div className="flex items-center gap-2.5 pt-1">
+                  <div className="w-8 h-8 rounded-full bg-[#E6D8C5]/70 dark:bg-[#20261C] border border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-center text-[#B96F4F] dark:text-[#C87D5D] shrink-0">
+                    <ShieldCheck size={16} />
+                  </div>
+                  <div>
+                    <h3 className="font-serif font-bold text-xl text-[#25231D] dark:text-[#F2EADF] tracking-tight">
+                      {t.skills.ticket01Title}
+                    </h3>
+                    <p className="font-mono text-[10px] text-[#85866A] dark:text-[#9E9F88] uppercase tracking-wider">
+                      {t.skills.ticket01Spec}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Danh sách kỹ năng mở, dạng dòng kẻ thanh mảnh (KHÔNG CARD) */}
+              <div className="space-y-0 divide-y divide-[#25231D]/10 dark:divide-[#F2EADF]/10 pt-1">
+                {[
+                  { name: "Test case design", status: language === "vi" ? "Biên & Phân vùng" : "Boundary & Logic" },
+                  { name: "Functional testing", status: language === "vi" ? "Luồng Nghiệp vụ" : "Business Flows" },
+                  { name: "API testing with Postman", status: language === "vi" ? "Kịch bản Postman" : "Automated Suite" },
+                  { name: "Defect tracking with Jira", status: language === "vi" ? "Vòng đời Lỗi Jira" : "Lifecycle Matrix" },
+                  { name: "Web UI Testing", status: language === "vi" ? "Giao diện Responsive" : "Cross-browser UI" },
+                ].map((item) => (
+                  <div
+                    key={item.name}
+                    className="py-3 flex items-center justify-between gap-2 hover:translate-x-1 transition-transform duration-200"
+                  >
+                    <span className="font-sans font-medium text-sm text-[#25231D] dark:text-[#F2EADF]">
+                      {item.name}
+                    </span>
+                    <span className="font-mono text-[11px] text-[#B96F4F] dark:text-[#C87D5D] font-medium shrink-0">
+                      [✓] {item.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Column Footer with Archival Barcode */}
+            <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="font-mono text-[8.5px] text-[#25231D]/60 dark:text-[#F2EADF]/60 uppercase">
+                  {language === "vi" ? "DẤU XÁC NHẬN" : "VERIFICATION STAMP"}
+                </span>
+                <span className="font-mono text-[11px] font-bold text-[#25231D] dark:text-[#F2EADF]">
+                  {t.skills.auditedStamp}
+                </span>
+              </div>
+              <svg className="w-20 h-5 text-[#25231D]/60 dark:text-[#F2EADF]/60" viewBox="0 0 100 24">
+                <rect x="0" y="0" width="3" height="24" fill="currentColor" />
+                <rect x="5" y="0" width="1" height="24" fill="currentColor" />
+                <rect x="8" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="14" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="18" y="0" width="5" height="24" fill="currentColor" />
+                <rect x="25" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="30" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="36" y="0" width="1" height="24" fill="currentColor" />
+                <rect x="40" y="0" width="6" height="24" fill="currentColor" />
+                <rect x="48" y="0" width="3" height="24" fill="currentColor" />
+                <rect x="54" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="60" y="0" width="5" height="24" fill="currentColor" />
+                <rect x="68" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="73" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="80" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="85" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="92" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="96" y="0" width="4" height="24" fill="currentColor" />
+              </svg>
+            </div>
+          </div>
+
+          {/* -----------------------------------------------------------------------
+              CỘT 02: FRONTEND DEVELOPMENT
+             ----------------------------------------------------------------------- */}
+          <div className="py-8 md:py-0 md:px-6 xl:px-8 flex flex-col justify-between space-y-8 group">
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between pb-2 border-b border-[#25231D]/15 dark:border-[#F2EADF]/15 font-mono text-[11px]">
+                  <span className="font-bold text-[#30372D] dark:text-[#C8B69E] tracking-wider">
+                    02 // FRONTEND
+                  </span>
+                  <span className="text-[#25231D]/50 dark:text-[#F2EADF]/50">#FE-9482</span>
+                </div>
+
+                <div className="flex items-center gap-2.5 pt-1">
+                  <div className="w-8 h-8 rounded-full bg-[#E6D8C5]/70 dark:bg-[#20261C] border border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-center text-[#30372D] dark:text-[#C8B69E] shrink-0">
+                    <Code2 size={16} />
+                  </div>
+                  <div>
+                    <h3 className="font-serif font-bold text-xl text-[#25231D] dark:text-[#F2EADF] tracking-tight">
+                      {t.skills.ticket02Title}
+                    </h3>
+                    <p className="font-mono text-[10px] text-[#85866A] dark:text-[#9E9F88] uppercase tracking-wider">
+                      {t.skills.ticket02Spec}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Danh sách kỹ năng Frontend */}
+              <div className="space-y-0 divide-y divide-[#25231D]/10 dark:divide-[#F2EADF]/10 pt-1">
+                {[
+                  { name: "React", status: language === "vi" ? "Kiến trúc SPA" : "Component SPA" },
+                  { name: "NextJS", status: language === "vi" ? "Môi trường Prod" : "Production App" },
+                  { name: "TypeScript", status: language === "vi" ? "Kiểm kiểu chặt chẽ" : "Strict Typing" },
+                  { name: "JavaScript", status: language === "vi" ? "Chuẩn ES6+" : "Core ES6+" },
+                  { name: "Tailwind CSS", status: language === "vi" ? "Thiết kế Token" : "Utility Tokens" },
+                  { name: "HTML5 & CSS3", status: language === "vi" ? "Ngữ nghĩa & RWD" : "Semantic & RWD" },
+                ].map((item) => (
+                  <div
+                    key={item.name}
+                    className="py-3 flex items-center justify-between gap-2 hover:translate-x-1 transition-transform duration-200"
+                  >
+                    <span className="font-sans font-medium text-sm text-[#25231D] dark:text-[#F2EADF]">
+                      {item.name}
+                    </span>
+                    <span className="font-mono text-[11px] text-[#85866A] dark:text-[#9E9F88] font-medium shrink-0">
+                      [✓] {item.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="font-mono text-[8.5px] text-[#25231D]/60 dark:text-[#F2EADF]/60 uppercase">
+                  {language === "vi" ? "DẤU XÁC NHẬN" : "VERIFICATION STAMP"}
+                </span>
+                <span className="font-mono text-[11px] font-bold text-[#25231D] dark:text-[#F2EADF]">
+                  {language === "vi" ? "FE ĐÃ KIỂM ĐỊNH" : "CLIENT AUDITED"}
+                </span>
+              </div>
+              <svg className="w-20 h-5 text-[#25231D]/60 dark:text-[#F2EADF]/60" viewBox="0 0 100 24">
+                <rect x="0" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="4" y="0" width="3" height="24" fill="currentColor" />
+                <rect x="10" y="0" width="1" height="24" fill="currentColor" />
+                <rect x="14" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="20" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="25" y="0" width="5" height="24" fill="currentColor" />
+                <rect x="33" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="38" y="0" width="3" height="24" fill="currentColor" />
+                <rect x="44" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="51" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="56" y="0" width="5" height="24" fill="currentColor" />
+                <rect x="64" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="70" y="0" width="3" height="24" fill="currentColor" />
+                <rect x="76" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="83" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="88" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="95" y="0" width="3" height="24" fill="currentColor" />
+              </svg>
+            </div>
+          </div>
+
+          {/* -----------------------------------------------------------------------
+              CỘT 03: BACKEND & DATABASES
+             ----------------------------------------------------------------------- */}
+          <div className="py-8 md:py-0 md:px-6 xl:px-8 flex flex-col justify-between space-y-8 group">
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between pb-2 border-b border-[#25231D]/15 dark:border-[#F2EADF]/15 font-mono text-[11px]">
+                  <span className="font-bold text-[#85866A] dark:text-[#9E9F88] tracking-wider">
+                    03 // BACKEND & DB
+                  </span>
+                  <span className="text-[#25231D]/50 dark:text-[#F2EADF]/50">#BE-9483</span>
+                </div>
+
+                <div className="flex items-center gap-2.5 pt-1">
+                  <div className="w-8 h-8 rounded-full bg-[#E6D8C5]/70 dark:bg-[#20261C] border border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-center text-[#85866A] dark:text-[#9E9F88] shrink-0">
+                    <Database size={16} />
+                  </div>
+                  <div>
+                    <h3 className="font-serif font-bold text-xl text-[#25231D] dark:text-[#F2EADF] tracking-tight">
+                      {t.skills.ticket03Title}
+                    </h3>
+                    <p className="font-mono text-[10px] text-[#85866A] dark:text-[#9E9F88] uppercase tracking-wider">
+                      {t.skills.ticket03Spec}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Danh sách kỹ năng Backend & Databases */}
+              <div className="space-y-0 divide-y divide-[#25231D]/10 dark:divide-[#F2EADF]/10 pt-1">
+                {[
+                  { name: "NodeJS", status: language === "vi" ? "Server Runtime" : "Server Runtime" },
+                  { name: "Express", status: language === "vi" ? "REST Middleware" : "REST Middleware" },
+                  { name: "RESTful APIs", status: language === "vi" ? "Chuẩn OpenAPI" : "OpenAPI Protocol" },
+                  { name: "SQL Server", status: language === "vi" ? "CSDL Quan hệ" : "Relational T-SQL" },
+                  { name: "MongoDB", status: language === "vi" ? "NoSQL Tài liệu" : "Document NoSQL" },
+                ].map((item) => (
+                  <div
+                    key={item.name}
+                    className="py-3 flex items-center justify-between gap-2 hover:translate-x-1 transition-transform duration-200"
+                  >
+                    <span className="font-sans font-medium text-sm text-[#25231D] dark:text-[#F2EADF]">
+                      {item.name}
+                    </span>
+                    <span className="font-mono text-[11px] text-[#B96F4F] dark:text-[#C87D5D] font-medium shrink-0">
+                      [✓] {item.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="font-mono text-[8.5px] text-[#25231D]/60 dark:text-[#F2EADF]/60 uppercase">
+                  {language === "vi" ? "DẤU XÁC NHẬN" : "VERIFICATION STAMP"}
+                </span>
+                <span className="font-mono text-[11px] font-bold text-[#25231D] dark:text-[#F2EADF]">
+                  {language === "vi" ? "DATA ĐÃ KIỂM ĐỊNH" : "DATA AUDITED"}
+                </span>
+              </div>
+              <svg className="w-20 h-5 text-[#25231D]/60 dark:text-[#F2EADF]/60" viewBox="0 0 100 24">
+                <rect x="0" y="0" width="3" height="24" fill="currentColor" />
+                <rect x="5" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="10" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="16" y="0" width="1" height="24" fill="currentColor" />
+                <rect x="20" y="0" width="5" height="24" fill="currentColor" />
+                <rect x="27" y="0" width="3" height="24" fill="currentColor" />
+                <rect x="33" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="38" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="45" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="50" y="0" width="5" height="24" fill="currentColor" />
+                <rect x="58" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="64" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="71" y="0" width="1" height="24" fill="currentColor" />
+                <rect x="75" y="0" width="5" height="24" fill="currentColor" />
+                <rect x="83" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="88" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="94" y="0" width="3" height="24" fill="currentColor" />
+              </svg>
+            </div>
+          </div>
+
+          {/* -----------------------------------------------------------------------
+              CỘT 04: TOOLS & AI
+             ----------------------------------------------------------------------- */}
+          <div className="py-8 md:py-0 md:px-6 xl:px-8 last:pb-0 last:md:pr-0 flex flex-col justify-between space-y-8 group">
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between pb-2 border-b border-[#25231D]/15 dark:border-[#F2EADF]/15 font-mono text-[11px]">
+                  <span className="font-bold text-[#85866A] dark:text-[#9E9F88] tracking-wider">
+                    04 // TOOLS & AI
+                  </span>
+                  <span className="text-[#25231D]/50 dark:text-[#F2EADF]/50">#AI-9484</span>
+                </div>
+
+                <div className="flex items-center gap-2.5 pt-1">
+                  <div className="w-8 h-8 rounded-full bg-[#E6D8C5]/70 dark:bg-[#20261C] border border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-center text-[#25231D] dark:text-[#F2EADF] shrink-0">
+                    <Sparkles size={16} className="text-[#B96F4F] dark:text-[#C87D5D]" />
+                  </div>
+                  <div>
+                    <h3 className="font-serif font-bold text-xl text-[#25231D] dark:text-[#F2EADF] tracking-tight">
+                      {t.skills.ticket04Title}
+                    </h3>
+                    <p className="font-mono text-[10px] text-[#85866A] dark:text-[#9E9F88] uppercase tracking-wider">
+                      {t.skills.ticket04Spec}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Danh sách kỹ năng Tools & AI */}
+              <div className="space-y-0 divide-y divide-[#25231D]/10 dark:divide-[#F2EADF]/10 pt-1">
+                {[
+                  { name: "Git / GitHub", status: language === "vi" ? "Quản lý Phiên bản" : "Version Control" },
+                  { name: "Jira", status: language === "vi" ? "Theo dõi Defect" : "Defect Tracking" },
+                  { name: "Postman", status: language === "vi" ? "Kiểm thử API" : "API Verification" },
+                  { name: "Figma", status: language === "vi" ? "Thiết kế UI/UX" : "UI/UX System" },
+                  { name: "AI Dev Tools", status: language === "vi" ? "Codex, Gemini, ChatGPT" : "Codex, Gemini, AI" },
+                ].map((item) => (
+                  <div
+                    key={item.name}
+                    className="py-3 flex items-center justify-between gap-2 hover:translate-x-1 transition-transform duration-200"
+                  >
+                    <span className="font-sans font-medium text-sm text-[#25231D] dark:text-[#F2EADF]">
+                      {item.name}
+                    </span>
+                    <span className="font-mono text-[11px] text-[#85866A] dark:text-[#9E9F88] font-medium shrink-0">
+                      [✓] {item.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-[#25231D]/15 dark:border-[#F2EADF]/15 flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="font-mono text-[8.5px] text-[#25231D]/60 dark:text-[#F2EADF]/60 uppercase">
+                  {language === "vi" ? "DẤU XÁC NHẬN" : "VERIFICATION STAMP"}
+                </span>
+                <span className="font-mono text-[11px] font-bold text-[#25231D] dark:text-[#F2EADF]">
+                  {language === "vi" ? "CÔNG CỤ ĐÃ KIỂM ĐỊNH" : "TOOLSET AUDITED"}
+                </span>
+              </div>
+              <svg className="w-20 h-5 text-[#25231D]/60 dark:text-[#F2EADF]/60" viewBox="0 0 100 24">
+                <rect x="0" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="6" y="0" width="1" height="24" fill="currentColor" />
+                <rect x="9" y="0" width="3" height="24" fill="currentColor" />
+                <rect x="15" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="19" y="0" width="5" height="24" fill="currentColor" />
+                <rect x="26" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="31" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="37" y="0" width="1" height="24" fill="currentColor" />
+                <rect x="41" y="0" width="5" height="24" fill="currentColor" />
+                <rect x="49" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="54" y="0" width="3" height="24" fill="currentColor" />
+                <rect x="60" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="67" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="72" y="0" width="4" height="24" fill="currentColor" />
+                <rect x="79" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="84" y="0" width="5" height="24" fill="currentColor" />
+                <rect x="92" y="0" width="2" height="24" fill="currentColor" />
+                <rect x="96" y="0" width="3" height="24" fill="currentColor" />
+              </svg>
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </section>
   );
 };
+
+export default SkillsSection;

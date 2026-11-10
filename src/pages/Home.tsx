@@ -1,47 +1,38 @@
-import React, { useState } from "react";
+import React from "react";
 import { Navbar } from "@/components/Navbar";
 import { HeroSection } from "@/components/HeroSection";
 import { AboutSection } from "@/components/AboutSection";
 import { ExperienceSection } from "@/components/ExperienceSection";
-import { SkillsSection } from "@/components/SkillsSection";
 import { ProjectsSection } from "@/components/ProjectsSection";
-import { ContactSection } from "@/components/ContactSection";
-import { CommandPaletteModal } from "@/components/CommandPaletteModal";
+import { SkillsSection } from "@/components/SkillsSection";
+import { Footer } from "@/components/Footer";
 
 export const Home: React.FC = () => {
-  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
-
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#08090C] text-slate-900 dark:text-[#EDEDED] selection:bg-emerald-500/25 selection:text-emerald-600 dark:selection:text-emerald-300 font-sans overflow-x-hidden transition-colors duration-300">
-      {/* Interactive Raycast / Linear Command Palette (Cmd + K) */}
-      <CommandPaletteModal
-        isOpen={commandPaletteOpen}
-        onClose={() => setCommandPaletteOpen(false)}
-      />
+    <div className="min-h-screen bg-[#F2EADF] dark:bg-[#161914] text-[#25231D] dark:text-[#F2EADF] font-sans selection:bg-[#B96F4F] selection:text-[#F2EADF] overflow-x-hidden transition-colors duration-300">
+      {/* Header & Navigation */}
+      <Navbar />
 
-      {/* Sticky Navigation Header */}
-      <Navbar onOpenCommandPalette={() => setCommandPaletteOpen(true)} />
-
-      {/* Main Single Page Scroll */}
-      <main>
-        {/* [1] Home Section (Hero, Headline, Three.js 3D Canvas, 2 CTAs) */}
+      {/* Main OFF-GRID Editorial Experience */}
+      <main className="relative">
+        {/* SECTION 01 — HERO */}
         <HeroSection />
 
-        {/* [2] About Me Section (Narrative Bio with Avatar & Education Strip) */}
+        {/* SECTION 02 — ABOUT & ACADEMIC DOSSIER */}
         <AboutSection />
 
-        {/* [3] Experience Section (Timeline with central axis, alternating cards) */}
+        {/* SECTION 03 — EXPERIENCE */}
         <ExperienceSection />
 
-        {/* [4] Skills Section (Hexagon Hive Network) */}
-        <SkillsSection />
-
-        {/* [5] Projects Section (Technical Cards, Problem, Stack, Metrics) */}
+        {/* SECTION 04 — SELECTED PROJECTS */}
         <ProjectsSection />
+
+        {/* SECTION 05 — SKILLS */}
+        <SkillsSection />
       </main>
 
-      {/* [6] Contact Section */}
-      <ContactSection />
+      {/* SECTION 06 — FOOTER & CONTACT */}
+      <Footer />
     </div>
   );
 };
