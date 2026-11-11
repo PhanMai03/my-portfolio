@@ -102,6 +102,38 @@
   background-color: #E6D8C5;
 }
 
+/* Blueprint Grid Background siêu mờ 3.5% (kích thước 32x32px chất liệu giấy vẽ kỹ thuật) */
+.bg-blueprint-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(64, 54, 46, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(64, 54, 46, 0.035) 1px, transparent 1px);
+}
+
+.dark .bg-blueprint-grid {
+  background-image: 
+    linear-gradient(to right, rgba(242, 234, 223, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(242, 234, 223, 0.035) 1px, transparent 1px);
+}
+
+/* Gentle Float Animation cho Data Bits & Nodes */
+@keyframes gentleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-gentle-float {
+  animation: gentleFloat 5s ease-in-out infinite;
+}
+
+.animate-gentle-float-delayed {
+  animation: gentleFloat 5s ease-in-out infinite 2.5s;
+}
+
 /* Organic Shapes & Sculptural Arches */
 .arch-top {
   border-top-left-radius: 9999px;

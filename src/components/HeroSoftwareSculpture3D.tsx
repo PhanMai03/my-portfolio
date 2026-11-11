@@ -1,14 +1,34 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 export const HeroSoftwareSculpture3D: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [webGLSupported, setWebGLSupported] = useState(true);
 
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
 
+    // Kiểm tra tính khả dụng của WebGL
+    try {
+      const testCanvas = document.createElement("canvas");
+      const hasWebGL = !!(
+        window.WebGLRenderingContext &&
+        (testCanvas.getContext("webgl") || testCanvas.getContext("experimental-webgl"))
+      );
+      if (!hasWebGL) {
+        setWebGLSupported(false);
+        return;
+      }
+    } catch {
+      setWebGLSupported(false);
+      return;
+    }
+
     let animationFrameId: number;
+    let isMounted = true;
+    let isIntersecting = true;
     let mouseX = 0;
     let mouseY = 0;
     let targetRotX = 0;
@@ -16,6 +36,12 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
 
     let width = container.clientWidth || 580;
     let height = container.clientHeight || 520;
+
+    // Phát hiện thiết bị di động / màn hình nhỏ để Dynamic Quality Scaling
+    const isMobile =
+      window.innerWidth < 768 ||
+      (typeof navigator !== "undefined" &&
+        /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent));
 
     // =========================================================================
     // 1. SCENE & CAMERA (Khử Z-fighting bằng tỉ lệ near: 0.5 / far: 30)
@@ -27,36 +53,44 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     camera.lookAt(0, 0.15, 0);
 
     // =========================================================================
-    // 2. RENDERER (Cập nhật PCFShadowMap mới nhất, triệt tiêu warning deprecated)
+    // 2. RENDERER (Cập nhật PCFShadowMap, Dynamic DPR Scaling & Pointer-Events-None)
     // =========================================================================
     const renderer = new THREE.WebGLRenderer({
-      antialias: true,
+      antialias: !isMobile, // Tắt antialias nặng trên mobile để duy trì 60 FPS
       alpha: true,
       powerPreference: "high-performance",
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Giới hạn devicePixelRatio: tối đa 1.5 trên mobile và 2.0 trên desktop
+    const targetDpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2);
+    renderer.setPixelRatio(targetDpr);
     renderer.setSize(width, height, false);
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFShadowMap; // Đã cập nhật từ PCFSoftShadowMap cũ
+    renderer.shadowMap.type = THREE.PCFShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
+
+    // Triệt tiêu Scroll Jacking: Đảm bảo canvas không chặn scroll hay touch gesture
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
     renderer.domElement.style.display = "block";
+    renderer.domElement.style.pointerEvents = "none";
+    renderer.domElement.style.touchAction = "pan-y";
     container.appendChild(renderer.domElement);
 
     // =========================================================================
-    // 3. HỆ THỐNG ÁNH SÁNG & KHỬ SHADOW ACNE
+    // 3. HỆ THỐNG ÁNH SÁNG & KHỬ SHADOW ACNE (Tối ưu shadow map theo cấu hình máy)
     // =========================================================================
     const ambientLight = new THREE.AmbientLight(0xf5efe6, 1.45);
     scene.add(ambientLight);
 
-    // Nguồn sáng chính ấm áp 45 độ
+    // Nguồn sáng chính ấm áp 45 độ (512px trên mobile, 1024px trên desktop)
+    const shadowRes = isMobile ? 512 : 1024;
     const keyLight = new THREE.DirectionalLight(0xfff8ee, 2.3);
     keyLight.position.set(4.2, 5.5, 4.0);
     keyLight.castShadow = true;
-    keyLight.shadow.mapSize.width = 1024;
-    keyLight.shadow.mapSize.height = 1024;
+    keyLight.shadow.mapSize.width = shadowRes;
+    keyLight.shadow.mapSize.height = shadowRes;
     keyLight.shadow.camera.near = 1.0;
     keyLight.shadow.camera.far = 12;
     keyLight.shadow.bias = -0.0005;
@@ -518,12 +552,33 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     resizeObserver.observe(container);
 
     // =========================================================================
-    // 13. ANIMATION LOOP — SỬ DỤNG performance.now() TRIỆT TIÊU THREE.Clock WARNING
+    // 13. TỐI ƯU HIỆU NĂNG OFFSCREEN: DỪNG RENDER KHI CUỘN RA NGOÀI MÀN HÌNH
+    // =========================================================================
+    const intersectionObserver = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        const visible = entry?.isIntersecting ?? true;
+        if (visible && !isIntersecting) {
+          isIntersecting = true;
+          animationFrameId = requestAnimationFrame(animate);
+        } else if (!visible && isIntersecting) {
+          isIntersecting = false;
+          cancelAnimationFrame(animationFrameId);
+        }
+      },
+      { threshold: 0.05 }
+    );
+    intersectionObserver.observe(container);
+
+    // =========================================================================
+    // 14. ANIMATION LOOP — TỐI ƯU 60FPS & PAUSE TỰ ĐỘNG
     // =========================================================================
     const startTime = performance.now();
     let lastTerminalUpdate = 0;
+    let firstFrameFired = false;
 
     const animate = () => {
+      if (!isMounted || !isIntersecting) return;
       animationFrameId = requestAnimationFrame(animate);
       const now = performance.now();
       const elapsedTime = (now - startTime) * 0.001;
@@ -554,17 +609,25 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
       });
 
       renderer.render(scene, camera);
+
+      // Kích hoạt trạng thái Loaded sau khi frame đầu tiên vẽ thành công
+      if (!firstFrameFired) {
+        firstFrameFired = true;
+        setIsLoaded(true);
+      }
     };
 
     animate();
 
     // =========================================================================
-    // 14. DỌN DẸP BỘ NHỚ KHI UNMOUNT
+    // 15. DỌN DẸP BỘ NHỚ KHI UNMOUNT
     // =========================================================================
     return () => {
+      isMounted = false;
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("mousemove", handleMouseMove);
       resizeObserver.disconnect();
+      intersectionObserver.disconnect();
 
       termTexture.dispose();
       renderer.dispose();
@@ -574,7 +637,58 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
     };
   }, []);
 
-  return <div ref={mountRef} className="w-full h-[480px] sm:h-[540px] lg:h-[580px] relative select-none" />;
+  // WebGL Fallback Mode nếu máy trạm hoặc trình duyệt tắt WebGL
+  if (!webGLSupported) {
+    return (
+      <div className="w-full h-[480px] sm:h-[540px] lg:h-[580px] relative rounded-3xl border border-[#25231D]/15 dark:border-[#F2EADF]/15 bg-[#E6D8C5]/30 dark:bg-[#181D15]/40 backdrop-blur-md flex flex-col items-center justify-center p-8 text-center select-none">
+        <div className="w-16 h-16 rounded-2xl bg-[#B96F4F]/20 flex items-center justify-center mb-4 border border-[#B96F4F]/30">
+          <span className="font-mono text-xl text-[#B96F4F] font-bold">3D</span>
+        </div>
+        <p className="font-serif text-xl sm:text-2xl font-bold text-[#25231D] dark:text-[#F2EADF] tracking-tight">
+          Clay Sculpture Engine
+        </p>
+        <p className="font-sans text-xs sm:text-sm text-[#85866A] dark:text-[#9E9F88] max-w-sm mt-2 leading-relaxed">
+          Procedural 3D Software Sculpture rendered via CSS fallback mode to ensure optimal 60 FPS performance on your current device.
+        </p>
+        <div className="mt-5 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#B96F4F]/10 border border-[#B96F4F]/30 text-[#B96F4F] font-mono text-[11px] tracking-wider">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#B96F4F] animate-pulse" />
+          FALLBACK_STATIC_OK // 60 FPS
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full h-[480px] sm:h-[540px] lg:h-[580px] relative select-none pointer-events-none">
+      {/* Three.js Canvas Container (hoàn toàn không chặn scroll/touch) */}
+      <div
+        ref={mountRef}
+        className={`w-full h-full relative transition-opacity duration-700 ease-out ${
+          isLoaded ? "opacity-100" : "opacity-0"
+        }`}
+      />
+
+      {/* Skeleton Loading State (Khử WebGL Shock & Tránh khoảng trống trắng/đen khi mới load) */}
+      {!isLoaded && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 transition-opacity duration-500">
+          <div className="relative w-56 sm:w-72 h-44 sm:h-56 rounded-3xl border border-[#B96F4F]/25 bg-[#E6D8C5]/30 dark:bg-[#181D15]/40 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center shadow-sm animate-pulse">
+            <div className="w-9 h-9 rounded-full border-2 border-[#B96F4F] border-t-transparent animate-spin mb-3.5" />
+            <span className="font-mono text-[10.5px] tracking-widest uppercase text-[#B96F4F] dark:text-[#C87D5D] font-bold">
+              [INITIALIZING 3D SCULPTURE]
+            </span>
+            <span className="font-mono text-[9px] text-[#85866A] dark:text-[#9E9F88] mt-1.5">
+              ACES Tone Mapping • Silky Matte Clay
+            </span>
+            <div className="mt-3.5 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#B96F4F]/60" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#85866A]/60" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C8B69E]/60" />
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default HeroSoftwareSculpture3D;

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 import { useLanguage } from "@/context/LanguageContext";
+import { ScrollReveal } from "./ScrollReveal";
 
 export const Footer: React.FC = () => {
   const { t, language } = useLanguage();
@@ -97,15 +98,40 @@ export const Footer: React.FC = () => {
       id="contact"
       className="relative w-full bg-[#20251D] dark:bg-[#121510] text-[#F2EADF] text-left border-t border-[#25231D]/20 dark:border-[#F2EADF]/15 select-none scroll-mt-0 transition-colors duration-300"
     >
+      {/* Corner drafting crosshairs */}
+      <div className="absolute top-4 left-6 sm:left-12 font-mono text-xs text-[#DECFC0]/50 select-none pointer-events-none">+</div>
+      <div className="absolute top-4 right-6 sm:right-12 font-mono text-xs text-[#DECFC0]/50 select-none pointer-events-none">+</div>
+      <div className="absolute bottom-4 left-6 sm:left-12 font-mono text-xs text-[#DECFC0]/50 select-none pointer-events-none">+</div>
+      <div className="absolute bottom-4 right-6 sm:right-12 font-mono text-xs text-[#DECFC0]/50 select-none pointer-events-none">+</div>
+
+      {/* Terminal Status Ribbon (Dòng trạng thái terminal chạy ngầm) */}
+      <div className="w-full border-b border-[#F2EADF]/10 bg-[#161A14]/80 px-6 sm:px-12 py-2.5">
+        <div className="max-w-[1520px] mx-auto flex items-center justify-between text-[10px] font-mono tracking-wider text-[#C8B69E]">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#B96F4F] inline-block animate-pulse" />
+            <span className="text-[#F2EADF] font-bold">PING: 24MS</span>
+            <span className="opacity-40">//</span>
+            <span className="text-[#DECFC0]">STATUS: READY_TO_COLLAB</span>
+          </div>
+          <div className="hidden sm:flex items-center gap-3 text-[#C8B69E]/70 text-[9px]">
+            <span>NODE: SGN-01</span>
+            <span className="opacity-40">•</span>
+            <span>PORT: 443_SSL</span>
+            <span className="opacity-40">•</span>
+            <span className="text-[#B96F4F]">PROTOCOL: ACTIVE</span>
+          </div>
+        </div>
+      </div>
+
       {/* MAIN CONTACT CONTAINER (MẶT PHẲNG MỞ THOÁNG, HOÀN TOÀN KHÔNG DÙNG CARD HỘP BỌC) */}
       <div className="w-full max-w-[1520px] mx-auto px-6 sm:px-12 lg:px-16 xl:px-20 py-20 sm:py-24 lg:py-28">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
           {/* =========================================================================
-              CỘT TRÁI: EDITORIAL STATEMENT & THÔNG TIN KẾT NỐI MỞ (5 COLS)
+              CỘT TRÁI: EDITORIAL STATEMENT & THÔNG TIN KẾN NỐI MỞ (5 COLS)
              ========================================================================= */}
-          <div className="lg:col-span-5 space-y-8">
+          <ScrollReveal className="lg:col-span-5 space-y-8">
             <div className="space-y-3">
               <div className="flex items-center gap-2.5 text-[#C8B69E]">
                 <span className="w-6 h-[1px] bg-[#C8B69E]" />
@@ -231,12 +257,12 @@ export const Footer: React.FC = () => {
               </div>
 
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* =========================================================================
               CỘT PHẢI: KHUNG ĐIỀN THÔNG ĐIỆP MỞ TRÊN CANVAS (KHÔNG HỘP BỌC DÀY CỘP)
              ========================================================================= */}
-          <div className="lg:col-span-7 lg:pl-10 xl:pl-14 lg:border-l border-[#F2EADF]/15 space-y-6">
+          <ScrollReveal delay={0.15} className="lg:col-span-7 lg:pl-10 xl:pl-14 lg:border-l border-[#F2EADF]/15 space-y-6">
             
             {/* Form Header */}
             <div className="flex items-center justify-between pb-3 border-b border-[#F2EADF]/15">
@@ -352,18 +378,24 @@ export const Footer: React.FC = () => {
               </div>
             </form>
 
-          </div>
+          </ScrollReveal>
 
         </div>
 
       </div>
 
-      {/* BOTTOM COPYRIGHT */}
-      <div className="border-t border-[#F2EADF]/10 py-6 px-6 sm:px-12 text-center font-sans text-xs text-[#F2EADF]/50 flex flex-col sm:flex-row items-center justify-between gap-3 max-w-[1520px] mx-auto">
-        <p>{t.contact.copyright}</p>
-        <p className="font-mono text-[11px] text-[#C8B69E]">
-          OFF-GRID Editorial Art Direction × HCMUTE
-        </p>
+      {/* BOTTOM COPYRIGHT & TECHNICAL DRAWING FRAME CLOSURE */}
+      <div className="border-t border-[#F2EADF]/10 py-6 px-6 sm:px-12 font-sans text-xs text-[#F2EADF]/50 max-w-[1520px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="font-mono text-[10px] text-[#B96F4F] font-bold">└</span>
+          <p>{t.contact.copyright}</p>
+        </div>
+        <div className="flex items-center gap-3 font-mono text-[10px] text-[#C8B69E]">
+          <span className="hidden md:inline text-[#DECFC0]/60">[SYS_TERMINATE // 10.82°N 106.63°E // REV: 2025.11]</span>
+          <span className="opacity-30 hidden md:inline">•</span>
+          <span>OFF-GRID Editorial Art Direction × HCMUTE</span>
+          <span className="font-mono text-[10px] text-[#B96F4F] font-bold">┘</span>
+        </div>
       </div>
     </footer>
   );

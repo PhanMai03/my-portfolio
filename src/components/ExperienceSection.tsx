@@ -2,6 +2,7 @@ import React from "react";
 import { ArrowUpRight, MapPin, Briefcase } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 import { useLanguage } from "@/context/LanguageContext";
+import { ScrollReveal } from "./ScrollReveal";
 
 export const ExperienceSection: React.FC = () => {
   const { t, language } = useLanguage();
@@ -65,43 +66,44 @@ export const ExperienceSection: React.FC = () => {
 
   return (
     <section
-      id="experience"
-      className="relative min-h-[75vh] flex flex-col justify-center py-20 sm:py-24 lg:py-28 text-left overflow-hidden bg-[#F2EADF] dark:bg-[#161914] border-b border-[#25231D]/15 dark:border-[#F2EADF]/15 transition-colors duration-300"
+      className="relative min-h-screen flex flex-col justify-center py-16 sm:py-20 lg:py-16 text-left overflow-hidden bg-[#F2EADF] dark:bg-[#161914] border-b border-[#25231D]/15 dark:border-[#F2EADF]/15 transition-colors duration-300"
     >
       <div className="w-full max-w-[1520px] mx-auto px-6 sm:px-12 lg:px-16 xl:px-20 space-y-12 sm:space-y-16">
         
         {/* =========================================================================
             SECTION HEADER
            ========================================================================= */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#25231D]/15 dark:border-[#F2EADF]/15">
-          <div className="space-y-2 max-w-xl">
-            <div className="flex items-center gap-2.5 text-[#85866A] dark:text-[#9E9F88]">
-              <span className="w-6 h-[1px] bg-[#85866A] dark:bg-[#9E9F88]" />
-              <span className="font-mono text-xs uppercase tracking-widest">
-                03 // WORK EXPERIENCE
-              </span>
+        <ScrollReveal>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#25231D]/15 dark:border-[#F2EADF]/15">
+            <div className="space-y-2 max-w-xl">
+              <div className="flex items-center gap-2.5 text-[#85866A] dark:text-[#9E9F88]">
+                <span className="w-6 h-[1px] bg-[#85866A] dark:bg-[#9E9F88]" />
+                <span className="font-mono text-xs uppercase tracking-widest">
+                  03 // WORK EXPERIENCE
+                </span>
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl lg:text-[3.2rem] font-serif font-bold text-[#25231D] dark:text-[#F2EADF] leading-[1.06] tracking-tight">
+                {t.experience.title}{" "}
+                <span className="italic font-normal text-[#B96F4F] dark:text-[#C87D5D]">
+                  {t.experience.titleHighlight}
+                </span>
+              </h2>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-[3.2rem] font-serif font-bold text-[#25231D] dark:text-[#F2EADF] leading-[1.06] tracking-tight">
-              {t.experience.title}{" "}
-              <span className="italic font-normal text-[#B96F4F] dark:text-[#C87D5D]">
-                {t.experience.titleHighlight}
-              </span>
-            </h2>
+            <div className="flex items-center gap-4">
+              <a
+                href={PERSONAL_INFO.cvUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#B96F4F] dark:text-[#C87D5D] hover:text-[#25231D] dark:hover:text-[#F2EADF] transition-colors group cursor-pointer px-2 py-2"
+              >
+                <span>{language === "vi" ? "Xem hồ sơ CV [PDF]" : "View Resume [PDF]"}</span>
+                <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
+            </div>
           </div>
-
-          <div className="flex items-center gap-4">
-            <a
-              href={PERSONAL_INFO.cvUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#B96F4F] dark:text-[#C87D5D] hover:text-[#25231D] dark:hover:text-[#F2EADF] transition-colors group cursor-pointer px-2 py-2"
-            >
-              <span>{language === "vi" ? "Xem hồ sơ CV [PDF]" : "View Resume [PDF]"}</span>
-              <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </a>
-          </div>
-        </div>
+        </ScrollReveal>
 
         {/* =========================================================================
             BỐ CỤC DÒNG THỜI GIAN TRỰC QUAN (INTERACTIVE EDITORIAL TIMELINE)
@@ -109,9 +111,10 @@ export const ExperienceSection: React.FC = () => {
             - HIỆU ỨNG TƯƠNG TÁC HOVER & THÔNG TIN CHUYÊN NGÀNH RÕ NÉT
            ========================================================================= */}
         <div className="relative pl-6 sm:pl-10 md:pl-12 border-l-2 border-[#25231D]/15 dark:border-[#F2EADF]/15 ml-2 sm:ml-4 space-y-12 sm:space-y-16">
-          {localizedExperiences.map((exp) => (
-            <div
+          {localizedExperiences.map((exp, idx) => (
+            <ScrollReveal
               key={exp.company}
+              delay={idx * 0.18}
               className="relative group transition-all duration-300"
             >
               {/* CHECKPOINT NODE TRÊN TRỤC DÒNG THỜI GIAN */}
@@ -198,7 +201,7 @@ export const ExperienceSection: React.FC = () => {
                 </div>
 
               </div>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
 

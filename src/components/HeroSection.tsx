@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
+import { motion } from "framer-motion";
 import { HeroSoftwareSculpture3D } from "./HeroSoftwareSculpture3D";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -16,7 +17,6 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section
-      id="home"
       onMouseMove={handleMouseMove}
       className="relative min-h-screen flex flex-col justify-center pt-24 sm:pt-28 pb-12 sm:pb-16 text-left overflow-hidden bg-[#F2EADF] dark:bg-[#161914] border-b border-[#25231D]/15 dark:border-[#F2EADF]/15 select-none transition-colors duration-300"
     >
@@ -29,31 +29,77 @@ export const HeroSection: React.FC = () => {
         <div className="w-[1px] h-10 bg-[#25231D]/25 dark:bg-[#F2EADF]/25" />
       </div>
 
+      {/* Grid Intersection Crosshairs `+` tại 4 góc */}
+      <span className="absolute top-6 left-6 sm:left-12 font-mono text-[13px] font-bold text-[#B96F4F] dark:text-[#C87D5D] leading-none select-none pointer-events-none z-20">+</span>
+      <span className="absolute top-6 right-6 sm:right-12 font-mono text-[13px] font-bold text-[#B96F4F] dark:text-[#C87D5D] leading-none select-none pointer-events-none z-20">+</span>
+      <span className="absolute bottom-6 left-6 sm:left-12 font-mono text-[13px] font-bold text-[#B96F4F] dark:text-[#C87D5D] leading-none select-none pointer-events-none z-20">+</span>
+      <span className="absolute bottom-6 right-6 sm:right-12 font-mono text-[13px] font-bold text-[#B96F4F] dark:text-[#C87D5D] leading-none select-none pointer-events-none z-20">+</span>
+
+      {/* 2 Hạt dữ liệu (Data Bits) trôi lững lờ cực chậm ở khoảng trống */}
+      <div className="hidden sm:block absolute top-[28%] left-[42%] w-1.5 h-1.5 rounded-full bg-[#B96F4F] dark:bg-[#C87D5D] animate-gentle-float pointer-events-none z-10 opacity-75 shadow-xs" />
+      <div className="hidden sm:block absolute top-[68%] right-[32%] w-1 h-1 rounded-full bg-[#C8B69E] dark:bg-[#9E9F88] animate-gentle-float-delayed pointer-events-none z-10 opacity-60 shadow-xs" />
+
+      {/* Tọa độ kỹ thuật ở lề dưới */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[9.5px] text-[#85866A]/70 dark:text-[#9E9F88]/70 tracking-widest uppercase select-none pointer-events-none z-20 whitespace-nowrap">
+        [SYS_INIT // 10.82°N 106.63°E]
+      </div>
+
       {/* Main Container */}
       <div className="w-full max-w-[1520px] mx-auto px-6 sm:px-12 lg:px-16 xl:px-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center relative h-full">
         
-        {/* 2. LEFT CONTENT (Typography Editorial chuẩn xác theo Art Direction) */}
+        {/* 2. LEFT CONTENT (Typography Editorial chuẩn xác theo Art Direction — Reveal từ từ, êm dịu) */}
         <div className="lg:col-span-5 space-y-5 sm:space-y-6 z-10">
           {/* Small label: SOFTWARE ENGINEER */}
-          <p className="font-sans text-[11px] sm:text-xs tracking-[0.22em] uppercase text-[#25231D]/75 dark:text-[#F2EADF]/75 font-semibold">
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="font-sans text-[11px] sm:text-xs tracking-[0.22em] uppercase text-[#25231D]/75 dark:text-[#F2EADF]/75 font-semibold"
+          >
             {t.hero.tag}
-          </p>
+          </motion.p>
 
-          {/* Main heading: Build. Explore. Iterate. */}
+          {/* Main heading: Build. Explore. Iterate. (Hiệu ứng mượt mà từ từ, không rung giật) */}
           <h1 className="text-5xl sm:text-6xl lg:text-[4.6rem] xl:text-[5.3rem] font-serif font-bold text-[#25231D] dark:text-[#F2EADF] leading-[1.04] tracking-tight">
-            {t.hero.headlinePart1} <br />
-            <span className="italic font-normal text-[#B96F4F] dark:text-[#C87D5D]">
-              {t.hero.headlinePart2}
+            <span className="block overflow-hidden pb-1">
+              <motion.span
+                initial={{ opacity: 0, y: "100%", filter: "blur(6px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 0.85, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                className="block"
+              >
+                {t.hero.headlinePart1}
+              </motion.span>
+            </span>
+            <span className="block overflow-hidden pt-0.5">
+              <motion.span
+                initial={{ opacity: 0, y: "100%", filter: "blur(6px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{ duration: 0.85, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                className="block italic font-normal text-[#B96F4F] dark:text-[#C87D5D]"
+              >
+                {t.hero.headlinePart2}
+              </motion.span>
             </span>
           </h1>
 
           {/* Description */}
-          <p className="font-sans text-sm sm:text-base text-[#25231D]/80 dark:text-[#F2EADF]/80 max-w-md leading-relaxed">
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.85, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="font-sans text-sm sm:text-base text-[#25231D]/80 dark:text-[#F2EADF]/80 max-w-md leading-relaxed"
+          >
             {t.hero.summary}
-          </p>
+          </motion.p>
 
           {/* CTA Buttons — Touch Target >= 44px chuẩn Mobile */}
-          <div className="pt-2 sm:pt-3 flex flex-wrap items-center gap-3 sm:gap-5">
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
+            className="pt-2 sm:pt-3 flex flex-wrap items-center gap-3 sm:gap-5"
+          >
             <a
               href="#projects"
               className="inline-flex items-center justify-center min-h-[44px] gap-2 px-6 sm:px-7 py-3 rounded-full bg-[#25231D] dark:bg-[#F2EADF] text-[#F2EADF] dark:text-[#25231D] text-xs sm:text-sm font-sans font-medium hover:bg-[#3D3A31] dark:hover:bg-[#E6D8C5] transition-all duration-300 shadow-sm group cursor-pointer"
@@ -72,7 +118,7 @@ export const HeroSection: React.FC = () => {
               <span>{t.hero.readStory}</span>
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </a>
-          </div>
+          </motion.div>
         </div>
 
         {/* 3. RIGHT VISUAL: 3D SCULPTURAL SOFTWARE TERMINAL & DATA NODES (OFF-GRID) */}

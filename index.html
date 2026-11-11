@@ -13,10 +13,51 @@
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Phan Thị Ngọc Mai Portfolio" />
     <meta property="og:url" content="https://maiphan.vercel.app/" />
     <meta property="og:title" content="Phan Thị Ngọc Mai // QA Tester & Frontend Software Engineer" />
-    <meta property="og:description" content="Portfolio of Phan Thị Ngọc Mai (HCMUTE '25). Specialized in QA Testing, Postman, Jira, React 19, Next.js, and TypeScript." />
+    <meta property="og:description" content="Portfolio of Phan Thị Ngọc Mai (HCMUTE '25). Specialized in Manual & API Testing, Postman, Jira, React 19, Next.js, and TypeScript." />
     <meta property="og:image" content="https://maiphan.vercel.app/mai-phan.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Phan Thị Ngọc Mai - QA Tester & Frontend Software Engineer" />
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:locale:alternate" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://maiphan.vercel.app/" />
+    <meta name="twitter:title" content="Phan Thị Ngọc Mai // QA Tester & Frontend Software Engineer" />
+    <meta name="twitter:description" content="Portfolio of Phan Thị Ngọc Mai (HCMUTE '25). Specialized in Manual & API Testing, Postman, Jira, React 19, Next.js, and TypeScript." />
+    <meta name="twitter:image" content="https://maiphan.vercel.app/mai-phan.jpg" />
+
+    <!-- Structured Data (JSON-LD) for Search Engine Crawlers & Rich Snippets -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "dateCreated": "2025-01-01T00:00:00+07:00",
+        "dateModified": "2026-11-10T00:00:00+07:00",
+        "mainEntity": {
+          "@type": "Person",
+          "name": "Phan Thị Ngọc Mai",
+          "alternateName": "Mai Phan",
+          "jobTitle": ["QA Tester", "Frontend Software Engineer"],
+          "description": "QA Tester & Frontend Software Engineer graduated from HCMUTE. Specialized in Manual & API Testing, Postman, Jira, React, and TypeScript.",
+          "url": "https://maiphan.vercel.app/",
+          "image": "https://maiphan.vercel.app/mai-phan.jpg",
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "Ho Chi Minh City University of Technology and Education (HCMUTE)"
+          },
+          "knowsAbout": ["QA Testing", "API Testing", "Postman", "Jira", "React", "Next.js", "TypeScript", "Tailwind CSS"],
+          "sameAs": [
+            "https://github.com/PhanMai03",
+            "https://www.linkedin.com/in/phan-mai-346761274"
+          ]
+        }
+      }
+    </script>
 
     <!-- Typography: Cormorant Garamond (Editorial Serif), Plus Jakarta Sans (Modern Sans), IBM Plex Mono (Metadata) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,6 +65,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body class="bg-[#F2EADF] text-[#40362E] font-sans antialiased min-h-screen selection:bg-[#B96F4F] selection:text-[#F2EADF] overflow-x-hidden">
+    <noscript>
+      <div style="max-width: 800px; margin: 40px auto; padding: 24px; font-family: sans-serif; line-height: 1.6; color: #40362E;">
+        <h1>Phan Thị Ngọc Mai // QA Tester &amp; Frontend Software Engineer</h1>
+        <p>Portfolio of Phan Thị Ngọc Mai (HCMUTE '25). Specialized in Manual &amp; API Testing, Postman, Jira, React 19, Next.js, and TypeScript.</p>
+        <h2>Featured Projects:</h2>
+        <ul>
+          <li><strong>Clothing E-Commerce Management:</strong> Full-featured e-commerce admin dashboard with RBAC and Postman API testing.</li>
+          <li><strong>Book Website &amp; Reader Platform:</strong> Online bookstore platform with search, category filtering, cart, and COD checkout.</li>
+          <li><strong>AgriGo Marketplace Platform:</strong> Digital agricultural commerce platform with real-time filters and OpenAPI consumption.</li>
+        </ul>
+        <p>GitHub: <a href="https://github.com/PhanMai03">https://github.com/PhanMai03</a> | LinkedIn: <a href="https://www.linkedin.com/in/phan-mai-346761274">https://www.linkedin.com/in/phan-mai-346761274</a></p>
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
