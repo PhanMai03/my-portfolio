@@ -1,12 +1,32 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { HeroSoftwareSculpture3D } from "./HeroSoftwareSculpture3D";
 import { useLanguage } from "@/context/LanguageContext";
+import { AmbientLeaf } from "./AmbientLeaves";
 
 export const HeroSection: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const { t, language } = useLanguage();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Parallax Scroll Tracking
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 24,
+    restDelta: 0.001,
+  });
+
+  // Parallax Transforms: foreground moves faster, background moves slower
+  const textY = useTransform(smoothProgress, [0, 1], [0, 60]);
+  const visualY = useTransform(smoothProgress, [0, 1], [0, -40]);
+  const opacityFade = useTransform(smoothProgress, [0, 0.85], [1, 0.2]);
+  const dataBitsY = useTransform(smoothProgress, [0, 1], [0, 120]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -17,50 +37,83 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section
+      ref={sectionRef}
       onMouseMove={handleMouseMove}
-      className="relative min-h-screen flex flex-col justify-center pt-24 sm:pt-28 pb-12 sm:pb-16 text-left overflow-hidden bg-[#F2EADF] dark:bg-[#161914] border-b border-[#25231D]/15 dark:border-[#F2EADF]/15 select-none transition-colors duration-300"
+      className="relative min-h-[92vh] lg:min-h-screen flex flex-col justify-center pt-24 sm:pt-28 pb-14 sm:pb-20 text-left overflow-hidden bg-[#F2EADF] dark:bg-[#161914] border-b border-[#25231D]/15 dark:border-[#F2EADF]/15 select-none transition-colors duration-300"
     >
-      {/* 1. DECORATIVE DETAILS: Số thứ tự dọc bên trái "01 / 05" kèm 2 đường kẻ mảnh kỹ thuật */}
+      {/* 1. DECORATIVE DETAILS: Số thứ tự dọc bên trái "01 / 06" chuẩn hóa theo hệ thống 6 section */}
       <div className="hidden lg:flex absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 flex-col items-center gap-3 pointer-events-none select-none z-20">
         <div className="w-[1px] h-10 bg-[#25231D]/25 dark:bg-[#F2EADF]/25" />
-        <span className="font-mono text-[11px] text-[#25231D]/60 dark:text-[#F2EADF]/60 -rotate-90 origin-center tracking-widest whitespace-nowrap">
-          01 / 05
+        <span className="font-mono text-[11px] text-[#25231D]/75 dark:text-[#F2EADF]/75 -rotate-90 origin-center tracking-widest whitespace-nowrap">
+          01 / 06
         </span>
         <div className="w-[1px] h-10 bg-[#25231D]/25 dark:bg-[#F2EADF]/25" />
       </div>
 
-      {/* Grid Intersection Crosshairs `+` tại 4 góc */}
-      <span className="absolute top-6 left-6 sm:left-12 font-mono text-[13px] font-bold text-[#B96F4F] dark:text-[#C87D5D] leading-none select-none pointer-events-none z-20">+</span>
-      <span className="absolute top-6 right-6 sm:right-12 font-mono text-[13px] font-bold text-[#B96F4F] dark:text-[#C87D5D] leading-none select-none pointer-events-none z-20">+</span>
-      <span className="absolute bottom-6 left-6 sm:left-12 font-mono text-[13px] font-bold text-[#B96F4F] dark:text-[#C87D5D] leading-none select-none pointer-events-none z-20">+</span>
-      <span className="absolute bottom-6 right-6 sm:right-12 font-mono text-[13px] font-bold text-[#B96F4F] dark:text-[#C87D5D] leading-none select-none pointer-events-none z-20">+</span>
-
-      {/* 2 Hạt dữ liệu (Data Bits) trôi lững lờ cực chậm ở khoảng trống */}
-      <div className="hidden sm:block absolute top-[28%] left-[42%] w-1.5 h-1.5 rounded-full bg-[#B96F4F] dark:bg-[#C87D5D] animate-gentle-float pointer-events-none z-10 opacity-75 shadow-xs" />
-      <div className="hidden sm:block absolute top-[68%] right-[32%] w-1 h-1 rounded-full bg-[#C8B69E] dark:bg-[#9E9F88] animate-gentle-float-delayed pointer-events-none z-10 opacity-60 shadow-xs" />
+      {/* 2 Hạt dữ liệu (Data Bits) di chuyển thị sai Parallax theo thanh cuộn */}
+      <motion.div
+        style={{ y: dataBitsY }}
+        className="hidden sm:block absolute top-[28%] left-[42%] w-1.5 h-1.5 rounded-full bg-[#B96F4F] dark:bg-[#C87D5D] animate-gentle-float pointer-events-none z-10 opacity-75 shadow-xs"
+      />
+      <motion.div
+        style={{ y: dataBitsY }}
+        className="hidden sm:block absolute top-[68%] right-[32%] w-1 h-1 rounded-full bg-[#C8B69E] dark:bg-[#B8B9A6] animate-gentle-float-delayed pointer-events-none z-10 opacity-60 shadow-xs"
+      />
 
       {/* Tọa độ kỹ thuật ở lề dưới */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[9.5px] text-[#85866A]/70 dark:text-[#9E9F88]/70 tracking-widest uppercase select-none pointer-events-none z-20 whitespace-nowrap">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 font-mono text-[9.5px] text-[#5C5549] dark:text-[#B8B9A6] tracking-widest uppercase select-none pointer-events-none z-20 whitespace-nowrap">
         [SYS_INIT // 10.82°N 106.63°E]
       </div>
 
-      {/* Main Container */}
+      {/* Cánh lá bay tự nhiên tại Hero */}
+      <div className="absolute top-20 left-12 hidden lg:block pointer-events-none">
+        <AmbientLeaf variant="olive" size={26} rotation={-35} animation="sway" />
+      </div>
+      <div className="absolute bottom-28 right-20 hidden lg:block pointer-events-none">
+        <AmbientLeaf variant="terracotta" size={24} rotation={40} animation="delayed-float" />
+      </div>
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 hidden xl:block pointer-events-none">
+        <AmbientLeaf variant="amber" size={18} rotation={15} animation="float" />
+      </div>
+
+      {/* Main Container with Parallax Effect */}
       <div className="w-full max-w-[1520px] mx-auto px-6 sm:px-12 lg:px-16 xl:px-20 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center relative h-full">
-        
-        {/* 2. LEFT CONTENT (Typography Editorial chuẩn xác theo Art Direction — Reveal từ từ, êm dịu) */}
-        <div className="lg:col-span-5 space-y-5 sm:space-y-6 z-10">
+
+        {/* 2. LEFT CONTENT (Typography Editorial Parallax) */}
+        <motion.div
+          style={{ y: textY, opacity: opacityFade }}
+          className="lg:col-span-5 space-y-5 sm:space-y-6 z-10"
+        >
+          {/* Status Pill: Available for QA / Frontend */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+            className="flex items-center gap-3"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#EAE0D2]/80 dark:bg-[#20261C] border border-[#25231D]/10 dark:border-[#F2EADF]/12 text-[11px] font-mono text-[#40362E] dark:text-[#EAE0D2] shadow-2xs">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
+              <span>
+                {language === "vi" ? "Sẵn sàng cho cơ hội QA & Frontend" : "Open for QA & Frontend opportunities"}
+              </span>
+            </div>
+          </motion.div>
+
           {/* Small label: SOFTWARE ENGINEER */}
           <motion.p
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-sans text-[11px] sm:text-xs tracking-[0.22em] uppercase text-[#25231D]/75 dark:text-[#F2EADF]/75 font-semibold"
+            className="font-sans text-[11px] sm:text-xs tracking-[0.22em] uppercase text-[#5C5549] dark:text-[#B8B9A6] font-semibold"
           >
             {t.hero.tag}
           </motion.p>
 
-          {/* Main heading: Build. Explore. Iterate. (Hiệu ứng mượt mà từ từ, không rung giật) */}
-          <h1 className="text-5xl sm:text-6xl lg:text-[4.6rem] xl:text-[5.3rem] font-serif font-bold text-[#25231D] dark:text-[#F2EADF] leading-[1.04] tracking-tight">
+          {/* Main heading: Build. Explore. Iterate. (Fluid responsive sizing) */}
+          <h1 className="text-4xl sm:text-6xl lg:text-[4.4rem] xl:text-[5.2rem] font-serif font-bold text-[#25231D] dark:text-[#F2EADF] leading-[1.05] tracking-tight">
             <span className="block overflow-hidden pb-1">
               <motion.span
                 initial={{ opacity: 0, y: "100%", filter: "blur(6px)" }}
@@ -76,7 +129,7 @@ export const HeroSection: React.FC = () => {
                 initial={{ opacity: 0, y: "100%", filter: "blur(6px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 transition={{ duration: 0.85, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
-                className="block italic font-normal text-[#B96F4F] dark:text-[#C87D5D]"
+                className="block font-editorial-italic font-normal text-[#B96F4F] dark:text-[#C87D5D]"
               >
                 {t.hero.headlinePart2}
               </motion.span>
@@ -88,7 +141,7 @@ export const HeroSection: React.FC = () => {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.85, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="font-sans text-sm sm:text-base text-[#25231D]/80 dark:text-[#F2EADF]/80 max-w-md leading-relaxed"
+            className="font-sans text-sm sm:text-base text-[#40362E]/90 dark:text-[#F2EADF]/85 max-w-md leading-relaxed"
           >
             {t.hero.summary}
           </motion.p>
@@ -113,16 +166,19 @@ export const HeroSection: React.FC = () => {
 
             <a
               href="#about"
-              className="inline-flex items-center min-h-[44px] gap-1.5 px-3 py-2 text-xs sm:text-sm font-sans font-medium text-[#25231D] dark:text-[#F2EADF] hover:text-[#B96F4F] dark:hover:text-[#C87D5D] transition-colors group cursor-pointer"
+              className="inline-flex items-center min-h-[44px] gap-1.5 px-4 py-2.5 rounded-full border border-[#40362E]/25 dark:border-[#F2EADF]/25 text-xs sm:text-sm font-sans font-medium text-[#25231D] dark:text-[#F2EADF] hover:text-[#B96F4F] dark:hover:text-[#C87D5D] hover:border-[#B96F4F] transition-all group cursor-pointer"
             >
               <span>{t.hero.readStory}</span>
               <span className="group-hover:translate-x-1 transition-transform">→</span>
             </a>
           </motion.div>
-        </div>
+        </motion.div>
 
-        {/* 3. RIGHT VISUAL: 3D SCULPTURAL SOFTWARE TERMINAL & DATA NODES (OFF-GRID) */}
-        <div className="lg:col-span-7 relative flex items-center justify-center lg:justify-end h-full">
+        {/* 3. RIGHT VISUAL: 3D SCULPTURAL SOFTWARE TERMINAL with Parallax Depth */}
+        <motion.div
+          style={{ y: visualY }}
+          className="lg:col-span-7 relative flex items-center justify-center lg:justify-end h-full"
+        >
           <div className="relative w-full max-w-[620px] xl:max-w-[680px] flex items-center justify-center">
             {/* Lớp nền phẳng hình học OFF-GRID bổ trợ chiều sâu không gian */}
             <div className="absolute top-0 right-2 w-[42%] h-[40%] bg-[#30372D]/20 dark:bg-[#C87D5D]/10 rounded-bl-3xl blur-xl pointer-events-none" />
@@ -132,11 +188,11 @@ export const HeroSection: React.FC = () => {
             {/* Component 3D Procedural Clay Terminal & Floating Modular Cubes */}
             <HeroSoftwareSculpture3D />
           </div>
-        </div>
+        </motion.div>
 
         {/* 4. DECORATIVE DETAILS: Scroll indicator ở góc phải phía dưới */}
         <div className="hidden lg:flex absolute right-10 bottom-0 translate-y-6 items-center gap-2.5 pointer-events-none select-none z-20">
-          <span className="font-sans text-[10.5px] text-[#25231D]/65 dark:text-[#F2EADF]/65 tracking-wider">
+          <span className="font-sans text-[10.5px] text-[#5C5549] dark:text-[#B8B9A6] tracking-wider font-medium">
             {language === "vi" ? "Cuộn để khám phá" : "Scroll to discover"}
           </span>
           <div className="h-10 w-[1px] bg-[#25231D]/35 dark:bg-[#F2EADF]/35 relative flex flex-col justify-end items-center">

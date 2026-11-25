@@ -273,7 +273,7 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
 
       // Terminal logs (Mô phỏng kết quả kiểm thử thực tế)
       ctx.font = "12px 'Courier New', monospace";
-      
+
       ctx.fillStyle = "#85866A";
       ctx.fillText("$ vitest --run --reporter=verbose", 24, 68);
 
@@ -663,9 +663,8 @@ export const HeroSoftwareSculpture3D: React.FC = () => {
       {/* Three.js Canvas Container (hoàn toàn không chặn scroll/touch) */}
       <div
         ref={mountRef}
-        className={`w-full h-full relative transition-opacity duration-700 ease-out ${
-          isLoaded ? "opacity-100" : "opacity-0"
-        }`}
+        className={`w-full h-full relative transition-opacity duration-700 ease-out ${isLoaded ? "opacity-100" : "opacity-0"
+          }`}
       />
 
       {/* Skeleton Loading State (Khử WebGL Shock & Tránh khoảng trống trắng/đen khi mới load) */}

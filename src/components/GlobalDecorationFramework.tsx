@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { AmbientLeaf } from "./AmbientLeaves";
 
 export const GlobalDecorationFramework: React.FC = () => {
   const [scrollPercent, setScrollPercent] = useState(0);
@@ -52,37 +53,46 @@ export const GlobalDecorationFramework: React.FC = () => {
         {/* Top/Bottom crosshair anchors */}
         <span className="absolute top-24 -left-1.5 font-mono text-[11px] font-bold text-[#B96F4F] leading-none">+</span>
         <span className="absolute bottom-24 -left-1.5 font-mono text-[11px] font-bold text-[#B96F4F] leading-none">+</span>
+        
+        {/* Cánh lá nhẹ bám khung lề trái */}
+        <div className="absolute top-[35%] -left-2 pointer-events-none opacity-70">
+          <AmbientLeaf variant="olive" size={18} rotation={-45} animation="sway" />
+        </div>
       </div>
 
       {/* Đường kẻ lề phải 48px */}
       <div className="hidden lg:block absolute right-12 top-0 bottom-0 w-[1px] bg-[#25231D]/8 dark:bg-[#F2EADF]/8">
         <span className="absolute top-24 -left-1.5 font-mono text-[11px] font-bold text-[#B96F4F] leading-none">+</span>
         <span className="absolute bottom-24 -left-1.5 font-mono text-[11px] font-bold text-[#B96F4F] leading-none">+</span>
+
+        {/* Cánh lá nhẹ bám khung lề phải */}
+        <div className="absolute top-[65%] -right-2 pointer-events-none opacity-60">
+          <AmbientLeaf variant="terracotta" size={16} rotation={60} animation="delayed-float" />
+        </div>
       </div>
 
       {/* =========================================================================
           3. FIXED RIGHT MARGIN RULER (Thước đo lề kỹ thuật scroll-linked)
          ========================================================================= */}
       <div className="hidden xl:flex absolute right-4 top-1/2 -translate-y-1/2 flex-col items-center gap-1.5 z-40">
-        
+
         {/* Label 00% TOP */}
-        <span className="font-mono text-[8.5px] text-[#85866A]/60 dark:text-[#9E9F88]/60 tracking-wider">
+        <span className="font-mono text-[8.5px] text-[#5C5549] dark:text-[#B8B9A6] tracking-wider font-semibold">
           00% TOP
         </span>
 
         {/* Thước đo với các vạch chia li ti (Tick marks) + Chấm Indicator Terracotta */}
         <div className="relative w-4 h-[216px] flex justify-center py-1">
           {/* Trục dọc trung tâm */}
-          <div className="w-[1px] h-full bg-[#85866A]/25 dark:bg-[#9E9F88]/20 flex flex-col justify-between items-center relative">
+          <div className="w-[1px] h-full bg-[#5C5549]/25 dark:bg-[#B8B9A6]/20 flex flex-col justify-between items-center relative">
             {/* 13 Tick Marks li ti */}
             {Array.from({ length: 13 }).map((_, i) => (
               <span
                 key={i}
-                className={`h-[1px] ${
-                  i === 0 || i === 3 || i === 6 || i === 9 || i === 12
-                    ? "w-3 bg-[#B96F4F] dark:bg-[#C87D5D]"
-                    : "w-1.5 bg-[#85866A]/40 dark:bg-[#9E9F88]/40"
-                }`}
+                className={`h-[1px] ${i === 0 || i === 3 || i === 6 || i === 9 || i === 12
+                  ? "w-3 bg-[#B96F4F] dark:bg-[#C87D5D]"
+                  : "w-1.5 bg-[#5C5549]/40 dark:bg-[#B8B9A6]/40"
+                  }`}
               />
             ))}
 
@@ -101,7 +111,7 @@ export const GlobalDecorationFramework: React.FC = () => {
           <span className="font-mono text-[8.5px] text-[#B96F4F] dark:text-[#C87D5D] font-bold">
             {scrollPercent}%
           </span>
-          <span className="font-mono text-[8.5px] text-[#85866A]/60 dark:text-[#9E9F88]/60 tracking-wider">
+          <span className="font-mono text-[8.5px] text-[#5C5549] dark:text-[#B8B9A6] tracking-wider font-semibold">
             100% END
           </span>
         </div>

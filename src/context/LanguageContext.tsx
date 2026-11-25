@@ -166,7 +166,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
       statsDedicationLabel: "GPA Khá/Giỏi ĐH SPKT",
     },
     experience: {
-      tag: "03 // HÀNH TRÌNH CHUYÊN MÔN",
+      tag: "04 // HÀNH TRÌNH CHUYÊN MÔN",
       title: "Kinh nghiệm &",
       titleHighlight: "Thực tiễn.",
       subtitle:
@@ -177,7 +177,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
       techStack: "Công nghệ & Công cụ ứng dụng:",
     },
     projects: {
-      tag: "04 // DỰ ÁN TIÊU BIỂU",
+      tag: "05 // DỰ ÁN TIÊU BIỂU",
       title: "Công trình &",
       titleHighlight: "Case Studies.",
       subtitle:
@@ -191,11 +191,11 @@ const TRANSLATIONS: Record<Language, Translations> = {
       close: "Đóng",
     },
     skills: {
-      tag: "05 // NĂNG LỰC KỸ THUẬT",
+      tag: "06 // NĂNG LỰC KỸ THUẬT",
       title: "Kỹ năng &",
       titleHighlight: "Năng lực chuyên môn.",
       subtitle:
-        "Hệ thống 4 phiếu kiểm định năng lực kỹ thuật chuẩn xác theo CV thực tế của bạn.",
+        "Hệ thống năng lực kỹ thuật và kiểm thử phần mềm được kiểm chứng qua dự án thực tế.",
       ticket01Title: "Kiểm thử (Testing)",
       ticket01Spec: "TIÊU CHUẨN: QA & PHÂN TÍCH DEFECT",
       ticket02Title: "Frontend",
@@ -207,7 +207,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
       auditedStamp: "ĐÃ KIỂM ĐỊNH",
     },
     education: {
-      tag: "06 // HỌC VẤN & BẰNG CẤP",
+      tag: "03 // HỌC VẤN & BẰNG CẤP",
       title: "Học vấn &",
       titleHighlight: "Chứng chỉ.",
       subtitle:
@@ -295,7 +295,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
       statsDedicationLabel: "GPA (Bachelor Degree)",
     },
     experience: {
-      tag: "03 // CAREER TRAJECTORY",
+      tag: "04 // WORK EXPERIENCE",
       title: "Experience &",
       titleHighlight: "Milestones.",
       subtitle:
@@ -306,7 +306,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
       techStack: "Technologies & Toolsets:",
     },
     projects: {
-      tag: "04 // SELECTED PROJECTS",
+      tag: "05 // SELECTED PROJECTS",
       title: "Works &",
       titleHighlight: "Case Studies.",
       subtitle:
@@ -320,11 +320,11 @@ const TRANSLATIONS: Record<Language, Translations> = {
       close: "Close",
     },
     skills: {
-      tag: "05 // TECHNICAL CAPABILITIES",
+      tag: "06 // TECHNICAL CAPABILITIES",
       title: "Skills &",
       titleHighlight: "Competencies.",
       subtitle:
-        "Editorial inspection tickets showcasing verified technical capabilities aligned with actual industry qualifications.",
+        "Verified technical capabilities aligned with actual industry qualifications.",
       ticket01Title: "Testing",
       ticket01Spec: "SPEC: QA & DEFECT ANALYSIS",
       ticket02Title: "Frontend",
@@ -336,7 +336,7 @@ const TRANSLATIONS: Record<Language, Translations> = {
       auditedStamp: "QA AUDITED",
     },
     education: {
-      tag: "06 // ACADEMIC & CREDENTIALS",
+      tag: "03 // EDUCATION & CREDENTIALS",
       title: "Education &",
       titleHighlight: "Certifications.",
       subtitle:

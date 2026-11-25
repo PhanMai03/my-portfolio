@@ -1,207 +1,226 @@
 import React from "react";
-import { ArrowUpRight, MapPin, Briefcase } from "lucide-react";
+import { ArrowUpRight, MapPin, Briefcase, FileText } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolioData";
 import { useLanguage } from "@/context/LanguageContext";
-import { ScrollReveal } from "./ScrollReveal";
+
+interface ExperienceItem {
+  id: string;
+  period: string;
+  company: string;
+  role: string;
+  status: string;
+  isActive?: boolean;
+  location: string;
+  description: string;
+  points: string[];
+  skills: string[];
+}
 
 export const ExperienceSection: React.FC = () => {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
 
-  const localizedExperiences = [
+  // Khớp 100% với Work Experience trong CV mới nhất
+  const experiences: ExperienceItem[] = [
     {
+      id: "hsv",
+      period: "Sep 2026 – Present",
       company: "Healthcare Solution Viet Nam",
-      role: language === "vi" ? "Thực tập sinh Kiểm thử Phần mềm (Manual Tester)" : "Manual Tester Intern",
-      period: language === "vi" ? "09/2024 – Hiện tại" : "09/2024 – Present",
-      location: "Ho Chi Minh City, Vietnam",
-      domain: language === "vi" ? "Hệ thống Quản lý Bệnh viện Y tế" : "Healthcare IT & Hospital Systems",
-      isCurrent: true,
-      statusLabel: language === "vi" ? "ĐANG LÀM VIỆC" : "ACTIVE TENURE",
-      highlights:
+      role: language === "vi" ? "Fullstack Developer Intern" : "Fullstack Developer Intern",
+      status: language === "vi" ? "Đang làm việc" : "Active",
+      isActive: true,
+      location: "TP. Hồ Chí Minh",
+      description:
         language === "vi"
-          ? "Phụ trách thiết kế Test Cases, kiểm thử UI/API và quản lý vòng đời lỗi cho hệ thống bệnh viện chuyên sâu."
-          : "Responsible for manual test design, UI/API validation, and defect triage on clinical hospital software.",
-      achievements:
+          ? "Phát triển các component React dạng module, xử lý luồng phân quyền RBAC và bản địa hóa giao diện cho Hệ thống Thông tin Bệnh viện (HIS)."
+          : "Develop modular React components, RBAC workflows, and localized UIs for a Hospital Information System (HIS).",
+      points: [
         language === "vi"
-          ? [
-              "Thực hiện kiểm thử thủ công và kiểm thử chức năng cho hệ thống quản lý bệnh viện theo tài liệu yêu cầu nghiệp vụ.",
-              "Thiết kế và thực thi test cases, xác minh tính đúng đắn của UI và luồng dữ liệu nghiệp vụ, retest lỗi sau khi dev fix.",
-              "Quản lý vòng đời lỗi và báo cáo defect chi tiết qua Jira; tổ chức dữ liệu test quy củ với Excel.",
-            ]
-          : [
-              "Perform manual and functional testing for a hospital management system based on business requirements.",
-              "Design and execute test cases, verify UI and data behavior, and retest fixed defects.",
-              "Report and track defects using Jira; manage test data with Excel.",
-            ],
-      technologies: ["Web UI Testing", "Functional Testing", "API Testing", "Test Case Design", "Defect Reporting", "Jira", "Excel"],
+          ? "Phát triển các component React dạng module, luồng phân quyền RBAC và giao diện bản địa hóa cho hệ thống HIS."
+          : "Develop modular React components, RBAC workflows, and localized UIs for a Hospital Information System (HIS).",
+        language === "vi"
+          ? "Tối ưu tốc độ tải trang ban đầu bằng route-based code splitting và lazy loading trên các phân hệ lâm sàng trọng yếu."
+          : "Optimize initial page load speed using route-based code splitting and lazy loading across core clinical modules.",
+        language === "vi"
+          ? "Tích hợp RESTful APIs, xử lý trạng thái bất đồng bộ (async states) và kiểm định luồng dữ liệu qua Postman và SQL Server."
+          : "Integrate RESTful APIs, handle async states, and validate data flows via Postman and SQL Server.",
+      ],
+      skills: ["React", "RBAC", "Code Splitting", "Lazy Loading", "RESTful APIs", "Postman", "SQL Server"],
     },
     {
+      id: "fpt",
+      period: "Jun 2024 – Sep 2024",
       company: "FPT Software",
-      role: language === "vi" ? "Thực tập sinh Lập trình Frontend" : "Frontend Developer Intern",
-      period: "06/2024 – 09/2024",
-      location: "Ho Chi Minh City, Vietnam",
-      domain: language === "vi" ? "Hệ thống Tự động hóa Doanh nghiệp" : "Enterprise Automation & SPA",
-      isCurrent: false,
-      statusLabel: language === "vi" ? "ĐÃ HOÀN THÀNH" : "COMPLETED",
-      highlights:
+      role: language === "vi" ? "Frontend Developer Intern" : "Frontend Developer Intern",
+      status: language === "vi" ? "Hoàn thành" : "Completed",
+      location: "TP. Hồ Chí Minh",
+      description:
         language === "vi"
-          ? "Tham gia đội ngũ Agile 18 thành viên phát triển ứng dụng Single Page Application (SPA) trên ReactJS & Tailwind."
-          : "Contributed within an 18-member Agile squad engineering responsive Single Page Applications in ReactJS & Tailwind.",
-      achievements:
+          ? "Phối hợp trong đội ngũ Agile 18 thành viên xây dựng ứng dụng SPA thích ứng (responsive) sử dụng React và Tailwind CSS."
+          : "Collaborated in an 18-member Agile team to build a responsive SPA using React and Tailwind CSS.",
+      points: [
         language === "vi"
-          ? [
-              "Phối hợp trong đội ngũ Agile 18 thành viên xây dựng ứng dụng Single Page Application (SPA) cho hệ thống tự động hóa nội bộ.",
-              "Phát triển tính năng giao diện bằng ReactJS và Tailwind CSS, chú trọng cấu trúc component tái sử dụng và khả năng mở rộng.",
-              "Tích hợp các RESTful APIs và hiển thị dữ liệu động chính xác theo đặc tả kỹ thuật.",
-              "Tối ưu mã nguồn và cải thiện hiệu năng UI nhằm đem lại trải nghiệm mượt mà cho người dùng.",
-            ]
-          : [
-              "Collaborated in an 18-member Agile team to build a responsive Single Page Application (SPA) for an internal automation system.",
-              "Implemented front-end features using ReactJS and Tailwind CSS with an emphasis on reusable components and scalable structure.",
-              "Integrated RESTful APIs and dynamically rendered data according to functional specifications.",
-              "Maintained code quality and improved UI performance to deliver a smoother user experience.",
-            ],
-      technologies: ["ReactJS", "Tailwind CSS", "TypeScript", "JavaScript", "RESTful APIs", "Agile / Scrum", "SPA"],
+          ? "Phối hợp cùng đội ngũ Agile 18 thành viên xây dựng ứng dụng SPA thích ứng bằng React và Tailwind CSS."
+          : "Collaborated in an 18-member Agile team to build a responsive SPA using React and Tailwind CSS.",
+        language === "vi"
+          ? "Tích hợp các RESTful APIs để hiển thị dữ liệu động chính xác theo đặc tả kỹ thuật."
+          : "Integrated RESTful APIs to dynamically render data according to functional specifications.",
+        language === "vi"
+          ? "Sửa lỗi giao diện và xử lý các trường hợp ngoại lệ (edge-case errors) đảm bảo tương thích đa trình duyệt."
+          : "Resolved UI defects and edge-case errors to ensure cross-browser compatibility.",
+      ],
+      skills: ["React", "Tailwind CSS", "SPA", "RESTful APIs", "Agile", "Cross-browser QA"],
+    },
+    {
+      id: "hcmute",
+      period: "2021 – 2025",
+      company: "Ho Chi Minh City University of Technology and Education (HCMUTE)",
+      role: language === "vi" ? "Kỹ thuật Phần mềm (GPA: 3.23 / 4.0)" : "Software Engineering (GPA: 3.23 / 4.0)",
+      status: language === "vi" ? "Tốt nghiệp" : "Graduated",
+      location: "TP. Thủ Đức",
+      description:
+        language === "vi"
+          ? "Tốt nghiệp chính quy chuyên ngành Kỹ thuật Phần mềm với điểm tích lũy GPA 3.23 / 4.0 và trình độ Anh ngữ quốc tế TOEIC 640."
+          : "Graduated with Bachelor of Engineering in Software Engineering (GPA: 3.23/4.0) with international TOEIC 640 proficiency.",
+      points: [
+        language === "vi"
+          ? "Tốt nghiệp chuyên ngành Kỹ thuật Phần mềm (Software Engineering) với điểm GPA 3.23 / 4.0."
+          : "Completed Software Engineering degree with cumulative GPA: 3.23/4.0.",
+        language === "vi"
+          ? "Giải Khuyến khích Hội thi An toàn thông tin — Cyber Security CTF Competition 2023 tại HCMUTE."
+          : "Consolation Prize – Cyber Security CTF Competition (2023), HCMUTE.",
+        language === "vi"
+          ? "Thành viên dự thi Cuộc thi Sinh viên với An toàn thông tin ASEAN (ASCIS) & Mastering IT Competition 2025."
+          : "Participant in ASEAN Student Contest on Information Security (ASCIS) & Competitor in Mastering IT Competition.",
+      ],
+      skills: ["Software Engineering", "React", "RESTful APIs", "SQL Server", "Cyber Security CTF", "TOEIC 640"],
     },
   ];
 
   return (
     <section
-      className="relative min-h-screen flex flex-col justify-center py-16 sm:py-20 lg:py-16 text-left overflow-hidden bg-[#F2EADF] dark:bg-[#161914] border-b border-[#25231D]/15 dark:border-[#F2EADF]/15 transition-colors duration-300"
+      id="experience"
+      className="relative py-20 sm:py-24 lg:py-28 text-left overflow-hidden bg-[#F2EADF] dark:bg-[#161914] text-[#25231D] dark:text-[#F2EADF] border-b border-[#25231D]/15 dark:border-[#F2EADF]/15 select-none transition-colors duration-300"
     >
-      <div className="w-full max-w-[1520px] mx-auto px-6 sm:px-12 lg:px-16 xl:px-20 space-y-12 sm:space-y-16">
+      <div className="w-full max-w-[1240px] mx-auto px-6 sm:px-12 lg:px-16 space-y-12 relative z-10">
         
         {/* =========================================================================
-            SECTION HEADER
+            HEADER: ĐẬM CHẤT EDITORIAL, RÕ RÀNG
            ========================================================================= */}
-        <ScrollReveal>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#25231D]/15 dark:border-[#F2EADF]/15">
-            <div className="space-y-2 max-w-xl">
-              <div className="flex items-center gap-2.5 text-[#85866A] dark:text-[#9E9F88]">
-                <span className="w-6 h-[1px] bg-[#85866A] dark:bg-[#9E9F88]" />
-                <span className="font-mono text-xs uppercase tracking-widest">
-                  03 // WORK EXPERIENCE
-                </span>
-              </div>
-
-              <h2 className="text-3xl sm:text-4xl lg:text-[3.2rem] font-serif font-bold text-[#25231D] dark:text-[#F2EADF] leading-[1.06] tracking-tight">
-                {t.experience.title}{" "}
-                <span className="italic font-normal text-[#B96F4F] dark:text-[#C87D5D]">
-                  {t.experience.titleHighlight}
-                </span>
-              </h2>
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-[#25231D]/15 dark:border-[#F2EADF]/15">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2.5 text-[#5C5549] dark:text-[#B8B9A6]">
+              <span className="w-6 h-[1.5px] bg-[#5C5549] dark:bg-[#B8B9A6]" />
+              <span className="font-mono text-xs uppercase tracking-widest font-bold">
+                04 // WORK EXPERIENCE
+              </span>
+              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-[#B96F4F]/15 text-[#B96F4F] dark:text-[#C87D5D]">
+                CV VERIFIED
+              </span>
             </div>
 
-            <div className="flex items-center gap-4">
-              <a
-                href={PERSONAL_INFO.cvUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="min-h-[44px] inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-[#B96F4F] dark:text-[#C87D5D] hover:text-[#25231D] dark:hover:text-[#F2EADF] transition-colors group cursor-pointer px-2 py-2"
-              >
-                <span>{language === "vi" ? "Xem hồ sơ CV [PDF]" : "View Resume [PDF]"}</span>
-                <ArrowUpRight size={13} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
-            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-[#25231D] dark:text-[#F2EADF] leading-tight tracking-tight">
+              {language === "vi" ? "Kinh nghiệm " : "Work "}
+              <span className="font-editorial-italic font-normal text-[#B96F4F] dark:text-[#C87D5D]">
+                {language === "vi" ? "thực chiến." : "experience."}
+              </span>
+            </h2>
           </div>
-        </ScrollReveal>
+
+          <a
+            href={PERSONAL_INFO.cvUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono uppercase tracking-wider text-[#F2EADF] bg-[#B96F4F] hover:bg-[#A35C3E] dark:bg-[#C87D5D] dark:hover:bg-[#D98E6E] transition-all px-5 py-2.5 rounded-full font-bold group shadow-sm self-start sm:self-auto"
+          >
+            <FileText size={15} className="shrink-0" />
+            <span>{language === "vi" ? "Xem Hồ Sơ CV [PDF]" : "View Resume [PDF]"}</span>
+            <ArrowUpRight
+              size={14}
+              className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"
+            />
+          </a>
+        </div>
 
         {/* =========================================================================
-            BỐ CỤC DÒNG THỜI GIAN TRỰC QUAN (INTERACTIVE EDITORIAL TIMELINE)
-            - TRỤC DỌC (TIMELINE SPINE) KÈM CHECKPOINT NODE PHÁT SÁNG
-            - HIỆU ỨNG TƯƠNG TÁC HOVER & THÔNG TIN CHUYÊN NGÀNH RÕ NÉT
+            VERTICAL TIMELINE — CỠ CHỮ CHUẨN, THẲNG HÀNG VÀ CÂN ĐỐI
            ========================================================================= */}
-        <div className="relative pl-6 sm:pl-10 md:pl-12 border-l-2 border-[#25231D]/15 dark:border-[#F2EADF]/15 ml-2 sm:ml-4 space-y-12 sm:space-y-16">
-          {localizedExperiences.map((exp, idx) => (
-            <ScrollReveal
-              key={exp.company}
-              delay={idx * 0.18}
-              className="relative group transition-all duration-300"
-            >
-              {/* CHECKPOINT NODE TRÊN TRỤC DÒNG THỜI GIAN */}
-              <div
-                className={`absolute -left-[31px] sm:-left-[47px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full border-2 border-[#F2EADF] dark:border-[#161914] transition-all duration-300 ${
-                  exp.isCurrent
-                    ? "bg-emerald-500 ring-4 ring-emerald-500/25 group-hover:scale-125"
-                    : "bg-[#B96F4F] dark:bg-[#C87D5D] ring-4 ring-[#B96F4F]/20 group-hover:scale-125"
-                }`}
-              />
-
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start p-2 sm:p-4 -mx-2 sm:-mx-4 rounded-2xl hover:bg-[#EAE0D2]/50 dark:hover:bg-[#1C201A]/60 transition-colors">
-                
-                {/* Cột trái (4 cols): Thời gian, Trạng thái & Doanh nghiệp */}
-                <div className="lg:col-span-4 space-y-2.5">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-mono text-xs font-bold text-[#B96F4F] dark:text-[#C87D5D] tracking-wide">
-                      {exp.period}
-                    </span>
-                    <span
-                      className={`px-2 py-0.5 rounded-full text-[10px] font-mono uppercase font-bold tracking-wider ${
-                        exp.isCurrent
-                          ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30"
-                          : "bg-[#85866A]/15 text-[#85866A] dark:text-[#9E9F88] border border-[#85866A]/25"
-                      }`}
-                    >
-                      {exp.statusLabel}
-                    </span>
+        <div className="relative pl-8 sm:pl-12 border-l-2 border-[#B96F4F]/40 dark:border-[#C87D5D]/40 space-y-12 sm:space-y-14 max-w-4xl">
+          {experiences.map((exp) => (
+            <div key={exp.id} className="relative space-y-3.5">
+              
+              {/* Nút mốc thời gian rõ nét trên trục dọc */}
+              <div className="absolute -left-[41px] sm:-left-[57px] top-1.5 flex items-center justify-center">
+                {exp.isActive ? (
+                  <div className="relative flex items-center justify-center">
+                    <span className="animate-ping absolute inline-flex h-5 w-5 rounded-full bg-[#B96F4F] dark:bg-[#C87D5D] opacity-40" />
+                    <div className="w-4 h-4 rounded-full bg-[#B96F4F] dark:bg-[#C87D5D] border-2 border-[#F2EADF] dark:border-[#161914] shadow-sm" />
                   </div>
-
-                  <div className="space-y-1">
-                    <h3 className="font-mono text-base sm:text-lg font-bold text-[#25231D] dark:text-[#F2EADF] tracking-wide uppercase flex items-center gap-2">
-                      <Briefcase size={15} className="text-[#B96F4F] dark:text-[#C87D5D] shrink-0" />
-                      <span>{exp.company}</span>
-                    </h3>
-                    <div className="font-sans text-xs text-[#85866A] dark:text-[#9E9F88] italic flex items-center gap-1.5 pt-0.5">
-                      <MapPin size={11} className="shrink-0" />
-                      <span>{exp.location}</span>
-                      <span>•</span>
-                      <span>{exp.domain}</span>
-                    </div>
-                  </div>
-
-                  <p className="font-sans text-xs text-[#25231D]/70 dark:text-[#F2EADF]/70 pt-1 leading-relaxed">
-                    {exp.highlights}
-                  </p>
-                </div>
-
-                {/* Cột phải (8 cols): Vai trò, Trách nhiệm & Công nghệ */}
-                <div className="lg:col-span-8 space-y-4">
-                  <div>
-                    <h4 className="text-2xl sm:text-[1.8rem] font-serif font-bold text-[#25231D] dark:text-[#F2EADF] tracking-tight group-hover:text-[#B96F4F] dark:group-hover:text-[#C87D5D] transition-colors flex items-center gap-2">
-                      <span>{exp.role}</span>
-                      <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-sm font-sans text-[#B96F4F]">
-                        →
-                      </span>
-                    </h4>
-                  </div>
-
-                  {/* Danh sách thành tựu & trách nhiệm */}
-                  <ul className="space-y-2.5 font-sans text-xs sm:text-[13.5px] text-[#25231D]/80 dark:text-[#F2EADF]/80 leading-relaxed list-none">
-                    {exp.achievements.map((item, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <span className="text-[#B96F4F] dark:text-[#C87D5D] mt-1 shrink-0 text-xs">✦</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Công cụ & Kỹ thuật ứng dụng */}
-                  <div className="pt-2 flex flex-wrap items-center gap-2">
-                    <span className="font-mono text-[10px] uppercase text-[#85866A] dark:text-[#9E9F88] mr-1">
-                      STACK:
-                    </span>
-                    {exp.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2.5 py-1 rounded-md bg-[#E6D8C5]/70 dark:bg-[#20261C] border border-[#25231D]/10 dark:border-[#F2EADF]/12 text-[10.5px] font-mono text-[#30372D] dark:text-[#D4C9BD] font-medium"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
+                ) : (
+                  <div className="w-3.5 h-3.5 rounded-full bg-[#FAF7F2] dark:bg-[#20261C] border-2 border-[#25231D]/40 dark:border-[#F2EADF]/40" />
+                )}
               </div>
-            </ScrollReveal>
+
+              {/* Dòng 1: Thời gian & Trạng thái & Địa điểm */}
+              <div className="flex flex-wrap items-center justify-between gap-3 text-xs sm:text-sm font-mono">
+                <div className="flex items-center gap-2.5">
+                  <span className="font-bold text-[#25231D] dark:text-[#F2EADF] text-sm sm:text-base">
+                    {exp.period}
+                  </span>
+                  <span className="text-[#5C5549]/40 dark:text-[#B8B9A6]/40">•</span>
+                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                    exp.isActive 
+                      ? "bg-[#B96F4F] dark:bg-[#C87D5D] text-[#F2EADF]" 
+                      : "bg-[#25231D]/10 dark:bg-[#F2EADF]/10 text-[#5C5549] dark:text-[#B8B9A6]"
+                  }`}>
+                    {exp.status}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-1.5 text-xs text-[#5C5549] dark:text-[#B8B9A6]">
+                  <MapPin size={13} className={exp.isActive ? "text-[#B96F4F] dark:text-[#C87D5D]" : "text-[#5C5549] dark:text-[#B8B9A6]"} />
+                  <span>{exp.location}</span>
+                </div>
+              </div>
+
+              {/* Dòng 2: Tên công ty & Vị trí làm việc rõ ràng */}
+              <div className="space-y-1">
+                <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#25231D] dark:text-[#F2EADF] tracking-tight">
+                  {exp.company}
+                </h3>
+                <div className="flex items-center gap-2 font-mono text-sm sm:text-base font-semibold text-[#B96F4F] dark:text-[#C87D5D]">
+                  <Briefcase size={14} className="shrink-0" />
+                  <span>{exp.role}</span>
+                </div>
+              </div>
+
+              {/* Dòng 3: Tóm tắt 1 câu vừa vặn */}
+              <p className="font-sans text-xs sm:text-sm text-[#40362E] dark:text-[#D4C9BD] leading-relaxed">
+                {exp.description}
+              </p>
+
+              {/* Dòng 4: Các điểm nhấn thẳng hàng, dễ đọc */}
+              <ul className="space-y-2 text-xs sm:text-[13px] text-[#25231D] dark:text-[#F2EADF] font-sans pt-1">
+                {exp.points.map((pt, pIdx) => (
+                  <li key={pIdx} className="flex items-start gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#B96F4F] dark:bg-[#C87D5D] mt-2 shrink-0" />
+                    <span className="leading-relaxed">{pt}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Dòng 5: Tag công nghệ kích thước chuẩn */}
+              <div className="flex flex-wrap gap-2 pt-1.5">
+                {exp.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-2.5 py-1 rounded-md text-xs font-mono font-medium bg-[#EAE0D2] dark:bg-[#20261C] border border-[#25231D]/10 dark:border-[#F2EADF]/10 text-[#25231D] dark:text-[#F2EADF]"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+
+            </div>
           ))}
         </div>
 

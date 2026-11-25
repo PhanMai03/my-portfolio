@@ -3,126 +3,134 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-serif: "Cormorant Garamond", Georgia, Cambria, serif;
-  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Cormorant Garamond", Georgia, serif;
-  --font-mono: "IBM Plex Mono", monospace;
+  --font-serif: "Fraunces", "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Be Vietnam Pro", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Bricolage Grotesque", "Cormorant Garamond", Georgia, serif;
+  --font-mono: "JetBrains Mono", "IBM Plex Mono", monospace;
 
+  /* Primary Warm Editorial Color Palette */
   --color-warm-ivory: #F2EADF;
   --color-soft-beige: #E6D8C5;
-  --color-deep-forest: #30372D;
   --color-terracotta: #B96F4F;
-  --color-sage-olive: #85866A;
+  --color-terracotta-hover: #A35C3E;
+  --color-terracotta-dark: #C87D5D;
   --color-sand: #C8B69E;
   --color-dark-brown: #40362E;
+  --color-charcoal-warm: #161914;
+  --color-surface-dark: #1C201A;
+  --color-deep-forest: #30372D;
 }
 
 :root {
   --canvas: #F2EADF;
-  --surface: #E6D8C5;
-  --text-primary: #30372D;
+  --surface: #FAF7F2;
+  --text-primary: #25231D;
   --text-secondary: #40362E;
-  --text-muted: #85866A;
+  --text-muted: #5C5549;
   --accent: #B96F4F;
   --accent-hover: #A35C3E;
-  --hairline: rgba(64, 54, 46, 0.14);
+  --hairline: rgba(37, 35, 29, 0.12);
 }
 
 .dark {
   --canvas: #161914;
-  --surface: #20261C;
+  --surface: #1C201A;
   --text-primary: #F2EADF;
   --text-secondary: #D4C9BD;
-  --text-muted: #9E9F88;
+  --text-muted: #85866A;
   --accent: #C87D5D;
   --accent-hover: #D98E6E;
-  --hairline: rgba(242, 234, 223, 0.14);
+  --hairline: rgba(242, 234, 223, 0.12);
 }
 
 @layer base {
-  * {
-    border-color: rgba(64, 54, 46, 0.14);
-  }
-  .dark * {
-    border-color: rgba(242, 234, 223, 0.12);
-  }
   html {
     scroll-behavior: smooth;
-    transition: background-color 0.25s ease, color 0.25s ease;
-    background-color: #F2EADF;
-    color: #40362E;
-  }
-  html.dark {
-    background-color: #161914;
-    color: #F2EADF;
-  }
-  body {
-    background-color: #F2EADF;
-    color: #40362E;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
-    transition: background-color 0.25s ease, color 0.25s ease;
-  }
-  html.dark body {
-    background-color: #161914;
-    color: #F2EADF;
+    background-color: var(--canvas);
+    color: var(--text-primary);
+    overflow-x: hidden;
   }
 
-  /* OFF-GRID Editorial Scrollbar */
+  body {
+    background-color: var(--canvas);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Sleek Minimal Warm Scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
+
   ::-webkit-scrollbar-track {
     background: #F2EADF;
   }
+
   .dark ::-webkit-scrollbar-track {
     background: #161914;
   }
+
   ::-webkit-scrollbar-thumb {
     background: #C8B69E;
     border-radius: 3px;
   }
+
   .dark ::-webkit-scrollbar-thumb {
-    background: #2E362A;
+    background: #30372D;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: #B96F4F;
   }
+
   .dark ::-webkit-scrollbar-thumb:hover {
     background: #C87D5D;
   }
 }
 
-/* Structural Hairlines */
-.structural-border {
-  border-color: rgba(64, 54, 46, 0.14);
+/* Editorial Typography */
+.font-editorial-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
 }
 
-.structural-surface {
-  background-color: #E6D8C5;
-}
-
-/* Blueprint Grid Background siêu mờ 3.5% (kích thước 32x32px chất liệu giấy vẽ kỹ thuật) */
+/* Subtle Technical Blueprint Texture */
 .bg-blueprint-grid {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(64, 54, 46, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(64, 54, 46, 0.035) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-image:
+    linear-gradient(to right, rgba(37, 35, 29, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(37, 35, 29, 0.035) 1px, transparent 1px);
 }
 
 .dark .bg-blueprint-grid {
-  background-image: 
+  background-image:
     linear-gradient(to right, rgba(242, 234, 223, 0.035) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(242, 234, 223, 0.035) 1px, transparent 1px);
 }
 
-/* Gentle Float Animation cho Data Bits & Nodes */
+/* Gentle Float Animations */
 @keyframes gentleFloat {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(0) rotate(0deg);
   }
   50% {
-    transform: translateY(-4px);
+    transform: translateY(-6px) rotate(2deg);
+  }
+}
+
+@keyframes gentleSway {
+  0%, 100% {
+    transform: translateY(0) translateX(0) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-8px) translateX(4px) rotate(3deg);
   }
 }
 
@@ -131,36 +139,53 @@
 }
 
 .animate-gentle-float-delayed {
-  animation: gentleFloat 5s ease-in-out infinite 2.5s;
+  animation: gentleFloat 6s ease-in-out infinite 2s;
 }
 
-/* Organic Shapes & Sculptural Arches */
-.arch-top {
-  border-top-left-radius: 9999px;
-  border-top-right-radius: 9999px;
+.animate-gentle-sway {
+  animation: gentleSway 7s ease-in-out infinite;
 }
 
-.pebble-shape {
-  border-radius: 60% 40% 70% 30% / 50% 60% 40% 50%;
+.animate-gentle-sway-delayed {
+  animation: gentleSway 8s ease-in-out infinite 3.5s;
 }
 
-.arch-asymmetric {
-  border-top-left-radius: 140px;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 60px;
-  border-bottom-left-radius: 20px;
+/* Infinite Marquee Animations */
+@keyframes marquee {
+  0% {
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 
-/* Editorial Drop Cap */
-.drop-cap::first-letter {
-  float: left;
-  font-family: var(--font-serif);
-  font-size: 4.6rem;
-  line-height: 0.85;
-  padding-top: 4px;
-  padding-right: 12px;
-  padding-bottom: 2px;
-  color: #B96F4F;
-  font-weight: 600;
-  font-style: italic;
+@keyframes marqueeReverse {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-reverse {
+  animation: marqueeReverse 28s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover,
+.animate-marquee-reverse:hover {
+  animation-play-state: paused;
+}
+
+
+.animate-marquee:hover,
+.animate-marquee-reverse:hover {
+  animation-play-state: paused;
 }

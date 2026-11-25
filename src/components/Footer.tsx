@@ -96,8 +96,15 @@ export const Footer: React.FC = () => {
   return (
     <footer
       id="contact"
-      className="relative w-full bg-[#20251D] dark:bg-[#121510] text-[#F2EADF] text-left border-t border-[#25231D]/20 dark:border-[#F2EADF]/15 select-none scroll-mt-0 transition-colors duration-300"
+      className="relative w-full bg-[#181D14] dark:bg-[#10140E] text-[#F2EADF] text-left border-t border-[#25231D]/20 dark:border-[#F2EADF]/15 select-none scroll-mt-0 overflow-hidden transition-colors duration-300"
     >
+      {/* Lớp hạt nhiễu giấy mỹ thuật tinh tế trên nền tối */}
+      <div className="absolute inset-0 pointer-events-none bg-paper-noise opacity-35" />
+
+      {/* Ánh sáng hắt không gian điện ảnh (Ambient Glow) */}
+      <div className="absolute top-1/4 -right-24 w-96 h-96 rounded-full bg-[#B96F4F]/12 blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-1/3 -left-24 w-80 h-80 rounded-full bg-[#30372D]/60 blur-[140px] pointer-events-none" />
+
       {/* Corner drafting crosshairs */}
       <div className="absolute top-4 left-6 sm:left-12 font-mono text-xs text-[#DECFC0]/50 select-none pointer-events-none">+</div>
       <div className="absolute top-4 right-6 sm:right-12 font-mono text-xs text-[#DECFC0]/50 select-none pointer-events-none">+</div>
@@ -105,7 +112,7 @@ export const Footer: React.FC = () => {
       <div className="absolute bottom-4 right-6 sm:right-12 font-mono text-xs text-[#DECFC0]/50 select-none pointer-events-none">+</div>
 
       {/* Terminal Status Ribbon (Dòng trạng thái terminal chạy ngầm) */}
-      <div className="w-full border-b border-[#F2EADF]/10 bg-[#161A14]/80 px-6 sm:px-12 py-2.5">
+      <div className="w-full border-b border-[#F2EADF]/10 bg-[#161A14]/80 px-6 sm:px-12 py-2.5 relative z-10">
         <div className="max-w-[1520px] mx-auto flex items-center justify-between text-[10px] font-mono tracking-wider text-[#C8B69E]">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#B96F4F] inline-block animate-pulse" />
@@ -124,7 +131,7 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* MAIN CONTACT CONTAINER (MẶT PHẲNG MỞ THOÁNG, HOÀN TOÀN KHÔNG DÙNG CARD HỘP BỌC) */}
-      <div className="w-full max-w-[1520px] mx-auto px-6 sm:px-12 lg:px-16 xl:px-20 py-20 sm:py-24 lg:py-28">
+      <div className="w-full max-w-[1520px] mx-auto px-6 sm:px-12 lg:px-16 xl:px-20 py-20 sm:py-24 lg:py-28 relative z-10">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
@@ -143,7 +150,7 @@ export const Footer: React.FC = () => {
               {/* Monumental Serif Heading */}
               <h2 className="text-4xl sm:text-5xl lg:text-[3.2rem] font-serif font-bold text-[#F2EADF] leading-[1.05] tracking-tight">
                 {t.contact.heading} <br />
-                <span className="italic font-normal text-[#DECFC0] dark:text-[#C87D5D]">
+                <span className="font-editorial-italic font-normal text-[#C87D5D]">
                   {t.contact.headingHighlight}
                 </span>
               </h2>
